@@ -39,7 +39,7 @@ class _MenuScreen extends State<MenuScreen> {
           children: [
             Container(
               margin: EdgeInsets.only(right: width * 3.5),
-              height: height * 2.4,
+              height: height * 2.7,
               width: width * 20,
               child: DrawerHeader(
                 child: Center(

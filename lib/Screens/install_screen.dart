@@ -30,7 +30,7 @@ class _InstallApps extends State<InstallApps> {
   late List<String> image_list;
   late String _fileUrl = "";
   late String _fileName = "";
-  late String open_path;
+  late String open_path = "";
   final Dio _dio = Dio();
 
   late double _progress = 0.0;
@@ -40,6 +40,8 @@ class _InstallApps extends State<InstallApps> {
   bool progress_visible = false;
   bool open_visible = false;
   late String app_package_name;
+  late String title;
+  late String description;
 
   @override
   void initState() {
@@ -53,22 +55,31 @@ class _InstallApps extends State<InstallApps> {
       ];
       _fileUrl = "http://143.110.176.111/genieshield/security.apk";
       _fileName = "security.apk";
-      app_package_name = "com.frandroid.app";
+      app_package_name = "com.gss.genieshield";
+      title = "Install the App to Secure you and your device..";
+      description = "Some features are:- \n Spy Camera, Life Saver, Secure Chat, Scan, Anti Phishing, Secure, Permission, Social Media Checker, Device Status, Password Safe, Pay Safe, Hidden App Detector, Ad Detector, Full Scan, Application Scan, Battery Save, Phone Cooler, Alarm Alert, SMS Alert, Email Alert, Data Access Alert, Restart Alert, Plug-in / Plug-Out, Motion Alert, Pocket Alert, List, Alarm Alert, Device Location, Format Device, Photo Front Camera, Photo Back Camera, Show Message on Screen, Record Video Front Camera, Record Video Back Camera, Lock Device, Get Contact List, Get Call Log, Torch Light On, Torch Light Off, Location History, Call Filter, Privacy Protection & more…";
     } else if (widget.name == "YouTube Video"){
       image_list = [
         "images/youtube_gs_1.png",
         "images/youtube_gs_2.png",
         "images/youtube_gs_3.png",
-        "images/antitheft_gs.png",
-        "images/lock_gs.png",
+        "images/youtube_gs_4.png"
       ];
       _fileUrl = "http://143.110.176.111/genieshield/youtube.apk";
       _fileName = "youtube.apk";
-      app_package_name = "com.frandroid.app";
+      app_package_name = "com.vanced.android.youtube";
+      title = "Youtube Video";
+      description = "Enjoy the Ad-free youtube videos and also play when offline.";
     } else {
+      image_list = [
+        "images/youtube_music_gs_1.png",
+        "images/youtube_music_gs_2.png"
+      ];
       _fileUrl = "http://143.110.176.111/genieshield/youtubemusic.apk";
       _fileName = "youtubemusic.apk";
-      app_package_name = "com.frandroid.app";
+      app_package_name = "com.vanced.android.apps.youtube.music";
+      title = "Youtube Music";
+      description = "Enjoy the Ad-free youtube music and also play when offline.";
     }
     _getPackageStatus();
     super.initState();
@@ -156,10 +167,10 @@ class _InstallApps extends State<InstallApps> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 30.0),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "Install the App to Secure you and your device..",
-                            style: TextStyle(
+                            title,
+                            style: const TextStyle(
                                 color: Color(0xFFFFAE00),
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold),
@@ -244,8 +255,15 @@ class _InstallApps extends State<InstallApps> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    onPressed: () {
-                      OpenFile.open(open_path);
+                    onPressed: () async {
+                      if(open_path.isEmpty) {
+                        bool isInstalled = await DeviceApps.isAppInstalled(app_package_name);
+                        if(isInstalled) {
+                          DeviceApps.openApp(app_package_name);
+                        }
+                      } else {
+                        OpenFile.open(open_path);
+                      }
                     },
                   ),
                 ),
