@@ -162,7 +162,7 @@ class _ALlOptions extends State<AllOptions> {
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () {
-                        if (homepageList[index].name == "Spy Camera" || homepageList[index].name == "Life Saver" || homepageList[index].name == "Secure Chat" || homepageList[index].name == "Anti Hacking" || homepageList[index].name == "Anti Virus" || homepageList[index].name == "Anti Theft" || homepageList[index].name == "Wi-Fi Protect" || homepageList[index].name == "YouTube Video" || homepageList[index].name == "YouTube Music") {
+                        if (homepageList[index].name == "Spy Camera" || homepageList[index].name == "Life Saver" || homepageList[index].name == "Secure Chat" || homepageList[index].name == "Anti Hacking" || homepageList[index].name == "Anti Virus" || homepageList[index].name == "Anti Theft" || homepageList[index].name == "Wi-Fi Protect") {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => InstallApps(homepageList[index].name)));
                         } else {
                           _alertDialog();

@@ -81,4 +81,10 @@
        </provider>
        <!-- End FlutterDownloader customization -->
     </application>
+
+    <queries>
+        <package android:name="com.gss.genieshield" />
+        <!--<package android:name="com.gss.utilityapp" />
+        <package android:name="com.vanced.android.youtube" />-->
+    </queries>
 </manifest>
