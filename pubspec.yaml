@@ -46,6 +46,7 @@ dependencies:
   flutter_animated_dialog: ^2.0.1
   flutter_animation_progress_bar: ^2.0.1
   device_apps: ^2.1.1
+  android_intent_plus: ^3.0.2
 
 dev_dependencies:
   flutter_test:

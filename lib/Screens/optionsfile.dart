@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -161,10 +165,26 @@ class _ALlOptions extends State<AllOptions> {
                   itemCount: homepageList.length,
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
-                      onTap: () {
-                        if (homepageList[index].name == "Spy Camera" || homepageList[index].name == "Life Saver" || homepageList[index].name == "Secure Chat" || homepageList[index].name == "Anti Hacking" || homepageList[index].name == "Anti Virus" || homepageList[index].name == "Anti Theft" || homepageList[index].name == "Wi-Fi Protect") {
+                      onTap: () async {
+                        if (homepageList[index].name == "Spy Camera"
+                            || homepageList[index].name == "Life Saver"
+                            || homepageList[index].name == "Secure Chat"
+                            || homepageList[index].name == "Anti Hacking"
+                            || homepageList[index].name == "Anti Virus"
+                            || homepageList[index].name == "Anti Theft"
+                            || homepageList[index].name == "Wi-Fi Protect") {
+                          bool installed =  await DeviceApps.isAppInstalled("com.gss.genieshield");
+                          if(installed){
+                              launchNativeActivity(homepageList[index].name);
+                          }else{
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => InstallApps(homepageList[index].name)));
+                          }
+
+                        }else if(homepageList[index].name == "YouTube Video"
+                            || homepageList[index].name == "YouTube Music"){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => InstallApps(homepageList[index].name)));
-                        } else {
+
+                        }else {
                           _alertDialog();
                         }
                       },
@@ -236,5 +256,80 @@ class _ALlOptions extends State<AllOptions> {
       curve: Curves.fastOutSlowIn,
       duration: const Duration(seconds: 1),
     );
+  }
+
+  void launchNativeActivity(String pageName) async{
+    if(Platform.isAndroid){
+      //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
+      bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
+      if(isInstalled == true){
+        AndroidIntent intent;
+        /*Device security*/
+        if(pageName == "Anti Hacking"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.AntiHackingActivity',
+
+          );
+          await intent.launch();
+        }
+        if(pageName == "Anti Virus"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.AntiVirusActivity',
+          );
+          await intent.launch();
+        }
+        if(pageName == "Anti Theft"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.AntiTheftActivity',
+          );
+          await intent.launch();
+        }
+        if(pageName == "Wi-Fi Protect"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.SecurityActivity',
+          );
+          await intent.launch();
+        }
+        /*Personal Security*/
+        if(pageName == "Spy Camera"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.VideoAudioRecorderActivity',
+          );
+          await intent.launch();
+        }
+        if(pageName == "Life Saver"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.ChildLadiesProtectionActivity',
+          );
+          await intent.launch();
+        }
+        if(pageName == "Secure Chat"){
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.SecureChatActivity',
+          );
+          await intent.launch();
+        }
+
+
+      }else{
+        print("is not installed "+isInstalled.toString());
+      }
+
+    }
+
   }
 }

@@ -5,7 +5,7 @@ import 'package:genie_shield/Model/onboard_screen_model.dart';
 import 'package:genie_shield/utils/screen_sizes.dart';
 
 import '../home.dart';
-
+import 'signup_screen.dart';
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({Key? key}) : super(key: key);
 
@@ -184,6 +184,10 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                     ),
                     onPressed: () {
                       _alertDialog();
+                      /*Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignupScreen()),
+                      );*/
                     },
                   ),
                 ),
