@@ -184,15 +184,32 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name ==
-                                "YouTube Video" ||
-                            homepageList[index].name == "YouTube Music") {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      InstallApps(homepageList[index].name)));
-                        } else {
+                        } else if (homepageList[index].name == "YouTube Video") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.vanced.android.youtube");
+                          if (installed) {
+                            DeviceApps.openApp("com.vanced.android.youtube");
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "YouTube Music") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.vanced.android.apps.youtube.music");
+                          if (installed) {
+                            DeviceApps.openApp("com.vanced.android.apps.youtube.music");
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        }
+                        else {
                           _alertDialog();
                         }
                       },
