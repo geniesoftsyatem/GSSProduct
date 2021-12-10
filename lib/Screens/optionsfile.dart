@@ -284,10 +284,27 @@ class _ALlOptions extends State<AllOptions> {
   }
 
   void launchNativeActivity(String pageName) async {
+    final Map<String, String> someMap = {"activity": pageName};
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
       bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
-      if (isInstalled == true) {
+      if(isInstalled ==true){
+        AndroidIntent intent;
+        //if (pageName == "Anti Hacking") {
+
+          intent =  AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
+            data: 'com.gss.genieshield',
+            arguments: someMap,
+          );
+          await intent.launch();
+        //}
+      }else{
+        print("not installed");
+      }
+      /*if (isInstalled == true) {
         AndroidIntent intent;
         if (pageName == "Anti Hacking") {
           intent = const AndroidIntent(
@@ -349,7 +366,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else {
         print("is not installed " + isInstalled.toString());
-      }
+      }*/
     }
   }
 }

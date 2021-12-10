@@ -1,8 +1,7 @@
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:android_intent_plus/android_intent.dart';
-import 'package:app_installer/app_installer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:dio/dio.dart';
@@ -34,6 +33,7 @@ class _InstallApps extends State<InstallApps> {
   late String open_path = "";
   final Dio _dio = Dio();
 
+  late double _progress = 0.0;
   late int percentage = 0;
   late String display_percent = "";
   bool install_visible = true;
@@ -45,13 +45,7 @@ class _InstallApps extends State<InstallApps> {
 
   @override
   void initState() {
-    if (widget.name == "Spy Camera" ||
-        widget.name == "Life Saver" ||
-        widget.name == "Secure Chat" ||
-        widget.name == "Anti Hacking" ||
-        widget.name == "Anti Virus" ||
-        widget.name == "Anti Theft" ||
-        widget.name == "Wi-Fi Protect") {
+    if (widget.name == "Spy Camera" || widget.name == "Life Saver" || widget.name == "Secure Chat" || widget.name == "Anti Hacking" || widget.name == "Anti Virus" || widget.name == "Anti Theft" || widget.name == "Wi-Fi Protect") {
       image_list = [
         "images/notification_gs.png",
         "images/securechat_gs.png",
@@ -63,9 +57,8 @@ class _InstallApps extends State<InstallApps> {
       _fileName = "security.apk";
       app_package_name = "com.gss.genieshield";
       title = "Install the App to Secure you and your device..";
-      description =
-          "Some features are:- \n Spy Camera, Life Saver, Secure Chat, Scan, Anti Phishing, Secure, Permission, Social Media Checker, Device Status, Password Safe, Pay Safe, Hidden App Detector, Ad Detector, Full Scan, Application Scan, Battery Save, Phone Cooler, Alarm Alert, SMS Alert, Email Alert, Data Access Alert, Restart Alert, Plug-in / Plug-Out, Motion Alert, Pocket Alert, List, Alarm Alert, Device Location, Format Device, Photo Front Camera, Photo Back Camera, Show Message on Screen, Record Video Front Camera, Record Video Back Camera, Lock Device, Get Contact List, Get Call Log, Torch Light On, Torch Light Off, Location History, Call Filter, Privacy Protection & more…";
-    } else if (widget.name == "YouTube Video") {
+      description = "Some features are:- \n Spy Camera, Life Saver, Secure Chat, Scan, Anti Phishing, Secure, Permission, Social Media Checker, Device Status, Password Safe, Pay Safe, Hidden App Detector, Ad Detector, Full Scan, Application Scan, Battery Save, Phone Cooler, Alarm Alert, SMS Alert, Email Alert, Data Access Alert, Restart Alert, Plug-in / Plug-Out, Motion Alert, Pocket Alert, List, Alarm Alert, Device Location, Format Device, Photo Front Camera, Photo Back Camera, Show Message on Screen, Record Video Front Camera, Record Video Back Camera, Lock Device, Get Contact List, Get Call Log, Torch Light On, Torch Light Off, Location History, Call Filter, Privacy Protection & more…";
+    } else if (widget.name == "YouTube Video"){
       image_list = [
         "images/youtube_gs_1.png",
         "images/youtube_gs_2.png",
@@ -76,8 +69,7 @@ class _InstallApps extends State<InstallApps> {
       _fileName = "youtube.apk";
       app_package_name = "com.vanced.android.youtube";
       title = "Youtube Video";
-      description =
-          "Enjoy the Ad-free youtube videos and also play when offline.";
+      description = "Enjoy the Ad-free youtube videos and also play when offline.";
     } else {
       image_list = [
         "images/youtube_music_gs_1.png",
@@ -87,11 +79,9 @@ class _InstallApps extends State<InstallApps> {
       _fileName = "youtubemusic.apk";
       app_package_name = "com.vanced.android.apps.youtube.music";
       title = "Youtube Music";
-      description =
-          "Enjoy the Ad-free youtube music and also play when offline.";
+      description = "Enjoy the Ad-free youtube music and also play when offline.";
     }
     _getPackageStatus();
-    _getFileDirectory();
     super.initState();
   }
 
@@ -190,9 +180,9 @@ class _InstallApps extends State<InstallApps> {
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 30.0),
-                        child: Text(
-                          description,
-                          style: const TextStyle(
+                        child: const Text(
+                          "Some features are:- \n Spy Camera, Life Saver, Secure Chat, Scan, Anti Phishing, Secure, Permission, Social Media Checker, Device Status, Password Safe, Pay Safe, Hidden App Detector, Ad Detector, Full Scan, Application Scan, Battery Save, Phone Cooler, Alarm Alert, SMS Alert, Email Alert, Data Access Alert, Restart Alert, Plug-in / Plug-Out, Motion Alert, Pocket Alert, List, Alarm Alert, Device Location, Format Device, Photo Front Camera, Photo Back Camera, Show Message on Screen, Record Video Front Camera, Record Video Back Camera, Lock Device, Get Contact List, Get Call Log, Torch Light On, Torch Light Off, Location History, Call Filter, Privacy Protection & more…",
+                          style: TextStyle(
                             color: Color(0xFFFFAE00),
                             fontSize: 18.0,
                           ),
@@ -207,10 +197,10 @@ class _InstallApps extends State<InstallApps> {
                 visible: install_visible,
                 child: Container(
                   margin:
-                      const EdgeInsets.all(10.0),
+                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                   child: ElevatedButton(
                     child: const Text(
-                      "Download",
+                      "Install",
                       style: TextStyle(
                         color: Color(0xFF111111),
                         fontSize: 18.0,
@@ -234,12 +224,12 @@ class _InstallApps extends State<InstallApps> {
                 visible: progress_visible,
                 child: Container(
                   margin:
-                      const EdgeInsets.all(10.0),
+                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                   child: FAProgressBar(
                     backgroundColor: const Color(0xFF3A3A3A),
                     maxValue: 100,
                     progressColor: const Color(0xFFFFAE00),
-                    displayText: display_percent + "%",
+                    displayText: display_percent+ "%",
                     currentValue: percentage,
                   ),
                 ),
@@ -248,10 +238,10 @@ class _InstallApps extends State<InstallApps> {
                 visible: open_visible,
                 child: Container(
                   margin:
-                      const EdgeInsets.all(10.0),
+                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                   child: ElevatedButton(
                     child: const Text(
-                      "Install",
+                      "Open",
                       style: TextStyle(
                         color: Color(0xFF111111),
                         fontSize: 18.0,
@@ -266,29 +256,14 @@ class _InstallApps extends State<InstallApps> {
                       ),
                     ),
                     onPressed: () async {
-                      bool isInstalled =
-                          await DeviceApps.isAppInstalled(app_package_name);
-                      if (option == "Spy Camera" ||
-                          option == "Life Saver" ||
-                          option == "Secure Chat" ||
-                          option == "Anti Hacking" ||
-                          option == "Anti Virus" ||
-                          option == "Anti Theft" ||
-                          option == "Wi-Fi Protect") {
-                        if (isInstalled) {
-                          launchNativeActivity(option);
-                        } else {
-                          OpenFile.open(open_path);
-                        }
-                      } else if (option == "YouTube Video" || option == "YouTube Music") {
-                        if (isInstalled) {
+                      if(open_path.isEmpty) {
+                        bool isInstalled = await DeviceApps.isAppInstalled(app_package_name);
+                        if(isInstalled) {
                           DeviceApps.openApp(app_package_name);
-                        } else {
-                          OpenFile.open(open_path);
-                          AppInstaller.installApk('/sdcard/app/app-debug.apk');
                         }
+                      } else {
+                        OpenFile.open(open_path);
                       }
-                      Navigator.of(context).pop();
                     },
                   ),
                 ),
@@ -322,18 +297,6 @@ class _InstallApps extends State<InstallApps> {
       return status.isGranted;
     } else {
       return status.isDenied;
-    }
-  }
-
-  Future<void> _getFileDirectory() async {
-    final dir = await _getDownloadDirectory();
-    final isPermissionStatusGranted = await _requestPermissions();
-
-    if (isPermissionStatusGranted) {
-      open_path = path.join(dir!.path, _fileName);
-      // await _startDownload(savePath);
-    } else {
-      // handle the scenario when user declines the permissions
     }
   }
 
@@ -379,8 +342,9 @@ class _InstallApps extends State<InstallApps> {
   }
 
   _getPackageStatus() async {
+    Application? app = await DeviceApps.getApp(app_package_name);
     bool isInstalled = await DeviceApps.isAppInstalled(app_package_name);
-    if (isInstalled) {
+    if(isInstalled) {
       setState(() {
         install_visible = false;
         progress_visible = false;
@@ -392,75 +356,6 @@ class _InstallApps extends State<InstallApps> {
         progress_visible = false;
         open_visible = false;
       });
-    }
-  }
-
-  void launchNativeActivity(String pageName) async {
-    if (Platform.isAndroid) {
-      //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
-      bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
-      if (isInstalled == true) {
-        AndroidIntent intent;
-        if (pageName == "Anti Hacking") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.AntiHackingActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Anti Virus") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.AntiVirusActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Anti Theft") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.AntiTheftActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Wi-Fi Protect") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.SecurityActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Spy Camera") {
-          intent = const AndroidIntent(
-              action: 'android_send',
-              package: 'com.gss.genieshield',
-              componentName:
-                  'com.gss.genieshield.Activity.VideoAudioRecorderActivity');
-          await intent.launch();
-        }
-        if (pageName == "Life Saver") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName:
-                'com.gss.genieshield.Activity.ChildLadiesProtectionActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Secure Chat") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.SecureChatActivity',
-          );
-          await intent.launch();
-        }
-      } else {
-        print("is not installed " + isInstalled.toString());
-      }
     }
   }
 }
