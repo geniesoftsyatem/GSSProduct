@@ -284,72 +284,27 @@ class _ALlOptions extends State<AllOptions> {
   }
 
   void launchNativeActivity(String pageName) async {
+    final Map<String, String> someMap = {"activity": pageName};
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
       bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
-      if (isInstalled == true) {
+      if(isInstalled ==true){
         AndroidIntent intent;
-        if (pageName == "Anti Hacking") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.AntiHackingActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Anti Virus") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.AntiVirusActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Anti Theft") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.AntiTheftActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Wi-Fi Protect") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.SecurityActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Spy Camera") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName:
-                'com.gss.genieshield.Activity.VideoAudioRecorderActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Life Saver") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName:
-                'com.gss.genieshield.Activity.ChildLadiesProtectionActivity',
-          );
-          await intent.launch();
-        }
-        if (pageName == "Secure Chat") {
-          intent = const AndroidIntent(
-            action: 'android_send',
-            package: 'com.gss.genieshield',
-            componentName: 'com.gss.genieshield.Activity.SecureChatActivity',
-          );
-          await intent.launch();
-        }
-      } else {
-        print("is not installed " + isInstalled.toString());
+        //if (pageName == "Anti Hacking") {
+
+        intent =  AndroidIntent(
+          action: 'android_send',
+          package: 'com.gss.genieshield',
+          componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
+          data: 'com.gss.genieshield',
+          arguments: someMap,
+        );
+        await intent.launch();
+        //}
+      }else{
+        print("not installed");
       }
+
     }
   }
 }
