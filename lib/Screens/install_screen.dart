@@ -7,6 +7,7 @@ import 'package:device_apps/device_apps.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:genie_shield/utils/screen_sizes.dart';
 import 'package:open_file/open_file.dart';
@@ -77,7 +78,7 @@ class _InstallApps extends State<InstallApps> {
       title = "Youtube Video";
       description =
           "Enjoy the Ad-free youtube videos and also play when offline.";
-    } else {
+    } else if (widget.name == "YouTube Music"){
       image_list = [
         "images/youtube_music_gs_1.png",
         "images/youtube_music_gs_2.png"
@@ -88,6 +89,19 @@ class _InstallApps extends State<InstallApps> {
       title = "Youtube Music";
       description =
           "Enjoy the Ad-free youtube music and also play when offline.";
+    } else if (widget.name == "OTT"){
+      image_list = [
+        "images/ott_gs_1.png",
+        "images/ott_gs_2.png",
+        "images/ott_gs_3.png",
+        "images/ott_gs_4.png"
+      ];
+      _fileUrl = "";
+      _fileName = "";
+      app_package_name = "";
+      title = "OTT";
+      description =
+      "Install app, We provides you a new perspective towards entertainment.";
     }
     _getPackageStatus();
     _getFileDirectory();
@@ -224,7 +238,11 @@ class _InstallApps extends State<InstallApps> {
                       ),
                     ),
                     onPressed: () {
-                      _download();
+                      if(option == "OTT") {
+                      _alertDialog();
+                      } else {
+                        _download();
+                      }
                     },
                   ),
                 ),
@@ -416,5 +434,23 @@ class _InstallApps extends State<InstallApps> {
       }
 
     }
+  }
+
+  Future _alertDialog() {
+    return showAnimatedDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ClassicGeneralDialogWidget(
+          contentText: 'Coming Soon',
+          onPositiveClick: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+      animationType: DialogTransitionType.size,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(seconds: 1),
+    );
   }
 }

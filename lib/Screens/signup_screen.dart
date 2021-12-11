@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
+import 'package:genie_shield/Model/registration_model.dart';
+import 'package:genie_shield/Screens/signin_screen.dart';
 
-class SignupScreen extends StatefulWidget{
+class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
@@ -10,42 +10,62 @@ class SignupScreen extends StatefulWidget{
     // TODO: implement createState
     return _SignupScreen();
   }
-
-
 }
 
-class _SignupScreen extends State<SignupScreen>{
+class _SignupScreen extends State<SignupScreen> {
+  final TextEditingController _email_controller = TextEditingController();
+  final TextEditingController _mobile_controller = TextEditingController();
+  final TextEditingController _password_controller = TextEditingController();
+  final TextEditingController _confirm_password_controller = TextEditingController();
+
+  Future<RegistrationModel>? _futureAlbum;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    double width = MediaQuery.of(context).size.width;;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: const Color(0xFFFFAE00),
-        body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                    flex: 2,
-                    child: Container(
-                      margin: const EdgeInsets.all(20.0),
-                      height: double.infinity,
+      backgroundColor: const Color(0xFF111111),
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            CustomPaint(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height/7,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(10.0),
                       child: Align(
-                        alignment : Alignment(-1,1),
+                        alignment: const Alignment(-1, 1),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               const Text(
                                 "Existing user?",
-                                style: TextStyle(color: Color(0xFF111111), fontSize: 14.0,fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    color: Color(0xFF111111),
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold),
                               ),
                               ElevatedButton(
-                                  onPressed: () {  },
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const SignInScreen()));
+                                  },
                                   child: const Text(
                                     "LOGIN",
                                     style: TextStyle(
-                                        color: Color(0xFFFFAE00),
-                                        fontSize: 16.0,
+                                      color: Color(0xFFFFAE00),
+                                      fontSize: 16.0,
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
@@ -56,158 +76,165 @@ class _SignupScreen extends State<SignupScreen>{
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
                                     padding: const EdgeInsets.only(
-                                      left: 12.0,
-                                      right: 12.0
-                                    ),
-                                  )
-                              )]
-                        ),
+                                        left: 12.0, right: 12.0),
+                                  ))
+                            ]),
                       ),
                     ),
+                  ],
                 ),
-                Expanded(
-                    flex: 4,
+              ),
+              painter: HeaderCurvedContainer(),
+            ),
+            Expanded(
+              flex: 4,
+              child: Stack(
+                alignment: const Alignment(-1, 1),
+                children: [
+                  SingleChildScrollView(
                     child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                          top: 40.0,
-                          bottom: 20.0
-                          ) ,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF111111),
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.elliptical(
-                                MediaQuery.of(context).size.width, 120.0)),
-                      ),
-                      child: Align(
-                          alignment : Alignment(-1,1),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "Sign up with",
-                                style: TextStyle(color: Color(0xFFFFAE00), fontSize: 14.0,fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height:10),
-                              Text(
-                                "PRODUCT",
-                                style: TextStyle(color: Color(0xFFFFAE00), fontSize: 24.0,fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height:20),
-                              TextField(
-                                obscureText: true,
-                                style: TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                    hintText: 'Enter Email',
-                                    hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-                                    fillColor: Color(0xFF3A3A3A),
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 16.0,
-                                        right: 16.0
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-
-                                    )
-
-                                ),
-                              ),
-                              SizedBox(height:10),
-                              TextField(
-                                obscureText: true,
-                                style: TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                    hintText: 'Mobile number',
-                                    hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-                                    fillColor: Color(0xFF3A3A3A),
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 16.0,
-                                        right: 16.0
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-
-                                    )
-
-                                ),
-                              ),
-                              SizedBox(height:10),
-                              TextField(
-                                obscureText: true,
-                                style: TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                    hintText: 'Password',
-                                    hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-                                    fillColor: Color(0xFF3A3A3A),
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 16.0,
-                                        right: 16.0
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-
-                                    )
-                                ),
-                              ),
-                              SizedBox(height:10),
-                              TextField(
-                                obscureText: true,
-                                style: TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                    hintText: 'Re-confirm Password',
-                                    hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-                                    fillColor: Color(0xFF3A3A3A),
-                                    filled: true,
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 16.0,
-                                        right: 16.0
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-
-                                    )
-                                ),
-                              ),
-                              SizedBox(height:10),
-                              ElevatedButton(
-                                  onPressed: () {  },
-                                  child: const Text(
-                                    "SIGN UP",
-                                    style: TextStyle(
-                                      color: Color(0xFF111111),
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize: Size(width, 30.0),
-                                    primary: const Color(0xFFFFAE00),
-                                    shadowColor: const Color(0xFFFFAE00),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        left: 12.0,
-                                        right: 12.0
-                                    ),
-                                  )
-                              ),
-                              SizedBox(height:10),
-                            ],
+                      margin: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          const Text(
+                            "Sign up with",
+                            style: TextStyle(
+                                color: Color(0xFFFFAE00),
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold),
                           ),
-                        )
-
+                          const SizedBox(height: 10),
+                          const Text(
+                            "PRODUCT",
+                            style: TextStyle(
+                                color: Color(0xFFFFAE00),
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 20),
+                          TextField(
+                            obscureText: true,
+                            style: const TextStyle(color: Color(0xFFFFAE00)),
+                            decoration: InputDecoration(
+                                hintText: 'Enter Email',
+                                hintStyle:
+                                    const TextStyle(fontSize: 14, color: Colors.grey),
+                                fillColor: const Color(0xFF3A3A3A),
+                                filled: true,
+                                contentPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            obscureText: true,
+                            style: const TextStyle(color: Color(0xFFFFAE00)),
+                            decoration: InputDecoration(
+                                hintText: 'Mobile number',
+                                hintStyle:
+                                    const TextStyle(fontSize: 14, color: Colors.grey),
+                                fillColor: const Color(0xFF3A3A3A),
+                                filled: true,
+                                contentPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            obscureText: true,
+                            style: const TextStyle(color: Color(0xFFFFAE00)),
+                            decoration: InputDecoration(
+                                hintText: 'Password',
+                                hintStyle:
+                                    const TextStyle(fontSize: 14, color: Colors.grey),
+                                fillColor: const Color(0xFF3A3A3A),
+                                filled: true,
+                                contentPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            obscureText: true,
+                            style: const TextStyle(color: Color(0xFFFFAE00)),
+                            decoration: InputDecoration(
+                                hintText: 'Re-confirm Password',
+                                hintStyle:
+                                    const TextStyle(fontSize: 14, color: Colors.grey),
+                                fillColor: const Color(0xFF3A3A3A),
+                                filled: true,
+                                contentPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                              onPressed: () {},
+                              child: const Text(
+                                "SIGN UP",
+                                style: TextStyle(
+                                  color: Color(0xFF111111),
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: Size(width, 30.0),
+                                primary: const Color(0xFFFFAE00),
+                                shadowColor: const Color(0xFFFFAE00),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                padding: const EdgeInsets.only(
+                                    left: 12.0, right: 12.0),
+                              )),
+                          const SizedBox(height: 10),
+                        ],
                       ),
-                      //color: const Color(0xFFFFAE00),
-                    ))
-              ],
-            )),
+                    ),
+                  ),
+                ],
+              ),
+              //color: const Color(0xFFFFAE00),
+            ),
+          ],
+        ),
+      ),
     );
   }
+}
+
+class HeaderCurvedContainer extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Paint paint = Paint()..color = const Color(0xFFFFAE00);
+    // Path path = Path()
+    //   ..lineTo(0, 150)
+    //   ..lineTo(0, size.height - 50)
+    //   ..quadraticBezierTo(
+    //       size.width / 2, size.height - 50, size.width, size.height - 50)
+    //   ..lineTo(size.width, 0)
+    //   ..lineTo(0, 0)
+    //   ..close();
+    Paint paint = Paint()..color = const Color(0xFFFFAE00);
+    Path path = Path()
+      ..relativeLineTo(0, 250)
+      ..quadraticBezierTo(size.width / 2, 130.0, size.width, 250)
+      ..relativeLineTo(0, -250)
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_shield/Model/onboard_screen_model.dart';
+import 'package:genie_shield/Screens/signin_screen.dart';
 import 'package:genie_shield/utils/screen_sizes.dart';
 
 import '../home.dart';
@@ -159,7 +160,9 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                       ),
                     ),
                     onPressed: () {
-                      _alertDialog();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SignupScreen()));
                     },
                   ),
                 ),
@@ -183,11 +186,10 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                       ),
                     ),
                     onPressed: () {
-                      _alertDialog();
-                      /*Navigator.push(
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
-                      );*/
+                        MaterialPageRoute(builder: (context) => const SignInScreen()),
+                      );
                     },
                   ),
                 ),
