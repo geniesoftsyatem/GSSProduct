@@ -1,5 +1,6 @@
-import 'dart:convert';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -34,36 +35,40 @@ class _SignupScreen extends State<SignupScreen> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CustomPaint(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 7,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: Align(
-                        alignment: const Alignment(-1, 1),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            const Text(
-                              "Existing user?",
-                              style: TextStyle(
-                                  color: Color(0xFF111111),
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            ElevatedButton(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10.0),
+                    child: Align(
+                      alignment: const Alignment(-1, 1),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            "Existing user?",
+                            style: TextStyle(
+                                color: Color(0xFF111111),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                            child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -79,189 +84,202 @@ class _SignupScreen extends State<SignupScreen> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                fixedSize: Size(width, 30.0),
+                                fixedSize: Size(width, 40.0),
                                 primary: const Color(0xFF111111),
                                 shadowColor: const Color(0xFF111111),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderRadius: BorderRadius.circular(5.0),
                                 ),
-                                padding: const EdgeInsets.only(
-                                    left: 12.0, right: 12.0),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              painter: HeaderCurvedContainer(),
-            ),
-            Expanded(
-              flex: 4,
-              child: Stack(
-                alignment: const Alignment(-1, 1),
-                children: [
-                  SingleChildScrollView(
-                    child: Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          const Text(
-                            "Sign up with",
-                            style: TextStyle(
-                                color: Color(0xFFFFAE00),
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "PRODUCT",
-                            style: TextStyle(
-                                color: Color(0xFFFFAE00),
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 20),
-                          TextField(
-                            style: const TextStyle(color: Color(0xFFFFAE00)),
-                            decoration: InputDecoration(
-                              hintText: 'Enter Email',
-                              hintStyle: const TextStyle(
-                                  fontSize: 14, color: Colors.grey),
-                              fillColor: const Color(0xFF3A3A3A),
-                              filled: true,
-                              contentPadding: const EdgeInsets.only(
-                                  left: 16.0, right: 16.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            controller: _email_controller,
-                          ),
-                          const SizedBox(height: 10),
-                          TextField(
-                            obscureText: true,
-                            style: const TextStyle(color: Color(0xFFFFAE00)),
-                            decoration: InputDecoration(
-                              hintText: 'Mobile number',
-                              hintStyle: const TextStyle(
-                                  fontSize: 14, color: Colors.grey),
-                              fillColor: const Color(0xFF3A3A3A),
-                              filled: true,
-                              contentPadding: const EdgeInsets.only(
-                                  left: 16.0, right: 16.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            keyboardType: TextInputType.phone,
-                            controller: _mobile_controller,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(10)
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          TextField(
-                            obscureText: true,
-                            style: const TextStyle(color: Color(0xFFFFAE00)),
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              hintStyle: const TextStyle(
-                                  fontSize: 14, color: Colors.grey),
-                              fillColor: const Color(0xFF3A3A3A),
-                              filled: true,
-                              contentPadding: const EdgeInsets.only(
-                                  left: 16.0, right: 16.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            controller: _password_controller,
-                          ),
-                          const SizedBox(height: 10),
-                          TextField(
-                            style: const TextStyle(color: Color(0xFFFFAE00)),
-                            decoration: InputDecoration(
-                              hintText: 'Re-confirm Password',
-                              hintStyle: const TextStyle(
-                                  fontSize: 14, color: Colors.grey),
-                              fillColor: const Color(0xFF3A3A3A),
-                              filled: true,
-                              contentPadding: const EdgeInsets.only(
-                                  left: 16.0, right: 16.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            controller: _confirm_password_controller,
-                          ),
-                          const SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_email_controller.text.isNotEmpty) {
-                                if (_mobile_controller.text.isNotEmpty) {
-                                  if (_password_controller.text.isNotEmpty) {
-                                    if (_confirm_password_controller
-                                        .text.isNotEmpty) {
-                                      if (_password_controller.text ==
-                                          _confirm_password_controller.text) {
-                                        String request_json =
-                                            jsonEncode(<String, String>{
-                                          "email": _email_controller.text,
-                                          "alt_mobile_no":
-                                              _mobile_controller.text,
-                                          "password": _password_controller.text,
-                                          "code": "",
-                                          "code_name": ""
-                                        });
-                                        _registrationResponse = networkCall.fetchPosts(_email_controller.text, _mobile_controller.text, _password_controller.text, context);
-                                      } else {
-                                        _createToast("Password does not match");
-                                      }
-                                    } else {
-                                      _createToast(
-                                          "Please enter re-confirm password");
-                                    }
-                                  } else {
-                                    _createToast("Please enter password");
-                                  }
-                                } else {
-                                  _createToast("Please enter mobile number");
-                                }
-                              } else {
-                                _createToast("Please enter email id");
-                              }
-                            },
-                            child: const Text(
-                              "SIGN UP",
-                              style: TextStyle(
-                                color: Color(0xFF111111),
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: Size(width, 30.0),
-                              primary: const Color(0xFFFFAE00),
-                              shadowColor: const Color(0xFFFFAE00),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              padding: const EdgeInsets.only(
-                                  left: 12.0, right: 12.0),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                  ),
+                  Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Container(
+                          margin: const EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                "Sign up with",
+                                style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                "PRODUCT",
+                                style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 26.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 20),
+                              TextField(
+                                style: const TextStyle(color: Color(0xFFFFAE00)),
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Email',
+                                  hintStyle: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
+                                  fillColor: const Color(0xFF3A3A3A),
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                controller: _email_controller,
+                              ),
+                              const SizedBox(height: 20),
+                              TextField(
+                                style: const TextStyle(color: Color(0xFFFFAE00)),
+                                decoration: InputDecoration(
+                                  hintText: 'Mobile number',
+                                  hintStyle: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
+                                  fillColor: const Color(0xFF3A3A3A),
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.phone,
+                                controller: _mobile_controller,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(10)
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              TextField(
+                                obscureText: true,
+                                style: const TextStyle(color: Color(0xFFFFAE00)),
+                                decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
+                                  fillColor: const Color(0xFF3A3A3A),
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                controller: _password_controller,
+                              ),
+                              const SizedBox(height: 20),
+                              TextField(
+                                style: const TextStyle(color: Color(0xFFFFAE00)),
+                                decoration: InputDecoration(
+                                  hintText: 'Re-confirm Password',
+                                  hintStyle: const TextStyle(
+                                      fontSize: 14, color: Colors.grey),
+                                  fillColor: const Color(0xFF3A3A3A),
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                controller: _confirm_password_controller,
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                                  var model, manufacturer, release, sdkInt, id;
+                                  if (Platform.isAndroid) {
+                                    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+                                    model = androidInfo.model;
+                                    manufacturer = androidInfo.manufacturer;
+                                    release = androidInfo.version.release;
+                                    sdkInt = androidInfo.version.sdkInt;
+                                    id = androidInfo.androidId;
+                                  } else {
+                                    IosDeviceInfo iosDevice = await deviceInfo.iosInfo;
+                                    model = iosDevice.name;
+                                    manufacturer = iosDevice.model;
+                                    release = iosDevice.systemName;
+                                    sdkInt = iosDevice.systemVersion;
+                                    id = iosDevice.identifierForVendor;
+                                  }
+
+                                  String sdk = "$sdkInt";
+                                  if (_email_controller.text.isNotEmpty) {
+                                    if (_mobile_controller.text.isNotEmpty) {
+                                      if (_mobile_controller.text.length == 10) {
+                                        if (_password_controller.text.isNotEmpty) {
+                                          if (_confirm_password_controller
+                                              .text.isNotEmpty) {
+                                            if (_password_controller.text ==
+                                                _confirm_password_controller.text) {
+                                              _registrationResponse = networkCall
+                                                  .fetchRegistrationPosts(
+                                                  _email_controller.text,
+                                                  _mobile_controller.text,
+                                                  _password_controller.text,
+                                                  release, model, "", "", "",
+                                                  context);
+                                            } else {
+                                              _createToast("Password does not match");
+                                            }
+                                          } else {
+                                            _createToast("Please enter re-confirm password");
+                                          }
+                                        } else {
+                                          _createToast("Please enter password");
+                                        }
+                                      } else {
+                                        _createToast("Please enter valid mobile number");
+                                      }
+                                    } else {
+                                      _createToast("Please enter mobile number");
+                                    }
+                                  } else {
+                                    _createToast("Please enter email id");
+                                  }
+                                },
+                                child: const Text(
+                                  "SIGN UP",
+                                  style: TextStyle(
+                                    color: Color(0xFF111111),
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: Size(width, 40.0),
+                                  primary: const Color(0xFFFFAE00),
+                                  shadowColor: const Color(0xFFFFAE00),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
+              painter: HeaderCurvedContainer(),
             ),
           ],
         ),

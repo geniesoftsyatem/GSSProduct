@@ -50,8 +50,10 @@ class _OnBoardScreen extends State<OnBoardScreen> {
         actions: <Widget>[
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Home()));
+              Navigator.pushAndRemoveUntil<dynamic>(context, MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => const Home(),),
+                    (route) => false,
+              );
             },
             child: const Align(
               alignment: Alignment.centerRight,

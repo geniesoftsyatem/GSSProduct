@@ -49,6 +49,9 @@ dependencies:
   android_intent_plus: ^3.0.2
   http: ^0.13.4
   fluttertoast: ^8.0.8
+  flutter_otp_text_field: ^1.0.0
+  device_info: ^2.0.3
+  flutter_sizer: ^1.0.4
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_shield/utils/screen_sizes.dart';
@@ -436,39 +435,39 @@ class _MenuScreen extends State<MenuScreen> {
                       SizedBox(
                         height: height,
                       ),
-                      Align(
-                        alignment: FractionalOffset.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: InkWell(
-                            onTap: () {
-                              // _navigate("Privilage Offer");
-                              _alertDialog();
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 10.0),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.logout,
-                                    color: Color(0xFFFFAE00),
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    "Logout",
-                                    style: TextStyle(
-                                      color: Color(0xFFFFAE00),
-                                      fontSize: 22,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Align(
+                      //   alignment: FractionalOffset.bottomCenter,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(2.0),
+                      //     child: InkWell(
+                      //       onTap: () {
+                      //         // _navigate("Privilage Offer");
+                      //         _alertDialog();
+                      //       },
+                      //       child: Container(
+                      //         margin: const EdgeInsets.only(left: 10.0),
+                      //         child: Row(
+                      //           children: const [
+                      //             Icon(
+                      //               Icons.logout,
+                      //               color: Color(0xFFFFAE00),
+                      //             ),
+                      //             SizedBox(
+                      //               width: 15,
+                      //             ),
+                      //             Text(
+                      //               "Logout",
+                      //               style: TextStyle(
+                      //                 color: Color(0xFFFFAE00),
+                      //                 fontSize: 22,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
