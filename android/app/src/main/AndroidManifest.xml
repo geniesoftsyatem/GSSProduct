@@ -94,4 +94,10 @@
         <!--<package android:name="com.gss.utilityapp" />
         <package android:name="com.vanced.android.youtube" />-->
     </queries>
+
+    <queries>
+        <package android:name="com.gss.entertainment" />
+        <!--<package android:name="com.gss.utilityapp" />
+        <package android:name="com.vanced.android.youtube" />-->
+    </queries>
 </manifest>

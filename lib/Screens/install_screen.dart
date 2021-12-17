@@ -78,7 +78,7 @@ class _InstallApps extends State<InstallApps> {
       title = "Youtube Video";
       description =
           "Enjoy the Ad-free youtube videos and also play when offline.";
-    } else if (widget.name == "YouTube Music"){
+    } else if (widget.name == "YouTube Music") {
       image_list = [
         "images/youtube_music_gs_1.png",
         "images/youtube_music_gs_2.png"
@@ -89,7 +89,7 @@ class _InstallApps extends State<InstallApps> {
       title = "Youtube Music";
       description =
           "Enjoy the Ad-free youtube music and also play when offline.";
-    } else if (widget.name == "OTT"){
+    } else if (widget.name == "OTT") {
       image_list = [
         "images/ott_gs_1.png",
         "images/ott_gs_2.png",
@@ -101,7 +101,34 @@ class _InstallApps extends State<InstallApps> {
       app_package_name = "";
       title = "OTT";
       description =
-      "Install app, We provides you a new perspective towards entertainment.";
+          "Install app, We provides you a new perspective towards entertainment.";
+    } else if (widget.name == "YouTube Download" ||
+        widget.name == "News Channels" ||
+        widget.name == "Other Channels" ||
+        widget.name == "Facebook video") {
+      image_list = [
+        "images/youtube_video_downloader_gs_1.png",
+        "images/channel_gs_1.png",
+        "images/channel_gs_2.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/entertainment.apk";
+      _fileName = "entertainment.apk";
+      app_package_name = "com.gss.entertainment";
+      title = "Youtube Download / Channels / Facebook video Download";
+      description =
+          "You can search, download any videos of youtube or facebook videos and save in your devices. Also you can watch your channels and various live news channels.";
+    } else if (widget.name == "Education") {
+      image_list = [
+        "images/education_gs_1.png",
+        "images/education_gs_2.png",
+        "images/education_gs_3.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/education.apk";
+      _fileName = "education.apk";
+      app_package_name = "com.gss.education";
+      title = "Education";
+      description =
+      "Install app for continuing your studies at home. App contains almost all Boards textbooks and its solutions as well as search nearest jobs and more ...";
     }
     _getPackageStatus();
     _getFileDirectory();
@@ -219,8 +246,7 @@ class _InstallApps extends State<InstallApps> {
               Visibility(
                 visible: install_visible,
                 child: Container(
-                  margin:
-                      const EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     child: const Text(
                       "Download",
@@ -238,8 +264,8 @@ class _InstallApps extends State<InstallApps> {
                       ),
                     ),
                     onPressed: () {
-                      if(option == "OTT") {
-                      _alertDialog();
+                      if (option == "OTT") {
+                        _alertDialog();
                       } else {
                         _download();
                       }
@@ -250,8 +276,7 @@ class _InstallApps extends State<InstallApps> {
               Visibility(
                 visible: progress_visible,
                 child: Container(
-                  margin:
-                      const EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
                   child: FAProgressBar(
                     backgroundColor: const Color(0xFF3A3A3A),
                     maxValue: 100,
@@ -264,8 +289,7 @@ class _InstallApps extends State<InstallApps> {
               Visibility(
                 visible: open_visible,
                 child: Container(
-                  margin:
-                      const EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     child: const Text(
                       "Install",
@@ -283,8 +307,7 @@ class _InstallApps extends State<InstallApps> {
                       ),
                     ),
                     onPressed: () async {
-                      bool isInstalled =
-                          await DeviceApps.isAppInstalled(app_package_name);
+                      bool isInstalled = await DeviceApps.isAppInstalled(app_package_name);
                       if (option == "Spy Camera" ||
                           option == "Life Saver" ||
                           option == "Secure Chat" ||
@@ -297,7 +320,23 @@ class _InstallApps extends State<InstallApps> {
                         } else {
                           OpenFile.open(open_path);
                         }
-                      } else if (option == "YouTube Video" || option == "YouTube Music") {
+                      } else if (option == "YouTube Video" ||
+                          option == "YouTube Music") {
+                        if (isInstalled) {
+                          DeviceApps.openApp(app_package_name);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (widget.name == "YouTube Download" ||
+                          widget.name == "News Channels" ||
+                          widget.name == "Other Channels" ||
+                          widget.name == "Facebook video") {
+                        if (isInstalled) {
+                          DeviceApps.openApp(app_package_name);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (option == "Education") {
                         if (isInstalled) {
                           DeviceApps.openApp(app_package_name);
                         } else {
@@ -416,11 +455,11 @@ class _InstallApps extends State<InstallApps> {
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
       bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
-      if(isInstalled ==true){
+      if (isInstalled == true) {
         AndroidIntent intent;
         //if (pageName == "Anti Hacking") {
 
-        intent =  AndroidIntent(
+        intent = AndroidIntent(
           action: 'android_send',
           package: 'com.gss.genieshield',
           componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
@@ -429,10 +468,9 @@ class _InstallApps extends State<InstallApps> {
         );
         await intent.launch();
         //}
-      }else{
+      } else {
         print("not installed");
       }
-
     }
   }
 

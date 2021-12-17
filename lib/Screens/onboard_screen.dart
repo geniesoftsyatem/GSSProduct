@@ -4,9 +4,11 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_shield/Model/onboard_screen_model.dart';
 import 'package:genie_shield/Screens/signin_screen.dart';
 import 'package:genie_shield/utils/screen_sizes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
 import 'signup_screen.dart';
+
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({Key? key}) : super(key: key);
 
@@ -19,10 +21,36 @@ class OnBoardScreen extends StatefulWidget {
 
 class _OnBoardScreen extends State<OnBoardScreen> {
   late List<OnBoardScreenList> onboardlist;
+  bool isLayoutVisible = false;
+
+  void _checkLogin() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var isLogedIn = false;
+    if (prefs.containsKey("isLoggedIn")) {
+      isLogedIn = prefs.getBool("isLoggedIn") ?? false;
+    }
+
+    setState(() {
+      if (isLogedIn) {
+        isLayoutVisible = false;
+        Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => const Home(),
+          ),
+              (route) => false,
+        );
+      } else {
+        isLayoutVisible = true;
+      }
+    });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
+    _checkLogin();
     onboardlist = [
       OnBoardScreenList("images/finance_intro.png", "Business & Finance",
           "Heart of Perfect Financial Planning. We offer financial wings to let your dreams soar higher."),
@@ -44,57 +72,62 @@ class _OnBoardScreen extends State<OnBoardScreen> {
     double width = SizeConfig.blockSizeHorizontal! * 90;
     double height = SizeConfig.blockSizeVertical! * 50;
     // TODO: implement build
-    return Scaffold(
-      backgroundColor: const Color(0xFF111111),
-      appBar: AppBar(
-        actions: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.pushAndRemoveUntil<dynamic>(context, MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const Home(),),
-                    (route) => false,
-              );
-            },
-            child: const Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: Center(
-                  child: Text(
-                    "SKIP",
-                    style: TextStyle(color: Color(0XFFFFAE00), fontSize: 18.0),
+    return Visibility(
+      visible: isLayoutVisible,
+        child: Scaffold(
+          backgroundColor: const Color(0xFF111111),
+          appBar: AppBar(
+            actions: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.pushAndRemoveUntil<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => const Home(),
+                    ),
+                        (route) => false,
+                  );
+                },
+                child: const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: Center(
+                      child: Text(
+                        "SKIP",
+                        style: TextStyle(color: Color(0XFFFFAE00), fontSize: 18.0),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(10.0),
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  height: height,
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  autoPlayAnimationDuration: const Duration(seconds: 1),
-                  autoPlay: true,
-                  // onPageChanged: (index, reason) {
-                  //   setState(() {
-                  //     _currentPosition = index;
-                  //   });
-                  // },
-                ),
-                items: onboardlist
-                    .map(
-                      (e) => ClipRRect(
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10.0),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: height,
+                      viewportFraction: 1.0,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration: const Duration(seconds: 1),
+                      autoPlay: true,
+                      // onPageChanged: (index, reason) {
+                      //   setState(() {
+                      //     _currentPosition = index;
+                      //   });
+                      // },
+                    ),
+                    items: onboardlist
+                        .map(
+                          (e) => ClipRRect(
                         child: Column(
                           children: <Widget>[
                             Expanded(
@@ -135,71 +168,74 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                         ),
                       ),
                     )
-                    .toList(),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 30.0),
-                  child: ElevatedButton(
-                    child: const Text(
-                      "SIGN UP",
-                      style: TextStyle(
-                          color: Color(0xFF111111),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(width, 25.0),
-                      primary: const Color(0xFFFFAE00),
-                      shadowColor: const Color(0xFFFFAE00),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignupScreen()));
-                    },
+                        .toList(),
                   ),
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-                  child: ElevatedButton(
-                    child: const Text(
-                      "SIGN IN",
-                      style: TextStyle(
-                          color: Color(0xFF111111),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(width, 25.0),
-                      primary: const Color(0xFFFFAE00),
-                      shadowColor: const Color(0xFFFFAE00),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      margin:
+                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 30.0),
+                      child: ElevatedButton(
+                        child: const Text(
+                          "SIGN IN",
+                          style: TextStyle(
+                              color: Color(0xFF111111),
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(width, 25.0),
+                          primary: const Color(0xFFFFAE00),
+                          shadowColor: const Color(0xFFFFAE00),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignInScreen()),
+                          );
+                        },
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignInScreen()),
-                      );
-                    },
-                  ),
+                    Container(
+                      margin:
+                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: ElevatedButton(
+                        child: const Text(
+                          "SIGN UP",
+                          style: TextStyle(
+                              color: Color(0xFF111111),
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(width, 25.0),
+                          primary: const Color(0xFFFFAE00),
+                          shadowColor: const Color(0xFFFFAE00),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SignupScreen()));
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
     );
   }
 

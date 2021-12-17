@@ -22,8 +22,7 @@ class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _email_controller = TextEditingController();
   final TextEditingController _mobile_controller = TextEditingController();
   final TextEditingController _password_controller = TextEditingController();
-  final TextEditingController _confirm_password_controller =
-      TextEditingController();
+  final TextEditingController _confirm_password_controller = TextEditingController();
 
   Future<RegistrationModel>? _registrationResponse;
 

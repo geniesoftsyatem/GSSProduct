@@ -184,7 +184,8 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "YouTube Video") {
+                        } else if (homepageList[index].name ==
+                            "YouTube Video") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.vanced.android.youtube");
                           if (installed) {
@@ -196,11 +197,13 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "YouTube Music") {
+                        } else if (homepageList[index].name ==
+                            "YouTube Music") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.vanced.android.apps.youtube.music");
                           if (installed) {
-                            DeviceApps.openApp("com.vanced.android.apps.youtube.music");
+                            DeviceApps.openApp(
+                                "com.vanced.android.apps.youtube.music");
                           } else {
                             Navigator.push(
                                 context,
@@ -221,6 +224,32 @@ class _ALlOptions extends State<AllOptions> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       InstallApps(homepageList[index].name)));
+                        } else if (homepageList[index].name == "YouTube Download" ||
+                            homepageList[index].name == "News Channels" ||
+                            homepageList[index].name == "Other Channels") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.entertainment");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "Education") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.education");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
                         }
                         else {
                           _alertDialog();
@@ -300,24 +329,108 @@ class _ALlOptions extends State<AllOptions> {
     final Map<String, String> someMap = {"activity": pageName};
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
-      bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
-      if(isInstalled ==true){
-        AndroidIntent intent;
-        //if (pageName == "Anti Hacking") {
+      if (pageName == "Spy Camera" ||
+          pageName == "Life Saver" ||
+          pageName == "Secure Chat" ||
+          pageName == "Anti Hacking" ||
+          pageName == "Anti Virus" ||
+          pageName == "Anti Theft" ||
+          pageName == "Wi-Fi Protect") {
+        bool isInstalled =
+            await DeviceApps.isAppInstalled('com.gss.genieshield');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
 
-        intent =  AndroidIntent(
-          action: 'android_send',
-          package: 'com.gss.genieshield',
-          componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
-          data: 'com.gss.genieshield',
-          arguments: someMap,
-        );
-        await intent.launch();
-        //}
-      }else{
-        print("not installed");
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
+            data: 'com.gss.genieshield',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "YouTube Download") {
+        bool isInstalled =
+            await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "News Channels") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Other Channels") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Education") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.education',
+            componentName: 'com.gss.education.cbse.ui.Dashboard',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
       }
-
     }
   }
 }

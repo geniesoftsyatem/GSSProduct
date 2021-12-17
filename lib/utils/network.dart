@@ -10,23 +10,25 @@ import 'package:genie_shield/Model/registration_model.dart';
 import 'package:genie_shield/Screens/otp_screen.dart';
 import 'package:genie_shield/Screens/signin_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
 
 class NetworkCall {
-  Future<RegistrationModel> fetchRegistrationPosts(
-      String email, String mobile_no, password, String os, String model, String latitude, String longitude, String install_location, BuildContext context) async {
+  Future<RegistrationModel> fetchRegistrationPosts(String email, String mobile_no, password,
+      String os, String model, String latitude, String longitude, String install_location,
+      BuildContext context) async {
     final body = {
-      'email': email,
-      'mobile_no': mobile_no,
-      'password': password,
-      'code': "",
-      'code_name': "",
-      'os' : os,
-      'phone_model' : model,
-      'lat' : latitude,
-      'lon': longitude,
-      'install_location': install_location
+      "email": email,
+      "mobile_no": mobile_no,
+      "password": password,
+      "code": "",
+      "code_name": "",
+      "os": os,
+      "phone_model": model,
+      "lat": latitude,
+      "lon": longitude,
+      "install_location": install_location
     };
 
     final response = await http.post(
@@ -49,34 +51,45 @@ class NetworkCall {
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => const SignInScreen(),
           ),
-              (route) => false,
+          (route) => false,
         );
         return RegistrationModel.fromJson(json.decode(response.body));
       } else {
         _createToast("Failed to register User");
         throw Exception('Failed to load album');
       }
-
     } else {
       _createToast("Failed to register User");
       throw Exception('Failed to load album');
     }
   }
 
-  Future<Login_model> fetchLoginPosts(String email, String mobile_no, String password, String os, String model,  String latitude, String longitude, String install_location, String manufacturer, String id, String otp, BuildContext context) async {
+  Future<Login_model> fetchLoginPosts(
+      String email,
+      String mobile_no,
+      String password,
+      String os,
+      String model,
+      String latitude,
+      String longitude,
+      String install_location,
+      String manufacturer,
+      String id,
+      String otp,
+      BuildContext context) async {
     final body = {
       "email": email,
       "mobile_no": mobile_no,
       "password": password,
       "code": "",
-      'os' : os,
-      'phone_model' : model,
-      'lat' : latitude,
-      'lon': longitude,
-      'install_location': install_location,
-      "manufacturer" : manufacturer,
-      "id" : id,
-      'otp': otp
+      "os": os,
+      "phone_model": model,
+      "lat": latitude,
+      "lon": longitude,
+      "install_location": install_location,
+      "manufacturer": manufacturer,
+      "id": id,
+      "otp": otp
     };
 
     final response = await http.post(
@@ -90,13 +103,16 @@ class NetworkCall {
         print(response_server);
       }
       if (response_server['response'] == 'success') {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        
         _createToast("Login Successful");
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => const Home(),
           ),
-              (route) => false,
+          (route) => false,
         );
         // generateOtp(email, mobile_no, password, context);
         // if (email.isNotEmpty) {
@@ -128,22 +144,25 @@ class NetworkCall {
     }
   }
 
-  Future<Generate_otp> generateOtp(String email, String mobile_no, String password, String os, String model,  String latitude, String longitude, String install_location, String manufacturer, String id, BuildContext context) async {
+  Future<Generate_otp> generateOtp(String email, String mobile_no, String password, String os,
+      String model, String latitude, String longitude, String install_location, String manufacturer,
+      String id, BuildContext context) async {
     final body = {
       "email": email,
       "mobile_no": mobile_no,
       "password": password,
-      'os' : os,
-      'phone_model' : model,
-      'lat' : latitude,
+      'os': os,
+      'phone_model': model,
+      'lat': latitude,
       'lon': longitude,
       'install_location': install_location,
-      "manufacturer" : manufacturer,
-      "id" : id
+      "manufacturer": manufacturer,
+      "id": id
     };
 
     final response = await http.post(
-      Uri.parse('http://143.110.176.111/genieshield/index.php/Api/user_login_otp'),
+      Uri.parse(
+          'http://143.110.176.111/genieshield/index.php/Api/user_login_otp'),
       body: body,
     );
 
@@ -157,12 +176,14 @@ class NetworkCall {
           _createToast("OTP Sent to " + email);
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OTPScreen(email, mobile_no, password)));
+              MaterialPageRoute(
+                  builder: (context) => OTPScreen(email, mobile_no, password)));
         } else {
           _createToast("OTP Sent to " + mobile_no);
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OTPScreen(email, mobile_no, password)));
+              MaterialPageRoute(
+                  builder: (context) => OTPScreen(email, mobile_no, password)));
           // Navigator.pushAndRemoveUntil<dynamic>(
           //   context,
           //   MaterialPageRoute<dynamic>(
