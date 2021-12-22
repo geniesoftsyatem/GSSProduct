@@ -1,8 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:genie_shield/Model/home_menu_list_model.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
+import 'package:genie_money/Model/home_menu_list_model.dart';
 
 import 'optionsfile.dart';
 
@@ -67,9 +66,8 @@ class MyHomeClass extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    double width = SizeConfig.blockSizeHorizontal! * 90;
-    double height = SizeConfig.blockSizeVertical! * 25;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
@@ -102,7 +100,8 @@ class MyHomeClass extends State<HomeScreen> {
                   Icons.notifications,
                   color: Color(0xFFFFAE00),
                 ),
-              )),
+              ),
+          ),
         ],
       ),
       body: SafeArea(
@@ -115,7 +114,7 @@ class MyHomeClass extends State<HomeScreen> {
               margin: const EdgeInsets.only(top: 10.0),
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: height,
+                  height: height * 0.30,
                   viewportFraction: 0.85,
                   enlargeCenterPage: true,
                   enableInfiniteScroll: true,
@@ -180,7 +179,12 @@ class MyHomeClass extends State<HomeScreen> {
                 children: homepageList.map((e) {
                   return GestureDetector(
                     onTap: () {
-                      ZoomDrawer.of(context)!.isOpen() ? ZoomDrawer.of(context)!.toggle() : Navigator.push(context, MaterialPageRoute(builder: (context) => AllOptions(e.name)));
+                      ZoomDrawer.of(context)!.isOpen()
+                          ? ZoomDrawer.of(context)!.toggle()
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllOptions(e.name)));
                     },
                     child: Card(
                       elevation: 10,

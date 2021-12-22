@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:genie_shield/Model/generate_otp.dart';
-import 'package:genie_shield/Model/login_model.dart';
-import 'package:genie_shield/Model/registration_model.dart';
-import 'package:genie_shield/Screens/otp_screen.dart';
-import 'package:genie_shield/Screens/signin_screen.dart';
+import 'package:genie_money/Model/generate_otp.dart';
+import 'package:genie_money/Model/login_model.dart';
+import 'package:genie_money/Model/registration_model.dart';
+import 'package:genie_money/Screens/otp_screen.dart';
+import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -184,13 +184,41 @@ class NetworkCall {
               context,
               MaterialPageRoute(
                   builder: (context) => OTPScreen(email, mobile_no, password)));
-          // Navigator.pushAndRemoveUntil<dynamic>(
-          //   context,
-          //   MaterialPageRoute<dynamic>(
-          //     builder: (BuildContext context) => OTPScreen(mobile_no),
-          //   ),
-          //       (route) => false,
-          // );
+        }
+        return Generate_otp.fromJson(json.decode(response.body));
+      } else {
+        _createToast("Login Failed");
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Login Failed");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<Generate_otp> resendOtp(String email, String mobile_no, String password, BuildContext context) async {
+    final body = {
+      "email": email,
+      "mobile_no": mobile_no,
+      "password": password,
+    };
+
+    final response = await http.post(
+      Uri.parse(
+          'http://143.110.176.111/genieshield/index.php/Api/user_login_otp'),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+      if (response_server['response'] == 'success') {
+        if (email.isNotEmpty) {
+          _createToast("OTP Sent to " + email);
+        } else {
+          _createToast("OTP Sent to " + mobile_no);
         }
         return Generate_otp.fromJson(json.decode(response.body));
       } else {

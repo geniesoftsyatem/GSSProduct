@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
+import 'package:genie_money/Screens/settings_screen.dart';
 
 import 'optionsfile.dart';
 
@@ -26,9 +27,8 @@ class _MenuScreen extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    SizeConfig().init(context);
-    double width = SizeConfig.blockSizeHorizontal! * 10;
-    double height = SizeConfig.blockSizeVertical! * 10;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: const Color(0xFF444444),
       body: SafeArea(
@@ -37,25 +37,23 @@ class _MenuScreen extends State<MenuScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(right: width * 3.5),
-              height: height * 2.7,
-              width: width * 20,
+              margin: EdgeInsets.only(right: width * 0.34),
+              height: height * 0.2852,
+              width: width,
               child: DrawerHeader(
                 child: Center(
                   child: Column(
                     children: [
-                      const Center(
-                        child: CircleAvatar(
-                          child: Icon(
-                            Icons.person,
-                            color: Color(0xFFFFAE00),
-                          ),
-                          radius: 30,
+                      Center(
+                        child: Icon(
+                          CupertinoIcons.profile_circled,
+                          color: const Color(0xFFFFAE00),
+                          size: height * 0.12,
                         ),
                       ),
                       Center(
                         child: Container(
-                            margin: EdgeInsets.only(top: height / 10),
+                            margin: EdgeInsets.only(top: height * 0.01),
                             child: const Text(
                               "User Name",
                               style: TextStyle(
@@ -67,7 +65,7 @@ class _MenuScreen extends State<MenuScreen> {
                       ),
                       Center(
                         child: Container(
-                          margin: EdgeInsets.only(top: height / 10),
+                          margin: EdgeInsets.only(top: height * 0.01),
                             child: const Text(
                               "mobile number",
                               style: TextStyle(
@@ -79,7 +77,7 @@ class _MenuScreen extends State<MenuScreen> {
                       ),
                       Center(
                         child: Container(
-                          margin: EdgeInsets.only(top: height / 10),
+                          margin: EdgeInsets.only(top: height * 0.01),
                             child: const Text(
                               "upi@bank",
                               style: TextStyle(
@@ -407,7 +405,7 @@ class _MenuScreen extends State<MenuScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: InkWell(
                           onTap: () {
-                            _alertDialog();
+                            _navigate("Settings");
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 10.0),
@@ -431,9 +429,6 @@ class _MenuScreen extends State<MenuScreen> {
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: height,
                       ),
                       // Align(
                       //   alignment: FractionalOffset.bottomCenter,
@@ -482,7 +477,11 @@ class _MenuScreen extends State<MenuScreen> {
     if (ZoomDrawer.of(context)!.isOpen()) {
       ZoomDrawer.of(context)!.toggle();
     }
-     Navigator.push(context, MaterialPageRoute(builder: (context) => AllOptions(name)));
+    if (name == "Settings") {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AllOptions(name)));
+    }
   }
 
   Future _alertDialog() {

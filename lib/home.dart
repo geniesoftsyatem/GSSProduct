@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
 
 import 'Screens/home_screen.dart';
 import 'Screens/menu_screen.dart';
@@ -28,7 +27,8 @@ class _MyHomePageState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    double width = SizeConfig.blockSizeHorizontal! * 70;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<Home> {
           showShadow: true,
           angle: 0.0,
           backgroundColor: const Color(0xFF3A3A3A),
-          slideWidth: width,
+          slideWidth: width * 0.67,
           openCurve: Curves.fastOutSlowIn,
           closeCurve: Curves.decelerate,
         ),

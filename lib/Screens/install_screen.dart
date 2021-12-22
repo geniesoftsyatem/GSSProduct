@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -139,9 +138,8 @@ class _InstallApps extends State<InstallApps> {
   Widget build(BuildContext context) {
     // TODO: implement build
     String option = widget.name;
-    SizeConfig().init(context);
-    double width = SizeConfig.blockSizeHorizontal! * 90;
-    double height = SizeConfig.blockSizeVertical! * 40;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
       appBar: AppBar(
@@ -162,7 +160,7 @@ class _InstallApps extends State<InstallApps> {
       ),
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.only(top: height / 5, left: 10.0, right: 10.0),
+          margin: EdgeInsets.only(top: height * 0.05, left: 10.0, right: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -172,7 +170,7 @@ class _InstallApps extends State<InstallApps> {
                 margin: const EdgeInsets.all(10.0),
                 child: CarouselSlider(
                   options: CarouselOptions(
-                    height: height,
+                    height: height * 0.35,
                     viewportFraction: 1.0,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: true,

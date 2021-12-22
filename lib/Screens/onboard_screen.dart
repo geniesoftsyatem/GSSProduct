@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:genie_shield/Model/onboard_screen_model.dart';
-import 'package:genie_shield/Screens/signin_screen.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
+import 'package:genie_money/Model/onboard_screen_model.dart';
+import 'package:genie_money/Screens/signin_screen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
@@ -68,9 +68,8 @@ class _OnBoardScreen extends State<OnBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    double width = SizeConfig.blockSizeHorizontal! * 90;
-    double height = SizeConfig.blockSizeVertical! * 50;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Visibility(
       visible: isLayoutVisible,
@@ -113,7 +112,7 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                   margin: const EdgeInsets.all(10.0),
                   child: CarouselSlider(
                     options: CarouselOptions(
-                      height: height,
+                      height: height * 0.60,
                       viewportFraction: 1.0,
                       enlargeCenterPage: true,
                       enableInfiniteScroll: true,
@@ -133,11 +132,14 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                             Expanded(
                               flex: 2,
                               child: InkWell(
-                                child: Image(
-                                  image: AssetImage(e.image),
-                                  width: width,
-                                  height: height,
-                                  fit: BoxFit.fill,
+                                child: Container(
+                                  margin: EdgeInsets.all(10.0),
+                                  child: Image(
+                                    image: AssetImage(e.image),
+                                    width: width,
+                                    height: height,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             ),

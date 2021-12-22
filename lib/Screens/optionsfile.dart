@@ -5,9 +5,10 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:genie_shield/Model/home_menu_list_model.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
-import 'package:genie_shield/utils/silver_delegate.dart';
+import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/accidental_insurance_screen.dart';
+
+import 'package:genie_money/utils/silver_delegate.dart';
 
 import 'install_screen.dart';
 
@@ -127,8 +128,8 @@ class _ALlOptions extends State<AllOptions> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    double height = SizeConfig.blockSizeVertical! * 22;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
@@ -160,13 +161,19 @@ class _ALlOptions extends State<AllOptions> {
                     crossAxisCount: 3,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
-                    height: height,
+                    height: height * 0.25,
                   ),
                   itemCount: homepageList.length,
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        if (homepageList[index].name == "Spy Camera" ||
+                        if (homepageList[index].name == "Accidental Insurance") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AccidentalInsurance()));
+                        } else if (homepageList[index].name == "Spy Camera" ||
                             homepageList[index].name == "Life Saver" ||
                             homepageList[index].name == "Secure Chat" ||
                             homepageList[index].name == "Anti Hacking" ||

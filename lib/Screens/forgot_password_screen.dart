@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:genie_shield/utils/screen_sizes.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -16,9 +15,8 @@ class _ForgotPassword extends State<ForgotPassword> {
   TextEditingController _email_mobile_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    double width = SizeConfig.blockSizeHorizontal! * 100;
-    double height = SizeConfig.blockSizeVertical! * 65;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
       appBar: AppBar(
@@ -34,7 +32,7 @@ class _ForgotPassword extends State<ForgotPassword> {
       body: SafeArea(
         child: Center(
           child: Container(
-            margin: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -70,7 +68,7 @@ class _ForgotPassword extends State<ForgotPassword> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.all(10.0),
+                        margin: const EdgeInsets.all(20.0),
                         child: TextField(
                           cursorColor: const Color(0xFFFFAE00),
                           controller: _email_mobile_controller,
