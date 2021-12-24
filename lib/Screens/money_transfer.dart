@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
 import 'package:genie_money/Screens/add_money_screen.dart';
 import 'package:genie_money/Screens/balance_inquiry_screen.dart';
 import 'package:genie_money/Screens/cash_withdrawal_screen.dart';
+import 'package:genie_money/Screens/mini_statement_screen.dart';
 import 'package:genie_money/Screens/money_transfer_screen.dart';
 import 'package:genie_money/utils/silver_delegate.dart';
 
@@ -104,9 +106,13 @@ class _MoneyTransfer extends State<MoneyTransfer>{
                                   builder: (context) =>
                                       CashWithdrawalScreen()));
                         }else if(list[index].name == "Mini Statement"){
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MiniStatementScreen()));
                         }else if(list[index].name == "Micro ATM"){
-
+                          _alertDialog();
                         }
                       },
                       child: Card(
@@ -158,6 +164,24 @@ class _MoneyTransfer extends State<MoneyTransfer>{
           ],
         ),
       ),
+    );
+  }
+
+  Future _alertDialog() {
+    return showAnimatedDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ClassicGeneralDialogWidget(
+          contentText: 'Coming Soon',
+          onPositiveClick: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+      animationType: DialogTransitionType.size,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(seconds: 1),
     );
   }
 

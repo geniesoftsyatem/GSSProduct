@@ -149,219 +149,221 @@ class _CashWithdrawalScreen extends State<CashWithdrawalScreen>{
           ),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            padding: EdgeInsets.all(10),
-            child: Container(
-              color: Colors.white,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      child: Image(
-                        image: const AssetImage('images/india_logo.png'),
-                        width: width,
-                        height: 60,
-                      )
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
+              child: Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        child: Image(
+                          image: const AssetImage('images/india_logo.png'),
+                          width: width,
+                          height: 60,
+                        )
                     ),
-                    child: TextField(
-                      //controller: _email_mobile_controller,
-                      style: const TextStyle(color: Color(0xFFFFAE00)),
-                      cursorColor: const Color(0xFFFFAE00),
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                      ),
+                      child: TextField(
+                        //controller: _email_mobile_controller,
+                        style: const TextStyle(color: Color(0xFFFFAE00)),
+                        cursorColor: const Color(0xFFFFAE00),
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+                          // hintText: 'Email / Mobile No.',
+                          labelText: 'Mobile Number',
+                          isDense: true,
                         ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
-                        // hintText: 'Email / Mobile No.',
-                        labelText: 'Mobile Number',
-                        isDense: true,
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                      ),
+                      padding: EdgeInsets.only(
+                          left: 20,
+                          right: 20
+                      ),
+                      width: width,
+                      color: Color(0xFFFFAE00),
+                      child: DropdownButton(
+                          dropdownColor: Color(0xFFFFAE00),
+                          isDense: false,
+                          isExpanded: true,
+                          hint: Text('Please Select Bank'),
+                          value: selectedBank,
+                          items: bankList.map((e) {
+                            return DropdownMenuItem(
+                              child: new Text(e),
+                              value: e,);
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedBank = newValue.toString();
+                            });
+                          }),
                     ),
-                    padding: EdgeInsets.only(
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                      ),
+                      padding: EdgeInsets.only(
                         left: 20,
-                        right: 20
+                        right: 20,
+                      ),
+                      width: width,
+                      color: Color(0xFFFFAE00),
+                      child: DropdownButton(
+                          dropdownColor: Color(0xFFFFAE00),
+                          isDense: false,
+                          isExpanded: true,
+                          hint: Text('Please Select Device'),
+                          value: selectedDevice,
+                          items: deviceList.map((e) {
+                            return DropdownMenuItem(
+                              child: new Text(e),
+                              value: e,);
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedDevice = newValue.toString();
+                            });
+                          }),
                     ),
-                    width: width,
-                    color: Color(0xFFFFAE00),
-                    child: DropdownButton(
-                        dropdownColor: Color(0xFFFFAE00),
-                        isDense: false,
-                        isExpanded: true,
-                        hint: Text('Please Select Bank'),
-                        value: selectedBank,
-                        items: bankList.map((e) {
-                          return DropdownMenuItem(
-                            child: new Text(e),
-                            value: e,);
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedBank = newValue.toString();
-                          });
-                        }),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
-                    ),
-                    padding: EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-                    width: width,
-                    color: Color(0xFFFFAE00),
-                    child: DropdownButton(
-                        dropdownColor: Color(0xFFFFAE00),
-                        isDense: false,
-                        isExpanded: true,
-                        hint: Text('Please Select Device'),
-                        value: selectedDevice,
-                        items: deviceList.map((e) {
-                          return DropdownMenuItem(
-                            child: new Text(e),
-                            value: e,);
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedDevice = newValue.toString();
-                          });
-                        }),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
-                    ),
-                    child: TextField(
-                      //controller: _email_mobile_controller,
-                      style: const TextStyle(color: Color(0xFFFFAE00)),
-                      cursorColor: const Color(0xFFFFAE00),
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                      ),
+                      child: TextField(
+                        //controller: _email_mobile_controller,
+                        style: const TextStyle(color: Color(0xFFFFAE00)),
+                        cursorColor: const Color(0xFFFFAE00),
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+                          // hintText: 'Email / Mobile No.',
+                          labelText: 'Enter Amount',
+                          isDense: true,
                         ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
-                        // hintText: 'Email / Mobile No.',
-                        labelText: 'Enter Amount',
-                        isDense: true,
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
-                    ),
-                    child: TextField(
-                      //controller: _email_mobile_controller,
-                      style: const TextStyle(color: Color(0xFFFFAE00)),
-                      cursorColor: const Color(0xFFFFAE00),
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                      ),
+                      child: TextField(
+                        //controller: _email_mobile_controller,
+                        style: const TextStyle(color: Color(0xFFFFAE00)),
+                        cursorColor: const Color(0xFFFFAE00),
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+                          // hintText: 'Email / Mobile No.',
+                          labelText: 'Aadhar Number',
+                          isDense: true,
                         ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Color(0xFFFFAE00)),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
-                        // hintText: 'Email / Mobile No.',
-                        labelText: 'Aadhar Number',
-                        isDense: true,
                       ),
                     ),
-                  ),
-                  Container(
-                      child: Image(
-                        image: const AssetImage('images/aadhar.png'),
-                        width: width,
-                        height: 30,
-                      )
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(
-                          color: Color(0xFF111111),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
+                    Container(
+                        child: Image(
+                          image: const AssetImage('images/aadhar.png'),
+                          width: width,
+                          height: 30,
+                        )
                     ),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(width, 40.0),
-                      primary: const Color(0xFFFFAE00),
-                      shadowColor: const Color(0xFFFFAE00),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                            color: Color(0xFF111111),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(width, 40.0),
+                        primary: const Color(0xFFFFAE00),
+                        shadowColor: const Color(0xFFFFAE00),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ),
               ),
-            ),
 
+            ),
           ),
         ),
       );
