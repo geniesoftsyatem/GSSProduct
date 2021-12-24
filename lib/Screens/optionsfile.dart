@@ -11,6 +11,7 @@ import 'package:genie_money/Screens/accidental_insurance_screen.dart';
 import 'package:genie_money/utils/silver_delegate.dart';
 
 import 'install_screen.dart';
+import 'money_transfer.dart';
 
 class AllOptions extends StatefulWidget {
   String option;
@@ -257,6 +258,14 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
+                        }else if(homepageList[index].name == "Money Transfer"){
+                          Navigator.pushAndRemoveUntil<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => MoneyTransfer(),
+                            ),
+                                (route) => false,
+                          );
                         }
                         else {
                           _alertDialog();
