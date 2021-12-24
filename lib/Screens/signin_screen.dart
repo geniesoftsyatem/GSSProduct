@@ -128,8 +128,8 @@ class _SignInScreen extends State<SignInScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                     style: ElevatedButton.styleFrom(
-                      fixedSize: Size(width,
-                          MediaQuery.of(context).size.height * 0.05),
+                      fixedSize: Size(
+                          width, MediaQuery.of(context).size.height * 0.05),
                       primary: const Color(0xFF111111),
                       shadowColor: const Color(0xFFFFAE00),
                       shape: RoundedRectangleBorder(
@@ -148,8 +148,7 @@ class _SignInScreen extends State<SignInScreen> {
                         sdkInt = androidInfo.version.sdkInt;
                         id = androidInfo.androidId;
                       } else {
-                        IosDeviceInfo iosDevice =
-                            await deviceInfo.iosInfo;
+                        IosDeviceInfo iosDevice = await deviceInfo.iosInfo;
                         model = iosDevice.name;
                         manufacturer = iosDevice.model;
                         release = iosDevice.systemName;
@@ -164,43 +163,15 @@ class _SignInScreen extends State<SignInScreen> {
                           bool emailValid = RegExp(
                                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(_email_mobile_controller.text);
-                          bool mobileValid = RegExp(
-                                  r'(^(?:[+0]9)?[0-9]{10,12}$)')
-                              .hasMatch(_email_mobile_controller.text);
-                          if (emailValid) {
+                          bool mobileValid =
+                              RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                                  .hasMatch(_email_mobile_controller.text);
+                          if (emailValid || mobileValid) {
                             NetworkCall netword_call = NetworkCall();
                             netword_call.generateOtp(
                                 _email_mobile_controller.text,
-                                "",
                                 _password_controller.text,
-                                release + " (" + sdk + ")",
-                                model,
-                                latitude,
-                                longitude,
-                                "",
-                                manufacturer,
-                                id,
                                 context);
-                          } else if (mobileValid) {
-                            if (_email_mobile_controller.text.length ==
-                                10) {
-                              NetworkCall networkcall = NetworkCall();
-                              networkcall.generateOtp(
-                                  "",
-                                  _email_mobile_controller.text,
-                                  _password_controller.text,
-                                  release + " (" + sdk + ")",
-                                  model,
-                                  latitude,
-                                  longitude,
-                                  "",
-                                  manufacturer,
-                                  id,
-                                  context);
-                            } else {
-                              _createToast(
-                                  "Please enter valid mobile number");
-                            }
                           } else {
                             _createToast(
                                 "Please enter valid email id / mobile no");
@@ -209,8 +180,7 @@ class _SignInScreen extends State<SignInScreen> {
                           _createToast("Please enter password");
                         }
                       } else {
-                        _createToast(
-                            "Please enter your email id / mobile no");
+                        _createToast("Please enter your email id / mobile no");
                       }
                     },
                   ),
@@ -223,8 +193,7 @@ class _SignInScreen extends State<SignInScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgotPassword()));
+                              builder: (context) => const ForgotPassword()));
                     },
                     child: Text(
                       "FORGOT PASSWORD ?",
@@ -245,8 +214,7 @@ class _SignInScreen extends State<SignInScreen> {
                     style: TextStyle(
                         color: Color(0xFFFFAE00),
                         fontWeight: FontWeight.bold,
-                        fontSize:
-                        20.0),
+                        fontSize: 20.0),
                   ),
                 ),
                 SizedBox(
@@ -261,8 +229,8 @@ class _SignInScreen extends State<SignInScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                   style: ElevatedButton.styleFrom(
-                    fixedSize: Size(width,
-                        MediaQuery.of(context).size.height * 0.05),
+                    fixedSize:
+                        Size(width, MediaQuery.of(context).size.height * 0.05),
                     primary: const Color(0xFFFFAE00),
                     shadowColor: const Color(0xFFFFAE00),
                     shape: RoundedRectangleBorder(
@@ -273,8 +241,7 @@ class _SignInScreen extends State<SignInScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                            const SignupScreen()));
+                            builder: (context) => const SignupScreen()));
                   },
                 ),
               ],
@@ -305,7 +272,11 @@ class HeaderCurvedContainer extends CustomPainter {
     Paint paint = Paint()..color = const Color(0xFFFFAE00);
     Path path = Path()
       ..relativeLineTo(0, MediaQuery.of(context).size.height * 0.65)
-      ..quadraticBezierTo(size.width / 2, MediaQuery.of(context).size.height * 0.75, size.width, MediaQuery.of(context).size.height * 0.65)
+      ..quadraticBezierTo(
+          size.width / 2,
+          MediaQuery.of(context).size.height * 0.75,
+          size.width,
+          MediaQuery.of(context).size.height * 0.65)
       ..relativeLineTo(0, -MediaQuery.of(context).size.height * 0.65)
       ..close();
 

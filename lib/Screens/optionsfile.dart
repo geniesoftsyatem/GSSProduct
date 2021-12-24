@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
-import 'package:genie_money/Screens/accidental_insurance_screen.dart';
+import 'package:genie_money/Screens/insurance_screen.dart';
+import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 
 import 'package:genie_money/utils/silver_delegate.dart';
 
@@ -168,12 +169,24 @@ class _ALlOptions extends State<AllOptions> {
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        if (homepageList[index].name == "Accidental Insurance") {
+                        if (homepageList[index].name == "Recharge and Bill Payment") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      AccidentalInsurance()));
+                                      const RechargeAndBillPayment()));
+                        } else if (homepageList[index].name == "Accidental Insurance") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      InsuranceScreen("Accidental Insurance")));
+                        } else if (homepageList[index].name == "COVID-19 Insurance") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      InsuranceScreen("COVID-19 Insurance")));
                         } else if (homepageList[index].name == "Spy Camera" ||
                             homepageList[index].name == "Life Saver" ||
                             homepageList[index].name == "Secure Chat" ||
@@ -259,13 +272,11 @@ class _ALlOptions extends State<AllOptions> {
                                         InstallApps(homepageList[index].name)));
                           }
                         }else if(homepageList[index].name == "Money Transfer"){
-                          Navigator.pushAndRemoveUntil<dynamic>(
-                            context,
-                            MaterialPageRoute<dynamic>(
-                              builder: (BuildContext context) => MoneyTransfer(),
-                            ),
-                                (route) => false,
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MoneyTransfer()));
                         }
                         else {
                           _alertDialog();

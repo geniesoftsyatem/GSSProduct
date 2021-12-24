@@ -7,9 +7,9 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:genie_money/utils/network.dart';
 
 class OTPScreen extends StatefulWidget {
-  String email, mobile_no, password;
+  String username, password;
 
-  OTPScreen(this.email, this.mobile_no, this.password, {Key? key}) : super(key: key);
+  OTPScreen(this.username, this.password, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _OtpScreen();
@@ -70,7 +70,7 @@ class _OtpScreen extends State<OTPScreen> {
                             child: Center(
                               child: Text(
                                 "Enter the 4-digit verification code that was sent to the number\nYour Mobile No." +
-                                    widget.mobile_no,
+                                    widget.username,
                                 style: const TextStyle(
                                   color: Color(0xFFFFAE00),
                                   fontSize: 14.0,
@@ -124,27 +124,10 @@ class _OtpScreen extends State<OTPScreen> {
                                 String sdk = "$sdkInt";
                                 NetworkCall networkcall = NetworkCall();
                                 networkcall.fetchLoginPosts(
-                                    widget.email,
-                                    widget.mobile_no,
+                                    widget.username,
                                     widget.password,
-                                    release + " (" + sdk + ")",
-                                    model,
-                                    "",
-                                    "",
-                                    "",
-                                    manufacturer,
-                                    id,
                                     verificationCode,
                                     context);
-                                // showDialog(
-                                //     context: context,
-                                //     builder: (context) {
-                                //       return AlertDialog(
-                                //         title: Text("Verification Code"),
-                                //         content: Text(
-                                //             'Code entered is $verificationCode'),
-                                //       );
-                                //     });
                               }, // end onSubmit
                             ),
                           ),
@@ -176,8 +159,7 @@ class _OtpScreen extends State<OTPScreen> {
                       ),
                       onPressed: () {
                         NetworkCall networkCall = NetworkCall();
-                        networkCall.resendOtp(widget.email, widget.mobile_no,
-                            widget.password, context);
+                        networkCall.resendOtp(widget.username, widget.password, context);
                       },
                     ),
                   ),
@@ -190,28 +172,28 @@ class _OtpScreen extends State<OTPScreen> {
     );
   }
 
-  // Widget _countDownTimer() {
-  //   return CountdownTimer(
-  //     endTime: endTime,
-  //     widgetBuilder: (context, CurrentRemainingTime? time) {
-  //       if (time == null) {
-  //         _enableButton = true;
-  //         return const Text(
-  //           '0 : min , 0 : sec',
-  //           style: TextStyle(color: Color(0xFFFFAE00), fontSize: 20.0),
-  //         );
-  //       } else {
-  //         if (time.min == null) {
-  //           return Text('0 : min , [ ${time.sec} ] : sec',
-  //               style:
-  //                   TextStyle(color: const Color(0xFFFFAE00), fontSize: 20.0));
-  //         } else {
-  //           return Text('${time.min} : min , ${time.sec} : sec',
-  //               style:
-  //                   TextStyle(color: const Color(0xFFFFAE00), fontSize: 20.0));
-  //         }
-  //       }
-  //     },
-  //   );
-  // }
+// Widget _countDownTimer() {
+//   return CountdownTimer(
+//     endTime: endTime,
+//     widgetBuilder: (context, CurrentRemainingTime? time) {
+//       if (time == null) {
+//         _enableButton = true;
+//         return const Text(
+//           '0 : min , 0 : sec',
+//           style: TextStyle(color: Color(0xFFFFAE00), fontSize: 20.0),
+//         );
+//       } else {
+//         if (time.min == null) {
+//           return Text('0 : min , [ ${time.sec} ] : sec',
+//               style:
+//                   TextStyle(color: const Color(0xFFFFAE00), fontSize: 20.0));
+//         } else {
+//           return Text('${time.min} : min , ${time.sec} : sec',
+//               style:
+//                   TextStyle(color: const Color(0xFFFFAE00), fontSize: 20.0));
+//         }
+//       }
+//     },
+//   );
+// }
 }
