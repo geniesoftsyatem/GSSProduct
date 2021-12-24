@@ -210,22 +210,24 @@ class _MiniStatementScreen extends State<MiniStatementScreen>{
                   ),
                   width: width,
                   color: Color(0xFFFFAE00),
-                  child: DropdownButton(
-                      dropdownColor: Color(0xFFFFAE00),
-                      isDense: false,
-                      isExpanded: true,
-                      hint: Text('Please Select Bank'),
-                      value: selectedBank,
-                      items: bankList.map((e){
-                        return DropdownMenuItem(
-                          child: new Text(e),
-                          value: e,);
-                      }).toList(),
-                      onChanged: (newValue){
-                        setState(() {
-                          selectedBank = newValue.toString();
-                        });
-                      }),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        dropdownColor: Color(0xFFFFAE00),
+                        isDense: false,
+                        isExpanded: true,
+                        hint: Text('Please Select Bank'),
+                        value: selectedBank,
+                        items: bankList.map((e){
+                          return DropdownMenuItem(
+                            child: new Text(e),
+                            value: e,);
+                        }).toList(),
+                        onChanged: (newValue){
+                          setState(() {
+                            selectedBank = newValue.toString();
+                          });
+                        }),
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(
@@ -237,22 +239,24 @@ class _MiniStatementScreen extends State<MiniStatementScreen>{
                   ),
                   width: width,
                   color: Color(0xFFFFAE00),
-                  child: DropdownButton(
-                      dropdownColor: Color(0xFFFFAE00),
-                      isDense: false,
-                      isExpanded: true,
-                      hint: Text('Please Select Device'),
-                      value: selectedDevice,
-                      items: deviceList.map((e){
-                        return DropdownMenuItem(
-                          child: new Text(e),
-                          value: e,);
-                      }).toList(),
-                      onChanged: (newValue){
-                        setState(() {
-                          selectedDevice = newValue.toString();
-                        });
-                      }),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        dropdownColor: Color(0xFFFFAE00),
+                        isDense: false,
+                        isExpanded: true,
+                        hint: Text('Please Select Device'),
+                        value: selectedDevice,
+                        items: deviceList.map((e){
+                          return DropdownMenuItem(
+                            child: new Text(e),
+                            value: e,);
+                        }).toList(),
+                        onChanged: (newValue){
+                          setState(() {
+                            selectedDevice = newValue.toString();
+                          });
+                        }),
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(
