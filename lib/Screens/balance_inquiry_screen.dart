@@ -169,30 +169,30 @@ class _BalanceInquiry extends State<BalanceInquiry>{
                 ),
                 child: TextField(
                   //controller: _email_mobile_controller,
-                  style: const TextStyle(color: Color(0xFFFFAE00)),
-                  cursorColor: const Color(0xFFFFAE00),
+                  style: const TextStyle(color: Color(0xFF3A3A3A)),
+                  cursorColor: const Color(0xFF3A3A3A),
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     border: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+                    labelStyle: const TextStyle(color: Color(0xFF3A3A3A)),
                     // hintText: 'Email / Mobile No.',
                     labelText: 'Mobile Number',
                     isDense: true,
@@ -203,22 +203,40 @@ class _BalanceInquiry extends State<BalanceInquiry>{
                 margin: EdgeInsets.only(
                   top: 20,
                 ),
-                padding: EdgeInsets.only(
-                  left: 20,
-                  right: 20
-                ),
+
                 width: width,
-                color: Color(0xFFFFAE00),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      dropdownColor: Color(0xFFFFAE00),
-                      isDense: false,
+                //color: Color(0xFFFFAE00),
+                  child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        labelStyle: TextStyle(color: Color(0xFF3A3A3A)),
+                        label: Text("Bank"),
+                        isDense: true,
+                      ),
+                      dropdownColor: Color(0xFFFFFFFF),
                       isExpanded: true,
                       hint: Text('Please Select Bank'),
                       value: selectedBank,
                       items: bankList.map((e){
                         return DropdownMenuItem(
-                          child: new Text(e),
+                          child: new Text(e,
+                          style: TextStyle(color: Color(0xFF3A3A3A)),
+                          ),
                           value: e,);
                       }).toList(),
                       onChanged: (newValue){
@@ -226,36 +244,53 @@ class _BalanceInquiry extends State<BalanceInquiry>{
                           selectedBank = newValue.toString();
                         });
                       }),
-                ),
+
               ),
               Container(
                 margin: EdgeInsets.only(
                   top: 20,
                 ),
-                padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                ),
                 width: width,
-                color: Color(0xFFFFAE00),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      dropdownColor: Color(0xFFFFAE00),
-                      isDense: false,
+                //color: Color(0xFFFFAE00),
+                  child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF3A3A3A)),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        labelStyle: TextStyle(color: Color(0xFF3A3A3A)),
+                        label: Text("Device"),
+                        isDense: true,
+                      ),
+                      dropdownColor: Color(0xFFFFFFFF),
                       isExpanded: true,
                       hint: Text('Please Select Device'),
                       value: selectedDevice,
                       items: deviceList.map((e){
                         return DropdownMenuItem(
-                          child: new Text(e),
-                          value: e,);
+                          child: new Text(e,
+                            style: TextStyle(color: Color(0xFF3A3A3A)),
+                          ),
+                          value: e,
+                        );
                       }).toList(),
                       onChanged: (newValue){
                         setState(() {
                           selectedDevice = newValue.toString();
                         });
                       }),
-                ),
               ),
               Container(
                 margin: EdgeInsets.only(
@@ -263,30 +298,30 @@ class _BalanceInquiry extends State<BalanceInquiry>{
                 ),
                 child: TextField(
                   //controller: _email_mobile_controller,
-                  style: const TextStyle(color: Color(0xFFFFAE00)),
-                  cursorColor: const Color(0xFFFFAE00),
+                  style: const TextStyle(color: Color(0xFF3A3A3A)),
+                  cursorColor: const Color(0xFF3A3A3A),
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     border: OutlineInputBorder(
                       borderSide:
-                      const BorderSide(color: Color(0xFFFFAE00)),
+                      const BorderSide(color: Color(0xFF3A3A3A)),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+                    labelStyle: const TextStyle(color: Color(0xFF3A3A3A)),
                     // hintText: 'Email / Mobile No.',
                     labelText: 'Aadhar Number',
                     isDense: true,
@@ -310,7 +345,7 @@ class _BalanceInquiry extends State<BalanceInquiry>{
                   style: TextStyle(
                       color: Color(0xFF111111),
                       fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.normal),
                 ),
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(width, 40.0),

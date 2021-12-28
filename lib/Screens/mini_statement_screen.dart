@@ -204,22 +204,39 @@ class _MiniStatementScreen extends State<MiniStatementScreen>{
                   margin: EdgeInsets.only(
                     top: 20,
                   ),
-                  padding: EdgeInsets.only(
-                      left: 20,
-                      right: 20
-                  ),
                   width: width,
-                  color: Color(0xFFFFAE00),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        dropdownColor: Color(0xFFFFAE00),
-                        isDense: false,
+                  //color: Color(0xFFFFAE00),
+                    child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelStyle: TextStyle(color: Color(0xFFFFAE00)),
+                          label: Text("Bank"),
+                          isDense: true,
+                        ),
+                        dropdownColor: Color(0xFF3A3A3A),
                         isExpanded: true,
-                        hint: Text('Please Select Bank'),
+                        //hint: Text('Please Select Bank'),
                         value: selectedBank,
                         items: bankList.map((e){
                           return DropdownMenuItem(
-                            child: new Text(e),
+                            child: new Text(e,
+                              style: TextStyle(color: Color(0xFFFFAE00)),
+                            ),
                             value: e,);
                         }).toList(),
                         onChanged: (newValue){
@@ -227,28 +244,44 @@ class _MiniStatementScreen extends State<MiniStatementScreen>{
                             selectedBank = newValue.toString();
                           });
                         }),
-                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     top: 20,
                   ),
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                  ),
                   width: width,
-                  color: Color(0xFFFFAE00),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        dropdownColor: Color(0xFFFFAE00),
-                        isDense: false,
+                    child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelStyle: TextStyle(color: Color(0xFFFFAE00)),
+                          label: Text("Device"),
+                          isDense: true,
+                        ),
+                        dropdownColor: Color(0xFF3A3A3A),
                         isExpanded: true,
                         hint: Text('Please Select Device'),
                         value: selectedDevice,
                         items: deviceList.map((e){
                           return DropdownMenuItem(
-                            child: new Text(e),
+                            child: new Text(e,
+                              style: TextStyle(color: Color(0xFFFFAE00),
+                              ),
+                            ),
                             value: e,);
                         }).toList(),
                         onChanged: (newValue){
@@ -256,7 +289,6 @@ class _MiniStatementScreen extends State<MiniStatementScreen>{
                             selectedDevice = newValue.toString();
                           });
                         }),
-                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(

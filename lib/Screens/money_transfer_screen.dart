@@ -12,11 +12,12 @@ class MoneyTransferScreen extends StatefulWidget{
 }
 class _MoneyTransferScreen extends State<MoneyTransferScreen>{
   final TextEditingController _mobile_controller = TextEditingController();
+  bool containerVisible = false;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     double width = MediaQuery.of(context).size.width;
-    bool containerVisible = true;
+
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
       appBar: AppBar(
@@ -62,14 +63,15 @@ class _MoneyTransferScreen extends State<MoneyTransferScreen>{
                 maxLength: 10,
                 controller: _mobile_controller,
                 onChanged: (content){
-                    setState(() {
-                      if(content.length==10) {
-                        if(!containerVisible) {
-                        //print('content length : $content.length');
-                          containerVisible = true;
-                        }
-                      }
-                    });
+                  if(content.length==10) {
+                    if (!containerVisible) {
+                      setVisibility(true);
+                    }
+                  }else{
+                    if(containerVisible){
+                      setVisibility(false);
+                    }
+                  }
                 },
                 style: const TextStyle(color: Color(0xFFFFAE00)),
                 cursorColor: const Color(0xFFFFAE00),
@@ -265,9 +267,7 @@ class _MoneyTransferScreen extends State<MoneyTransferScreen>{
                     ),
                     ElevatedButton(
                         onPressed: (){
-                          setState(() {
-                            containerVisible = false;
-                          });
+                          setVisibility(false);
                         },
                         child: Text(
                             "Cancel",
@@ -295,6 +295,12 @@ class _MoneyTransferScreen extends State<MoneyTransferScreen>{
       ),
       ),
     );
+  }
+
+  void setVisibility(bool visibility){
+    setState(() {
+      containerVisible = visibility;
+    });
   }
 
 }
