@@ -55,6 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _show_broadband_postpaid = false;
   bool postpaid_recharge = false;
   bool _show_mobile_postpaid = false;
+  bool isButton = false;
 
   String prepaid_operator = 'Select Operator';
   String dth_operator = 'Select Operator';
@@ -213,47 +214,79 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
+          child: CustomScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Visibility(
-                  visible: prepaid_recharge,
-                  child: perpaidMobileCenter(height, width, context),
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Visibility(
+                      visible: prepaid_recharge,
+                      child: perpaidMobileCenter(height, width, context),
+                    ),
+                    Visibility(
+                      visible: dth,
+                      child: dthColumn(height, width, context),
+                    ),
+                    Visibility(
+                      visible: electricity,
+                      child: electricityColumn(height, width, context),
+                    ),
+                    Visibility(
+                      visible: gas,
+                      child: gasColumn(height, width, context),
+                    ),
+                    Visibility(
+                      visible: water,
+                      child: waterColumn(height, width, context),
+                    ),
+                    Visibility(
+                      visible: landline,
+                      child: landlineColumn(height, width, context),
+                    ),
+                    Visibility(
+                      visible: broadband_postpaid,
+                      child: broadband_postpaid_Column(height, width, context),
+                    ),
+                    Visibility(
+                      visible: postpaid_recharge,
+                      child: mobile_postpaid_Column(height, width, context),
+                    ),
+                  ],
                 ),
-                Visibility(
-                  visible: dth,
-                  child: dthColumn(height, width, context),
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Visibility(
+                    visible: isButton,
+                    child: ElevatedButton(
+                      child: const Text(
+                        "PAY",
+                        style: TextStyle(
+                            color: Color(0xFF111111),
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize:
+                        Size(width, MediaQuery.of(context).size.height * 0.05),
+                        primary: const Color(0xFFFFAE00),
+                        shadowColor: const Color(0xFFFFAE00),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
                 ),
-                Visibility(
-                  visible: electricity,
-                  child: electricityColumn(height, width, context),
-                ),
-                Visibility(
-                  visible: gas,
-                  child: gasColumn(height, width, context),
-                ),
-                Visibility(
-                  visible: water,
-                  child: waterColumn(height, width, context),
-                ),
-                Visibility(
-                  visible: landline,
-                  child: landlineColumn(height, width, context),
-                ),
-                Visibility(
-                  visible: broadband_postpaid,
-                  child: broadband_postpaid_Column(height, width, context),
-                ),
-                Visibility(
-                  visible: postpaid_recharge,
-                  child: mobile_postpaid_Column(height, width, context),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -301,8 +334,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               mobile_postpaid_operator = data!;
               if (mobile_postpaid_operator == "Select Operator") {
                 _show_mobile_postpaid = false;
+                isButton = false;
               } else {
                 _show_mobile_postpaid = true;
+                isButton = true;
               }
             });
           },
@@ -385,28 +420,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),
@@ -455,8 +490,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               broadband_postpaid_operator = data!;
               if (broadband_postpaid_operator == "Select Operator") {
                 _show_broadband_postpaid = false;
+                isButton = false;
               } else {
                 _show_broadband_postpaid = true;
+                isButton = true;
               }
             });
           },
@@ -539,28 +576,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),
@@ -608,8 +645,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               landline_operator = data!;
               if (landline_operator == "Select Operator") {
                 _show_landline = false;
+                isButton = false;
               } else {
                 _show_landline = true;
+                isButton = true;
               }
             });
           },
@@ -692,28 +731,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),
@@ -761,8 +800,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               water_operator = data!;
               if (water_operator == "Select Operator") {
                 _show_water = false;
+                isButton = false;
               } else {
                 _show_water = true;
+                isButton = true;
               }
             });
           },
@@ -845,28 +886,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),
@@ -914,8 +955,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               gas_operator = data!;
               if (gas_operator == "Select Operator") {
                 _show_gas = false;
+                isButton = false;
               } else {
                 _show_gas = true;
+                isButton = true;
               }
             });
           },
@@ -998,28 +1041,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),
@@ -1067,8 +1110,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               electricity_operator = data!;
               if (electricity_operator == "Select Operator") {
                 _show_electricity = false;
+                isButton = false;
               } else {
                 _show_electricity = true;
+                isButton = false;
               }
             });
           },
@@ -1151,28 +1196,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),
@@ -1220,8 +1265,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               dth_operator = data!;
               if (dth_operator == "Select Operator") {
                 _show_dth = false;
+                isButton = false;
               } else {
                 _show_dth = true;
+                isButton = true;
               }
             });
           },
@@ -1303,28 +1350,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height * 0.4493,
-              ),
-              ElevatedButton(
-                child: const Text(
-                  "PAY",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                      Size(width, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              // SizedBox(
+              //   height: height * 0.4493,
+              // ),
+              // ElevatedButton(
+              //   child: const Text(
+              //     "PAY",
+              //     style: TextStyle(
+              //         color: Color(0xFF111111),
+              //         fontSize: 15.0,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   style: ElevatedButton.styleFrom(
+              //     fixedSize:
+              //         Size(width, MediaQuery.of(context).size.height * 0.05),
+              //     primary: const Color(0xFFFFAE00),
+              //     shadowColor: const Color(0xFFFFAE00),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //   ),
+              //   onPressed: () {},
+              // ),
             ],
           ),
         ),

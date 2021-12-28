@@ -110,12 +110,12 @@ class _SignInScreen extends State<SignInScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        // hintText: 'Password',
                         labelText: 'Password',
                         isDense: true,
                       ),
                       obscureText: true,
-                    )),
+                    ),
+                ),
                 Container(
                   margin: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.02),

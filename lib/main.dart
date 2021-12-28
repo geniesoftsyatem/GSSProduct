@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Screens/onboard_screen.dart';
-import 'home.dart';
+import 'package:genie_money/Screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,7 +43,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: primaryBlack,
         unselectedWidgetColor: const Color(0xFFFFAE00),
       ),
-      home: const OnBoardScreen(),
+      home: const SplashScreen(),
     );
   }
 }

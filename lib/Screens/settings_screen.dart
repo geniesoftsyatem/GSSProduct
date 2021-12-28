@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/profile_settings_screen.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:genie_money/utils/silver_delegate.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -91,7 +92,10 @@ class _SettingsScreen extends State<SettingsScreen> {
                       onTap: ()  {
                         if(homepageList[index].name == "Logout") {
                           _alertDialog("Logout", "Are you sure you want to logout");
-                        } else {
+                        } else if (homepageList[index].name == "Profile Setting") {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSettingsScreen()));
+                        }
+                        else {
                           _alertDialog("", "Coming Soon");
                         }
                       },
