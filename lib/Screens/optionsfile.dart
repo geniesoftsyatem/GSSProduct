@@ -13,6 +13,7 @@ import 'package:genie_money/utils/silver_delegate.dart';
 
 import 'install_screen.dart';
 import 'money_transfer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AllOptions extends StatefulWidget {
   String option;
@@ -353,7 +354,20 @@ class _ALlOptions extends State<AllOptions> {
   }
 
   void launchNativeActivity(String pageName) async {
-    final Map<String, String> someMap = {"activity": pageName};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userid = prefs.getString('userid')?? '';
+    var name = prefs.getString('name')?? '';
+    var email = prefs.getString('email')?? '';
+    var phone = prefs.getString('phone')?? '';
+
+    final Map<String, String> someMap = {
+      "activity" : pageName,
+      "userid" : userid,
+      "name" : name,
+      "email" : email,
+      "phone" : phone
+      };
+
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
       if (pageName == "Spy Camera" ||

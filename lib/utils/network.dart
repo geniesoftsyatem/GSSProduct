@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Model/generate_otp.dart';
 import 'package:genie_money/Model/login_model.dart';
 import 'package:genie_money/Model/registration_model.dart';
@@ -52,12 +52,13 @@ class NetworkCall {
 
       if (response_server["status"] == 201) {
         _createToast("User registered successfully, Please login");
+
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => const SignInScreen(),
           ),
-          (route) => false,
+              (route) => false,
         );
         return RegistrationModel.fromJson(json.decode(response.body));
       } else {
@@ -87,14 +88,18 @@ class NetworkCall {
       if (response_server['status'] == 201) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
-
+        await prefs.setString("userid", response_server['userdetail']['userid']);
+        await prefs.setString("name", response_server['userdetail']['name']);
+        await prefs.setString("email", response_server['userdetail']['email']);
+        await prefs.setString("phone", response_server['userdetail']['phone']);
+        
         _createToast("Login Successful");
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => const Home(),
           ),
-          (route) => false,
+              (route) => false,
         );
         return Login_model.fromJson(json.decode(response.body));
       } else {
