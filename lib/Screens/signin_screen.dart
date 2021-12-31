@@ -53,201 +53,204 @@ class _SignInScreen extends State<SignInScreen> {
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFF111111),
       body: SafeArea(
-        child: CustomPaint(
-          child: Container(
-            margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.05,
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05),
-            height: height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text(
-                  "Welcome to",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'Genie Money',
-                  style: TextStyle(
-                    fontSize: 36.0,
-                    color: Color(0xFF111111),
-                    fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: CustomPaint(
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.05,
+                  left: MediaQuery.of(context).size.width * 0.05,
+                  right: MediaQuery.of(context).size.width * 0.05),
+              height: height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    "Welcome to",
+                    style: TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                const Text(
-                  'Please Login To Continue',
-                  style: TextStyle(
-                      fontSize: 18.0,
+                  const Text(
+                    'Genie Money',
+                    style: TextStyle(
+                      fontSize: 36.0,
                       color: Color(0xFF111111),
-                      fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.05),
-                  child: TextField(
-                    controller: _email_mobile_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      // hintText: 'Email / Mobile No.',
-                      labelText: 'Email / Mobile No.',
-                      isDense: true,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                Container(
+                  const Text(
+                    'Please Login To Continue',
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Color(0xFF111111),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
                     margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.02),
+                        top: MediaQuery.of(context).size.height * 0.05),
                     child: TextField(
-                      controller: _password_controller,
+                      controller: _email_mobile_controller,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        labelText: 'Password',
+                        // hintText: 'Email / Mobile No.',
+                        labelText: 'Email / Mobile No.',
                         isDense: true,
                       ),
-                      obscureText: true,
                     ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child: ElevatedButton(
-                    child: const Text(
-                      "LOGIN",
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.02),
+                      child: TextField(
+                        controller: _password_controller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          labelText: 'Password',
+                          isDense: true,
+                        ),
+                        obscureText: true,
+                      ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02),
+                    child: ElevatedButton(
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            color: Color(0xFFFFAE00),
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(
+                            width, MediaQuery.of(context).size.height * 0.05),
+                        primary: const Color(0xFF111111),
+                        shadowColor: const Color(0xFFFFAE00),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                        var model, manufacturer, release, sdkInt, id;
+                        if (Platform.isAndroid) {
+                          AndroidDeviceInfo androidInfo =
+                              await deviceInfo.androidInfo;
+                          model = androidInfo.model;
+                          manufacturer = androidInfo.manufacturer;
+                          release = androidInfo.version.release;
+                          sdkInt = androidInfo.version.sdkInt;
+                          id = androidInfo.androidId;
+                        } else {
+                          IosDeviceInfo iosDevice = await deviceInfo.iosInfo;
+                          model = iosDevice.name;
+                          manufacturer = iosDevice.model;
+                          release = iosDevice.systemName;
+                          sdkInt = iosDevice.systemVersion;
+                          id = iosDevice.identifierForVendor;
+                        }
+
+                        String sdk = "$sdkInt";
+
+                        if (_email_mobile_controller.text.isNotEmpty) {
+                          if (_password_controller.text.isNotEmpty) {
+                            bool emailValid = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(_email_mobile_controller.text);
+                            bool mobileValid =
+                                RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                                    .hasMatch(_email_mobile_controller.text);
+                            if (emailValid || mobileValid) {
+                              NetworkCall netword_call = NetworkCall();
+                              netword_call.generateOtp(
+                                  _email_mobile_controller.text,
+                                  _password_controller.text,
+                                  context);
+                            } else {
+                              _createToast(
+                                  "Please enter valid email id / mobile no");
+                            }
+                          } else {
+                            _createToast("Please enter password");
+                          }
+                        } else {
+                          _createToast("Please enter your email id / mobile no");
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ForgotPassword()));
+                      },
+                      child: Text(
+                        "FORGOT PASSWORD ?",
+                        style: TextStyle(
+                          color: Color(0xFF111111),
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.10,
+                  ),
+                  const Center(
+                    child: Text(
+                      "OR",
                       style: TextStyle(
                           color: Color(0xFFFFAE00),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.10,
+                  ),
+                  ElevatedButton(
+                    child: const Text(
+                      "SIGN UP",
+                      style: TextStyle(
+                          color: Color(0xFF111111),
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold),
                     ),
                     style: ElevatedButton.styleFrom(
-                      fixedSize: Size(
-                          width, MediaQuery.of(context).size.height * 0.05),
-                      primary: const Color(0xFF111111),
+                      fixedSize:
+                          Size(width, MediaQuery.of(context).size.height * 0.05),
+                      primary: const Color(0xFFFFAE00),
                       shadowColor: const Color(0xFFFFAE00),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    onPressed: () async {
-                      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                      var model, manufacturer, release, sdkInt, id;
-                      if (Platform.isAndroid) {
-                        AndroidDeviceInfo androidInfo =
-                            await deviceInfo.androidInfo;
-                        model = androidInfo.model;
-                        manufacturer = androidInfo.manufacturer;
-                        release = androidInfo.version.release;
-                        sdkInt = androidInfo.version.sdkInt;
-                        id = androidInfo.androidId;
-                      } else {
-                        IosDeviceInfo iosDevice = await deviceInfo.iosInfo;
-                        model = iosDevice.name;
-                        manufacturer = iosDevice.model;
-                        release = iosDevice.systemName;
-                        sdkInt = iosDevice.systemVersion;
-                        id = iosDevice.identifierForVendor;
-                      }
-
-                      String sdk = "$sdkInt";
-
-                      if (_email_mobile_controller.text.isNotEmpty) {
-                        if (_password_controller.text.isNotEmpty) {
-                          bool emailValid = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(_email_mobile_controller.text);
-                          bool mobileValid =
-                              RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
-                                  .hasMatch(_email_mobile_controller.text);
-                          if (emailValid || mobileValid) {
-                            NetworkCall netword_call = NetworkCall();
-                            netword_call.generateOtp(
-                                _email_mobile_controller.text,
-                                _password_controller.text,
-                                context);
-                          } else {
-                            _createToast(
-                                "Please enter valid email id / mobile no");
-                          }
-                        } else {
-                          _createToast("Please enter password");
-                        }
-                      } else {
-                        _createToast("Please enter your email id / mobile no");
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.02),
-                  child: InkWell(
-                    onTap: () {
+                    onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ForgotPassword()));
+                              builder: (context) => const SignupScreen()));
                     },
-                    child: Text(
-                      "FORGOT PASSWORD ?",
-                      style: TextStyle(
-                        color: Color(0xFF111111),
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ),
-                ),
-                SizedBox(
-                  height: height * 0.10,
-                ),
-                const Center(
-                  child: Text(
-                    "OR",
-                    style: TextStyle(
-                        color: Color(0xFFFFAE00),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.10,
-                ),
-                ElevatedButton(
-                  child: const Text(
-                    "SIGN UP",
-                    style: TextStyle(
-                        color: Color(0xFF111111),
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    fixedSize:
-                        Size(width, MediaQuery.of(context).size.height * 0.05),
-                    primary: const Color(0xFFFFAE00),
-                    shadowColor: const Color(0xFFFFAE00),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignupScreen()));
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
+            painter: HeaderCurvedContainer(context),
           ),
-          painter: HeaderCurvedContainer(context),
         ),
       ),
     );

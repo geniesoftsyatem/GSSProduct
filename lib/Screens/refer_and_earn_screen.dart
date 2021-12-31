@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 
 class ReferAndEarnScreen extends StatefulWidget {
   const ReferAndEarnScreen({Key? key}) : super(key: key);
@@ -66,7 +67,8 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                   "50% off on processing fee.",
                   style: TextStyle(color: Color(0xFFFFAE00), fontSize: 17.0),
                 ),
-                SizedBox(
+                Container(
+                  margin: EdgeInsets.only(top: height * 0.10),
                   width: width * 0.70,
                   child: Row(
                     children: [
@@ -101,123 +103,177 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                         ),
                         Container(
                           margin: const EdgeInsets.only(
-                              top: 10.0, left: 10.0, right: 10.0),
+                              top: 10.0, left: 5.0, right: 5.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  const Image(
-                                    image: AssetImage("images/user_salaried.png"),
-                                    width: 30,
-                                      height: 30,
+                              SizedBox(
+                                width: width * 0.438,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  margin: const EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color(0xFFFFAE00),
+                                    width: 1.0,
+                                    ),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      children: const [
-                                        Text(
-                                          "is Salaried",
-                                          style:
+                                  child: Row(
+                                    children: [
+                                      const Image(
+                                        image: AssetImage("images/user_salaried.png"),
+                                        width: 30,
+                                          height: 30,
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              "is Salaried",
+                                              style:
+                                                  TextStyle(color: Color(0xFFFFAE00)),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                            Text(
+                                              "full-time",
+                                              style:
                                               TextStyle(color: Color(0xFFFFAE00)),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "full-time",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  const Image(
-                                    image: AssetImage("images/earns_atleast.png"),
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      children: const [
-                                        Text(
-                                          "earns atleast",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                        Text(
-                                          "₹12000/month",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                      ],
+                              SizedBox(
+                                width: width * 0.438,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  margin: const EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color(0xFFFFAE00),
+                                      width: 1.0,
                                     ),
                                   ),
-                                ],
+                                  child: Row(
+                                    children: [
+                                      const Image(
+                                        image: AssetImage("images/earns_atleast.png"),
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              "earns atleast",
+                                              style:
+                                              TextStyle(color: Color(0xFFFFAE00)),
+                                            ),
+                                            Text(
+                                              "₹12000/month",
+                                              style:
+                                              TextStyle(color: Color(0xFFFFAE00)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.all(10.0),
+                          margin: const EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0, bottom: 10.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  const Image(
-                                    image: AssetImage("images/above_21.png"),
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      children: const [
-                                        Text(
-                                          "is above",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                        Text(
-                                          "21 yrs of age",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                      ],
+                              SizedBox(
+                                width: width * 0.438,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  margin: const EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color(0xFFFFAE00),
+                                      width: 1.0,
                                     ),
                                   ),
-                                ],
+                                  child: Row(
+                                    children: [
+                                      const Image(
+                                        image: AssetImage("images/above_21.png"),
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              "is above",
+                                              style:
+                                              TextStyle(color: Color(0xFFFFAE00)),
+                                            ),
+                                            Text(
+                                              "21 yrs of age",
+                                              style:
+                                              TextStyle(color: Color(0xFFFFAE00)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  const Image(
-                                    image: AssetImage("images/cheque_payment_receives.png"),
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10.0),
-                                    child: Column(
-                                      children: const [
-                                        Text(
-                                          "receives salary",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                        Text(
-                                          "via cheque/bank",
-                                          style:
-                                          TextStyle(color: Color(0xFFFFAE00)),
-                                        ),
-                                      ],
+                              SizedBox(
+                                width: width * 0.438,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  // margin: const EdgeInsets.all(2.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color(0xFFFFAE00),
+                                      width: 1.0,
                                     ),
                                   ),
-                                ],
+                                  child: Row(
+                                    children: [
+                                      const Image(
+                                        image: AssetImage("images/cheque_payment_receives.png"),
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 10.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              "receives salary",
+                                              style:
+                                              TextStyle(color: Color(0xFFFFAE00)),
+                                            ),
+                                            Text(
+                                              "via cheque/bank",
+                                              style:
+                                              TextStyle(color: Color(0xFFFFAE00)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),

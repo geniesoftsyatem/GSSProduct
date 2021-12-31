@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Model/generate_otp.dart';
 import 'package:genie_money/Model/login_model.dart';

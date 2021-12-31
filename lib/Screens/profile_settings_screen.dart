@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:genie_money/Screens/employment_and_bank_details_screen.dart';
 import 'package:genie_money/Screens/personal_details.dart';
+import 'package:genie_money/Screens/photo_proof_list_screen.dart';
 import 'package:genie_money/Screens/refer_and_earn_screen.dart';
+import 'package:genie_money/Screens/reward_program_screen.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({Key? key}) : super(key: key);
@@ -45,8 +48,14 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double height = MediaQuery
+        .of(context)
+        .size
+        .height;
     _showProgress();
     return SafeArea(
       child: Scaffold(
@@ -69,28 +78,35 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              Container(
-                width: width,
-                // height: height * 0.30,
-                color: const Color(0xFFFFAE00),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0),
-                      child: Image(
-                        image: AssetImage("images/crown_silver.png"),
-                        width: width * 0.50,
-                        //height: height * 0.40,
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => const RewardProgram()));
+                },
+                child: Container(
+                  width: width,
+                  // height: height * 0.30,
+                  color: const Color(0xFFFFAE00),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 10.0),
+                        child: Image(
+                          image: AssetImage("images/crown_silver.png"),
+                          width: width * 0.50,
+                          //height: height * 0.40,
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: const Text(
-                        "Genie Money - Silver",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: const Text(
+                          "Genie Money - Silver",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 22.0),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               // Center(
@@ -105,7 +121,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               // ),
               Container(
                 margin:
-                    const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
+                const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -122,7 +138,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const PersonalDetailsScreen()));
+                                  const PersonalDetailsScreen()));
                         },
                         child: Column(
                           children: [
@@ -163,7 +179,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               width: width,
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Container(
                                     width: width * 0.20,
@@ -218,303 +234,341 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 10.0),
-                      child: Card(
-                        color: const Color(0xFF3A3A3A),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EmploymentAndBankDetailsScreen(
+                                          "Employment Details")));
+                        },
+                        child: Card(
+                          color: const Color(0xFF3A3A3A),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  const Image(
-                                    image: AssetImage(
-                                        "images/employement_details.png"),
-                                    width: 30.0,
-                                    height: 30.0,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10.0),
-                                    child: const Text(
-                                      "EMPLOYMENT DETAILS",
-                                      style: TextStyle(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    const Image(
+                                      image: AssetImage(
+                                          "images/employement_details.png"),
+                                      width: 30.0,
+                                      height: 30.0,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10.0),
+                                      child: const Text(
+                                        "EMPLOYMENT DETAILS",
+                                        style: TextStyle(
+                                            color: Color(0xFFFFAE00),
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                    Text(
+                                      employment_percentage + "% Completed",
+                                      style: const TextStyle(
                                           color: Color(0xFFFFAE00),
-                                          fontSize: 16.0),
+                                          fontSize: 13.0),
+                                      textAlign: TextAlign.right,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  Text(
-                                    employment_percentage + "% Completed",
-                                    style: const TextStyle(
-                                        color: Color(0xFFFFAE00),
-                                        fontSize: 13.0),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              width: width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 2),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFEA4335),
-                                      currentValue: emp_value,
-                                      size: 10.0,
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                width: width,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 2),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFEA4335),
+                                        currentValue: emp_value,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 4),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFEA4335),
-                                      currentValue: emp_value1,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 4),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFEA4335),
+                                        currentValue: emp_value1,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 6),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFEA4335),
-                                      currentValue: emp_value2,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 6),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFEA4335),
+                                        currentValue: emp_value2,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 2),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFEA4335),
-                                      currentValue: emp_value3,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 2),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFEA4335),
+                                        currentValue: emp_value3,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 10.0),
-                      child: Card(
-                        color: const Color(0xFF3A3A3A),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EmploymentAndBankDetailsScreen(
+                                          "Bank Details")));
+                        },
+                        child: Card(
+                          color: const Color(0xFF3A3A3A),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  const Image(
-                                    image:
-                                        AssetImage("images/bank_details.png"),
-                                    width: 30.0,
-                                    height: 30.0,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10.0),
-                                    child: const Text(
-                                      "BANK DETAILS",
-                                      style: TextStyle(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    const Image(
+                                      image:
+                                      AssetImage("images/bank_details.png"),
+                                      width: 30.0,
+                                      height: 30.0,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10.0),
+                                      child: const Text(
+                                        "BANK DETAILS",
+                                        style: TextStyle(
+                                            color: Color(0xFFFFAE00),
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.20,
+                                    ),
+                                    Text(
+                                      bank_percentage + "% Completed",
+                                      style: const TextStyle(
                                           color: Color(0xFFFFAE00),
-                                          fontSize: 16.0),
+                                          fontSize: 13.0),
+                                      textAlign: TextAlign.right,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.20,
-                                  ),
-                                  Text(
-                                    bank_percentage + "% Completed",
-                                    style: const TextStyle(
-                                        color: Color(0xFFFFAE00),
-                                        fontSize: 13.0),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              width: width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 2),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFFBBC05),
-                                      currentValue: bank_value,
-                                      size: 10.0,
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                width: width,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 2),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFFBBC05),
+                                        currentValue: bank_value,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 4),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFFBBC05),
-                                      currentValue: bank_value1,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 4),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFFBBC05),
+                                        currentValue: bank_value1,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 6),
-                                      backgroundColor: const Color(0xFF111111),
-                                      progressColor: const Color(0xFFFBBC05),
-                                      currentValue: bank_value2,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 6),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        progressColor: const Color(0xFFFBBC05),
+                                        currentValue: bank_value2,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 2),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFFFBBC05),
-                                      currentValue: bank_value3,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 2),
+                                        backgroundColor:
+                                        const Color(0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFFFBBC05),
+                                        currentValue: bank_value3,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10.0),
-                      child: Card(
-                        color: const Color(0xFF3A3A3A),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context) => const PhotoProofListScreen()));
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 10.0),
+                        child: Card(
+                          color: const Color(0xFF3A3A3A),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  const Image(
-                                    image:
-                                        AssetImage("images/photo_proofs.png"),
-                                    width: 30.0,
-                                    height: 30.0,
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 10.0),
-                                    child: const Text(
-                                      "PHOTO PROOFS",
-                                      style: TextStyle(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    const Image(
+                                      image:
+                                      AssetImage("images/photo_proofs.png"),
+                                      width: 30.0,
+                                      height: 30.0,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10.0),
+                                      child: const Text(
+                                        "PHOTO PROOFS",
+                                        style: TextStyle(
+                                            color: Color(0xFFFFAE00),
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.15,
+                                    ),
+                                    Text(
+                                      photo_percentage + "% Completed",
+                                      style: const TextStyle(
                                           color: Color(0xFFFFAE00),
-                                          fontSize: 16.0),
+                                          fontSize: 13.0),
+                                      textAlign: TextAlign.end,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.15,
-                                  ),
-                                  Text(
-                                    photo_percentage + "% Completed",
-                                    style: const TextStyle(
-                                        color: Color(0xFFFFAE00),
-                                        fontSize: 13.0),
-                                    textAlign: TextAlign.end,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              width: width,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 2),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFF34A853),
-                                      currentValue: photo_value,
-                                      size: 10.0,
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                width: width,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 2),
+                                        backgroundColor: const Color(
+                                            0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFF34A853),
+                                        currentValue: photo_value,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 4),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFF34A853),
-                                      currentValue: photo_value1,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 4),
+                                        backgroundColor: const Color(
+                                            0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFF34A853),
+                                        currentValue: photo_value1,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 6),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFF34A853),
-                                      currentValue: photo_value2,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 6),
+                                        backgroundColor: const Color(
+                                            0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFF34A853),
+                                        currentValue: photo_value2,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: width * 0.20,
-                                    child: FAProgressBar(
-                                      // animatedDuration: const Duration(seconds: 2),
-                                      backgroundColor: const Color(0xFF111111),
-                                      maxValue: 25,
-                                      progressColor: const Color(0xFF34A853),
-                                      currentValue: photo_value3,
-                                      size: 10.0,
+                                    Container(
+                                      width: width * 0.20,
+                                      child: FAProgressBar(
+                                        // animatedDuration: const Duration(seconds: 2),
+                                        backgroundColor: const Color(
+                                            0xFF111111),
+                                        maxValue: 25,
+                                        progressColor: const Color(0xFF34A853),
+                                        currentValue: photo_value3,
+                                        size: 10.0,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -523,9 +577,17 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 10.0),
-                child: const Text("Please ensure your profile is 100% complete", style: TextStyle(color: Color(0xFFFFAE00),),),
+                child: const Text(
+                  "Please ensure your profile is 100% complete",
+                  style: TextStyle(
+                    color: Color(0xFFFFAE00),
+                  ),
+                ),
               ),
-              const Text("Update your profile regularly to get maximum benefit", style: TextStyle(color: Color(0xFFFFAE00),)),
+              const Text("Update your profile regularly to get maximum benefit",
+                  style: TextStyle(
+                    color: Color(0xFFFFAE00),
+                  )),
               Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Card(
@@ -535,51 +597,54 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       Radius.circular(10.0),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 10.0, left: 10.0, bottom: 10.0),
-                        child: const Image(
-                          image: AssetImage("images/refer_and_earn_profile_settings.png"),
-                        ),
+                  child: Row(children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                          top: 10.0, left: 10.0, bottom: 10.0),
+                      child: const Image(
+                        image: AssetImage(
+                            "images/refer_and_earn_profile_settings.png"),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
-                        width: width * 0.60,
-                        child: Column(
-                          children:[
-                            const Text("Refer & Earn Unlimited Cash", style: TextStyle(color: Color(0xFFFFAE00)),),
-                            Container(
-                              margin: const EdgeInsets.only(top: 10.0),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                      builder: (context) => const ReferAndEarnScreen()));
-                                },
-                                child: const Text(
-                                  "Refer Now",
-                                  style: TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: Size(width * 0.50, 30.0),
-                                  primary: const Color(0xFFFFAE00),
-                                  shadowColor: const Color(0xFFFFAE00),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          left: 10.0, top: 10.0, bottom: 10.0),
+                      width: width * 0.60,
+                      child: Column(children: [
+                        const Text(
+                          "Refer & Earn Unlimited Cash",
+                          style: TextStyle(color: Color(0xFFFFAE00)),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                      const ReferAndEarnScreen()));
+                            },
+                            child: const Text(
+                              "Refer Now",
+                              style: TextStyle(
+                                color: Color(0xFF111111),
+                                fontSize: 16.0,
                               ),
                             ),
-                          ]
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: Size(width * 0.50, 30.0),
+                              primary: const Color(0xFFFFAE00),
+                              shadowColor: const Color(0xFFFFAE00),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ]
-                  ),
+                      ]),
+                    ),
+                  ]),
                 ),
               ),
             ],

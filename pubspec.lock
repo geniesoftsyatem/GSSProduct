@@ -187,14 +187,14 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "9.1.5"
+    version: "9.2.0"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
       name: flutter_local_notifications_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.1+1"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
@@ -216,6 +216,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  flutter_switch:
+    dependency: "direct main"
+    description:
+      name: flutter_switch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -394,6 +401,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  page_view_indicators:
+    dependency: "direct main"
+    description:
+      name: page_view_indicators
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   path:
     dependency: transitive
     description:
