@@ -193,7 +193,7 @@ class _InsuranceScreen extends State<InsuranceScreen> {
                         Center(
                           child: Visibility(
                             visible: isLoading,
-                            child: CircularProgressIndicator(),
+                            child: const CircularProgressIndicator(),
                           ),
                         );
                       },

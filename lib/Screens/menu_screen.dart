@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:genie_money/Screens/cashback_screen.dart';
 import 'package:genie_money/Screens/refer_and_earn_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
 
@@ -340,7 +341,12 @@ class _MenuScreen extends State<MenuScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: InkWell(
                           onTap: () {
-                            _alertDialog();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                    const CashbackScreen()));
+                            // _alertDialog();
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 10.0),

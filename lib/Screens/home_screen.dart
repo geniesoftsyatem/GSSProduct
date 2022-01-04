@@ -74,7 +74,7 @@ class MyHomeClass extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF3A3A3A),
         title: const Text(
-          "Home Page",
+          "Genie Money",
           style: TextStyle(color: Color(0xFFFFAE00)),
         ),
         leading: InkWell(
@@ -114,7 +114,7 @@ class MyHomeClass extends State<HomeScreen> {
               margin: const EdgeInsets.only(top: 10.0),
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: height * 0.30,
+                  height: height * 0.25,
                   viewportFraction: 0.85,
                   enlargeCenterPage: true,
                   enableInfiniteScroll: true,

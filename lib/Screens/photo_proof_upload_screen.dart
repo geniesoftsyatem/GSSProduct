@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PhotoProofUploadScreen extends StatefulWidget {
   String title;
@@ -31,6 +34,25 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
   bool is3offerPages = false;
   bool isAllOfferPagesToggle = false;
   bool isOffer = false;
+
+  var profile_path;
+  var pan_card_path;
+  var aadhar_both_path;
+  var aadhat_front_path;
+  var aadhat_back_path;
+  var emp_badge_path;
+  var sal_first_month_path;
+  var sal_second_month_path;
+  var sal_third_month_path;
+  var sal_all_three_month_path;
+  var bank_first_month_path;
+  var bank_second_month_path;
+  var bank_third_month_path;
+  var bank_all_3_month_path;
+  var offer_first_page_path;
+  var offer_second_page_path;
+  var offer_third_page_path;
+  var offer_all_page_path;
 
   @override
   void initState() {
@@ -96,12 +118,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Visibility(
-                            visible: true,
-                            child: Image(
-                              image: AssetImage("images/personal_details.png"),
-                              width: 50.0,
-                              height: 50.0,
+                          ClipRect(
+                            child: profile_path != null ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.file(
+                                profile_path,
+                                width: 50.0,
+                                height: 50.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ) : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: const Image(
+                                image: AssetImage("images/personal_details.png"),
+                                width: 50.0,
+                                height: 50.0,
+                              ),
                             ),
                           ),
                           Container(
@@ -125,7 +157,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                           icon: const Icon(Icons.add),
                           iconSize: 30.0,
                           color: const Color(0xFFFFAE00),
-                          onPressed: () {},
+                          onPressed: () {
+                            _showPicker(context, "profile_image");
+                          },
                         ),
                       ),
                     ),
@@ -142,12 +176,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Visibility(
-                            visible: true,
-                            child: Image(
-                              image: AssetImage("images/personal_details.png"),
-                              width: 50.0,
-                              height: 50.0,
+                          ClipRect(
+                            child: pan_card_path != null ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.file(
+                                pan_card_path,
+                                width: 50.0,
+                                height: 50.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ) : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: const Image(
+                                image: AssetImage("images/personal_details.png"),
+                                width: 50.0,
+                                height: 50.0,
+                              ),
                             ),
                           ),
                           Container(
@@ -171,7 +215,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                           icon: const Icon(Icons.add),
                           iconSize: 30.0,
                           color: const Color(0xFFFFAE00),
-                          onPressed: () {},
+                          onPressed: () {
+                            _showPicker(context, "pan_card_image");
+                          },
                         ),
                       ),
                     ),
@@ -235,13 +281,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Image(
-                                      image: AssetImage(
-                                          "images/personal_details.png"),
-                                      width: 50.0,
-                                      height: 50.0,
+                                  ClipRect(
+                                    child: aadhar_both_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        aadhar_both_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Image(
+                                        image: AssetImage("images/personal_details.png"),
+                                        width: 50.0,
+                                        height: 50.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -265,7 +320,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "aadhar_both_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -285,13 +342,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Image(
-                                      image: AssetImage(
-                                          "images/personal_details.png"),
-                                      width: 50.0,
-                                      height: 50.0,
+                                  ClipRect(
+                                    child: aadhat_front_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        aadhat_front_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Image(
+                                        image: AssetImage("images/personal_details.png"),
+                                        width: 50.0,
+                                        height: 50.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -315,7 +381,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "aadhar_front_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -335,13 +403,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Image(
-                                      image: AssetImage(
-                                          "images/personal_details.png"),
-                                      width: 50.0,
-                                      height: 50.0,
+                                  ClipRect(
+                                    child: aadhat_back_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        aadhat_back_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Image(
+                                        image: AssetImage("images/personal_details.png"),
+                                        width: 50.0,
+                                        height: 50.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -365,7 +442,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "aadhar_back_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -386,13 +465,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Visibility(
-                            visible: true,
-                            child: Image(
-                              image:
-                                  AssetImage("images/employement_details.png"),
-                              width: 50.0,
-                              height: 50.0,
+                          ClipRect(
+                            child: emp_badge_path != null ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.file(
+                                emp_badge_path,
+                                width: 50.0,
+                                height: 50.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ) : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: const Image(
+                                image: AssetImage("images/employement_details.png"),
+                                width: 50.0,
+                                height: 50.0,
+                              ),
                             ),
                           ),
                           Container(
@@ -416,7 +504,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                           icon: const Icon(Icons.add),
                           iconSize: 30.0,
                           color: const Color(0xFFFFAE00),
-                          onPressed: () {},
+                          onPressed: () {
+                            _showPicker(context, "emp_badge_image");
+                          },
                         ),
                       ),
                     ),
@@ -480,13 +570,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Visibility(
-                                        visible: true,
-                                        child: Image(
-                                          image: AssetImage(
-                                              "images/bank_details.png"),
-                                          width: 50.0,
-                                          height: 50.0,
+                                      ClipRect(
+                                        child: sal_first_month_path != null ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: Image.file(
+                                            sal_first_month_path,
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ) : ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: const Image(
+                                            image: AssetImage("images/bank_details.png"),
+                                            width: 50.0,
+                                            height: 50.0,
+                                          ),
                                         ),
                                       ),
                                       Container(
@@ -511,7 +610,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       icon: const Icon(Icons.add),
                                       iconSize: 30.0,
                                       color: const Color(0xFFFFAE00),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _showPicker(context, "sal_first_month_image");
+                                      },
                                     ),
                                   ),
                                 ),
@@ -529,13 +630,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Image(
-                                            image: AssetImage(
-                                                "images/bank_details.png"),
-                                            width: 50.0,
-                                            height: 50.0,
+                                        ClipRect(
+                                          child: sal_second_month_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              sal_second_month_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage("images/bank_details.png"),
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -560,7 +670,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "sal_second_month_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -579,13 +691,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Image(
-                                            image: AssetImage(
-                                                "images/bank_details.png"),
-                                            width: 50.0,
-                                            height: 50.0,
+                                        ClipRect(
+                                          child: sal_third_month_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              sal_third_month_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage("images/bank_details.png"),
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -610,7 +731,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "sal_third_month_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -633,13 +756,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Image(
-                                      image:
-                                          AssetImage("images/bank_details.png"),
-                                      width: 50.0,
-                                      height: 50.0,
+                                  ClipRect(
+                                    child: sal_all_three_month_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        sal_all_three_month_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Image(
+                                        image: AssetImage("images/bank_details.png"),
+                                        width: 50.0,
+                                        height: 50.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -666,7 +798,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "sal_all_three_month_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -734,13 +868,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Visibility(
-                                        visible: true,
-                                        child: Image(
-                                          image: AssetImage(
-                                              "images/bank_details.png"),
-                                          width: 50.0,
-                                          height: 50.0,
+                                      ClipRect(
+                                        child: bank_first_month_path != null ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: Image.file(
+                                            bank_first_month_path,
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ) : ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: const Image(
+                                            image: AssetImage("images/bank_details.png"),
+                                            width: 50.0,
+                                            height: 50.0,
+                                          ),
                                         ),
                                       ),
                                       Container(
@@ -765,7 +908,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       icon: const Icon(Icons.add),
                                       iconSize: 30.0,
                                       color: const Color(0xFFFFAE00),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _showPicker(context, "bank_first_month_image");
+                                      },
                                     ),
                                   ),
                                 ),
@@ -783,13 +928,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Image(
-                                            image: AssetImage(
-                                                "images/bank_details.png"),
-                                            width: 50.0,
-                                            height: 50.0,
+                                        ClipRect(
+                                          child: bank_second_month_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              bank_second_month_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage("images/bank_details.png"),
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -814,7 +968,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "bank_second_month_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -833,13 +989,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Image(
-                                            image: AssetImage(
-                                                "images/bank_details.png"),
-                                            width: 50.0,
-                                            height: 50.0,
+                                        ClipRect(
+                                          child: bank_third_month_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              bank_third_month_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage("images/bank_details.png"),
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -864,7 +1029,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "bank_third_month_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -887,13 +1054,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Image(
-                                      image:
-                                          AssetImage("images/bank_details.png"),
-                                      width: 50.0,
-                                      height: 50.0,
+                                  ClipRect(
+                                    child: bank_all_3_month_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        bank_all_3_month_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Image(
+                                        image: AssetImage("images/bank_details.png"),
+                                        width: 50.0,
+                                        height: 50.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -921,7 +1097,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "bank_all_3_month_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -998,13 +1176,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Visibility(
-                                        visible: true,
-                                        child: Image(
-                                          image: AssetImage(
-                                              "images/bank_details.png"),
-                                          width: 50.0,
-                                          height: 50.0,
+                                      ClipRect(
+                                        child: offer_first_page_path != null ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: Image.file(
+                                            offer_first_page_path,
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ) : ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: const Image(
+                                            image: AssetImage("images/bank_details.png"),
+                                            width: 50.0,
+                                            height: 50.0,
+                                          ),
                                         ),
                                       ),
                                       Container(
@@ -1029,7 +1216,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       icon: const Icon(Icons.add),
                                       iconSize: 30.0,
                                       color: const Color(0xFFFFAE00),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _showPicker(context, "offer_first_page_image");
+                                      },
                                     ),
                                   ),
                                 ),
@@ -1047,13 +1236,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Image(
-                                            image: AssetImage(
-                                                "images/bank_details.png"),
-                                            width: 50.0,
-                                            height: 50.0,
+                                        ClipRect(
+                                          child: offer_second_page_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              offer_second_page_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage("images/bank_details.png"),
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -1078,7 +1276,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "offer_second_page_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -1097,13 +1297,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Image(
-                                            image: AssetImage(
-                                                "images/bank_details.png"),
-                                            width: 50.0,
-                                            height: 50.0,
+                                        ClipRect(
+                                          child: offer_third_page_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              offer_third_page_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Image(
+                                              image: AssetImage("images/bank_details.png"),
+                                              width: 50.0,
+                                              height: 50.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -1128,7 +1337,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "offer_third_page_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -1151,13 +1362,22 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Image(
-                                      image:
-                                      AssetImage("images/bank_details.png"),
-                                      width: 50.0,
-                                      height: 50.0,
+                                  ClipRect(
+                                    child: offer_all_page_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        offer_all_page_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Image(
+                                        image: AssetImage("images/bank_details.png"),
+                                        width: 50.0,
+                                        height: 50.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1185,7 +1405,9 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "offer_all_page_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1201,5 +1423,125 @@ class _PhotoProofUploadScreenState extends State<PhotoProofUploadScreen> {
         ),
       ),
     );
+  }
+
+  void _showPicker(context, String which_image) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Photo Library'),
+                    onTap: () {
+                      _imgFromGallery(which_image);
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    _imgFromCamera(which_image);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  _imgFromGallery(String which_image) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? image =
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      if (which_image == "profile_image") {
+        profile_path = image == null ? null : File(image.path);
+      } else if (which_image == "pan_card_image") {
+        pan_card_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_both_image") {
+        aadhar_both_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_front_image") {
+        aadhat_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_back_image") {
+        aadhat_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "emp_badge_image") {
+        emp_badge_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_first_month_image") {
+        sal_first_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_second_month_image") {
+        sal_second_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_third_month_image") {
+        sal_third_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_all_three_month_image") {
+        sal_all_three_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_first_month_image") {
+        bank_first_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_second_month_image") {
+        bank_second_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_third_month_image") {
+        bank_third_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_all_3_month_image") {
+        bank_all_3_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_first_page_image") {
+        offer_first_page_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_second_page_image") {
+        offer_second_page_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_third_page_image") {
+        offer_third_page_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_all_page_image") {
+        offer_all_page_path = image == null ? null : File(image.path);
+      }
+    });
+  }
+
+  _imgFromCamera(String which_image) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? image =
+    await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      if (which_image == "profile_image") {
+        profile_path = image == null ? null : File(image.path);
+      } else if (which_image == "pan_card_image") {
+        pan_card_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_both_image") {
+        aadhar_both_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_front_image") {
+        aadhat_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_back_image") {
+        aadhat_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "emp_badge_image") {
+        emp_badge_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_first_month_image") {
+        sal_first_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_second_month_image") {
+        sal_second_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_third_month_image") {
+        sal_third_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "sal_all_three_month_image") {
+        sal_all_three_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_first_month_image") {
+        bank_first_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_second_month_image") {
+        bank_second_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_third_month_image") {
+        bank_third_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "bank_all_3_month_image") {
+        bank_all_3_month_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_first_page_image") {
+        offer_first_page_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_second_page_image") {
+        offer_second_page_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_third_page_image") {
+        offer_third_page_path = image == null ? null : File(image.path);
+      } else if (which_image == "offer_all_page_image") {
+        offer_all_page_path = image == null ? null : File(image.path);
+      }
+    });
   }
 }

@@ -131,7 +131,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: const [
                                             Text(
-                                              "is Salaried",
+                                              "Is Salaried",
                                               style:
                                                   TextStyle(color: Color(0xFFFFAE00)),
                                               textAlign: TextAlign.left,
@@ -172,7 +172,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: const [
                                             Text(
-                                              "earns atleast",
+                                              "Earns atleast",
                                               style:
                                               TextStyle(color: Color(0xFFFFAE00)),
                                             ),
@@ -220,7 +220,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: const [
                                             Text(
-                                              "is above",
+                                              "Is above",
                                               style:
                                               TextStyle(color: Color(0xFFFFAE00)),
                                             ),
@@ -259,7 +259,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: const [
                                             Text(
-                                              "receives salary",
+                                              "Receives salary",
                                               style:
                                               TextStyle(color: Color(0xFFFFAE00)),
                                             ),

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ResidentUploadImage extends StatefulWidget {
   String title;
@@ -63,6 +66,36 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
   bool isHouseBoth = false;
   bool isHouseFront = false;
   bool isHouseBack = false;
+
+  var aadhar_both_path;
+  var aadhar_front_path;
+  var aadhar_back_path;
+  var utility_first_path;
+  var utility_second_path;
+  var utility_third_path;
+  var utility_all_path;
+  var tele_first_path;
+  var tele_second_path;
+  var tele_third_path;
+  var tele_all_path;
+  var passport_all_path;
+  var passport_first_path;
+  var passport_last_path;
+  var voter_all_path;
+  var voter_front_path;
+  var voter_last_path;
+  var driving_all_path;
+  var driving_front_path;
+  var driving_back_path;
+  var rental_all_path;
+  var rental_front_path;
+  var rental_back_path;
+  var company_all_path;
+  var company_first_path;
+  var company_second_path;
+  var house_all_path;
+  var house_first_path;
+  var house_second_path;
 
   @override
   void initState() {
@@ -189,12 +222,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: aadhar_both_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        aadhar_both_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -218,7 +261,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "aadhar_both_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -238,12 +283,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: aadhar_front_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        aadhar_front_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -267,7 +322,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "aadhar_front_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -287,12 +344,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: aadhar_back_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        aadhar_back_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -316,7 +383,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "aadhar_back_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -384,12 +453,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Visibility(
-                                        visible: true,
-                                        child: Icon(
-                                          CupertinoIcons.home,
-                                          color: Color(0xFFFFAE00),
-                                          size: 40.0,
+                                      ClipRect(
+                                        child: utility_first_path != null ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: Image.file(
+                                            utility_first_path,
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ) : ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: const Icon(
+                                            CupertinoIcons.home,
+                                            color: Color(0xFFFFAE00),
+                                            size: 40.0,
+                                          ),
                                         ),
                                       ),
                                       Container(
@@ -414,7 +493,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                       icon: const Icon(Icons.add),
                                       iconSize: 30.0,
                                       color: const Color(0xFFFFAE00),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _showPicker(context, "utility_first_image");
+                                      },
                                     ),
                                   ),
                                 ),
@@ -432,12 +513,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Icon(
-                                            CupertinoIcons.home,
-                                            color: Color(0xFFFFAE00),
-                                            size: 40.0,
+                                        ClipRect(
+                                          child: utility_second_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              utility_second_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Icon(
+                                              CupertinoIcons.home,
+                                              color: Color(0xFFFFAE00),
+                                              size: 40.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -462,7 +553,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "utility_second_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -481,12 +574,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Icon(
-                                            CupertinoIcons.home,
-                                            color: Color(0xFFFFAE00),
-                                            size: 40.0,
+                                        ClipRect(
+                                          child: utility_third_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              utility_third_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Icon(
+                                              CupertinoIcons.home,
+                                              color: Color(0xFFFFAE00),
+                                              size: 40.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -511,7 +614,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "utility_third_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -534,12 +639,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: utility_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        utility_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -566,7 +681,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "utility_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -634,12 +751,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Visibility(
-                                        visible: true,
-                                        child: Icon(
-                                          CupertinoIcons.home,
-                                          color: Color(0xFFFFAE00),
-                                          size: 40.0,
+                                      ClipRect(
+                                        child: tele_first_path != null ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: Image.file(
+                                            tele_first_path,
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ) : ClipRRect(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          child: const Icon(
+                                            CupertinoIcons.home,
+                                            color: Color(0xFFFFAE00),
+                                            size: 40.0,
+                                          ),
                                         ),
                                       ),
                                       Container(
@@ -664,7 +791,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                       icon: const Icon(Icons.add),
                                       iconSize: 30.0,
                                       color: const Color(0xFFFFAE00),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _showPicker(context, "tele_first_image");
+                                      },
                                     ),
                                   ),
                                 ),
@@ -682,12 +811,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Icon(
-                                            CupertinoIcons.home,
-                                            color: Color(0xFFFFAE00),
-                                            size: 40.0,
+                                        ClipRect(
+                                          child: tele_second_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              tele_second_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Icon(
+                                              CupertinoIcons.home,
+                                              color: Color(0xFFFFAE00),
+                                              size: 40.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -712,7 +851,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "tele_second_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -731,12 +872,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.start,
                                       children: [
-                                        const Visibility(
-                                          visible: true,
-                                          child: Icon(
-                                            CupertinoIcons.home,
-                                            color: Color(0xFFFFAE00),
-                                            size: 40.0,
+                                        ClipRect(
+                                          child: tele_third_path != null ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              tele_third_path,
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ) : ClipRRect(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            child: const Icon(
+                                              CupertinoIcons.home,
+                                              color: Color(0xFFFFAE00),
+                                              size: 40.0,
+                                            ),
                                           ),
                                         ),
                                         Container(
@@ -761,7 +912,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         icon: const Icon(Icons.add),
                                         iconSize: 30.0,
                                         color: const Color(0xFFFFAE00),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          _showPicker(context, "tele_third_image");
+                                        },
                                       ),
                                     ),
                                   ),
@@ -784,12 +937,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: tele_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        tele_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -816,7 +979,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "tele_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -884,12 +1049,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: passport_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        passport_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -913,7 +1088,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "passport_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -933,12 +1110,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: passport_first_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        passport_first_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -962,7 +1149,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "passport_first_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -982,12 +1171,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: passport_last_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        passport_last_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1011,7 +1210,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "passport_last_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1079,12 +1280,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: voter_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        voter_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1108,7 +1319,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "voter_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1128,12 +1341,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: voter_front_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        voter_front_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1157,7 +1380,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "voter_front_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1177,12 +1402,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: voter_last_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        voter_last_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1206,7 +1441,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "voter_last_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1274,12 +1511,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: driving_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        driving_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1303,7 +1550,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "driving_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1323,12 +1572,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: driving_front_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        driving_front_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1352,7 +1611,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "driving_front_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1372,12 +1633,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: driving_back_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        driving_back_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1401,7 +1672,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "driving_back_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1469,12 +1742,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: rental_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        rental_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1504,7 +1787,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "rental_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1524,12 +1809,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: rental_front_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        rental_front_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1553,7 +1848,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "rental_front_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1573,12 +1870,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: rental_back_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        rental_back_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1602,7 +1909,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "rental_back_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1670,12 +1979,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: company_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        company_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1705,7 +2024,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "company_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1725,12 +2046,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: company_first_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        company_first_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1754,7 +2085,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "company_first_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1774,12 +2107,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: company_second_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        company_second_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1803,7 +2146,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "company_second_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1871,12 +2216,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: house_all_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        house_all_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1906,7 +2261,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "house_all_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1926,12 +2283,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: house_first_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        house_first_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1955,7 +2322,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "house_first_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -1975,12 +2344,22 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Visibility(
-                                    visible: true,
-                                    child: Icon(
-                                      CupertinoIcons.home,
-                                      color: Color(0xFFFFAE00),
-                                      size: 40.0,
+                                  ClipRect(
+                                    child: house_second_path != null ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        house_second_path,
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ) : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: const Icon(
+                                        CupertinoIcons.home,
+                                        color: Color(0xFFFFAE00),
+                                        size: 40.0,
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -2004,7 +2383,9 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                   icon: const Icon(Icons.add),
                                   iconSize: 30.0,
                                   color: const Color(0xFFFFAE00),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _showPicker(context, "house_second_image");
+                                  },
                                 ),
                               ),
                             ),
@@ -2020,5 +2401,163 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
         ),
       ),
     );
+  }
+
+  void _showPicker(context, String which_image) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Photo Library'),
+                    onTap: () {
+                      _imgFromGallery(which_image);
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    _imgFromCamera(which_image);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  _imgFromGallery(String which_image) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? image =
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      if (which_image == "aadhar_both_image") {
+        aadhar_both_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_front_image") {
+        aadhar_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_back_image") {
+        aadhar_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_first_image") {
+        utility_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_second_image") {
+        utility_second_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_third_image") {
+        utility_third_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_all_image") {
+        utility_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_first_image") {
+        tele_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_second_image") {
+        tele_second_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_third_image") {
+        tele_third_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_all_image") {
+        tele_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "passport_all_image") {
+        passport_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "passport_first_image") {
+        passport_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "passport_last_image") {
+        passport_last_path = image == null ? null : File(image.path);
+      } else if (which_image == "voter_all_image") {
+        voter_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "voter_front_image") {
+        voter_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "voter_last_image") {
+        voter_last_path = image == null ? null : File(image.path);
+      } else if (which_image == "driving_all_image") {
+        driving_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "driving_front_image") {
+        driving_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "driving_back_image") {
+        driving_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "rental_all_image") {
+        rental_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "rental_front_image") {
+        rental_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "rental_back_image") {
+        rental_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "company_all_image") {
+        company_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "company_first_image") {
+        company_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "company_second_image") {
+        company_second_path = image == null ? null : File(image.path);
+      } else if (which_image == "house_all_image") {
+        house_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "house_first_image") {
+        house_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "house_second_image") {
+        house_second_path = image == null ? null : File(image.path);
+      }
+    });
+  }
+
+  _imgFromCamera(String which_image) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? image =
+    await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+
+    setState(() {
+      if (which_image == "aadhar_both_image") {
+        aadhar_both_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_front_image") {
+        aadhar_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "aadhar_back_image") {
+        aadhar_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_first_image") {
+        utility_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_second_image") {
+        utility_second_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_third_image") {
+        utility_third_path = image == null ? null : File(image.path);
+      } else if (which_image == "utility_all_image") {
+        utility_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_first_image") {
+        tele_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_second_image") {
+        tele_second_path = image == null ? null : File(image.path);
+      }else if (which_image == "tele_third_image") {
+        tele_third_path = image == null ? null : File(image.path);
+      } else if (which_image == "tele_all_image") {
+        tele_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "passport_all_image") {
+        passport_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "passport_first_image") {
+        passport_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "passport_last_image") {
+        passport_last_path = image == null ? null : File(image.path);
+      } else if (which_image == "voter_all_image") {
+        voter_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "voter_last_image") {
+        voter_last_path = image == null ? null : File(image.path);
+      } else if (which_image == "driving_all_image") {
+        driving_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "rental_all_image") {
+        rental_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "rental_front_image") {
+        rental_front_path = image == null ? null : File(image.path);
+      } else if (which_image == "rental_back_image") {
+        rental_back_path = image == null ? null : File(image.path);
+      } else if (which_image == "company_all_image") {
+        company_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "company_first_image") {
+        company_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "company_second_image") {
+        company_second_path = image == null ? null : File(image.path);
+      } else if (which_image == "house_all_image") {
+        house_all_path = image == null ? null : File(image.path);
+      } else if (which_image == "house_first_image") {
+        house_first_path = image == null ? null : File(image.path);
+      } else if (which_image == "house_second_image") {
+        house_second_path = image == null ? null : File(image.path);
+      }
+    });
   }
 }

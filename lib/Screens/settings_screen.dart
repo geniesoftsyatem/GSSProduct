@@ -19,6 +19,19 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreen extends State<SettingsScreen> {
   late List<HomePageList> homepageList;
   late String version = "";
+  late List<String> languages = [
+    "English",
+    "मराठी",
+    "हिन्दी",
+    "ગુજરાતી",
+    "ਪੰਜਾਬੀ",
+    "ಕನ್ನಡ",
+    "తెలుగు",
+    "தமிழ்",
+    "മലയാളം",
+    "বাংলা",
+    "ଓଡିଆ",
+  ];
 
   @override
   void initState() {
@@ -94,6 +107,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                           _alertDialog("Logout", "Are you sure you want to logout");
                         } else if (homepageList[index].name == "Profile Setting") {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSettingsScreen()));
+                        } else if (homepageList[index].name == "Change Language") {
+                          showSelectDialog(context, width, height);
                         }
                         else {
                           _alertDialog("", "Coming Soon");
@@ -160,6 +175,41 @@ class _SettingsScreen extends State<SettingsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget setupAlertDialoadContainer(double width, double height) {
+    return Container(
+      color: const Color(0xFF3A3A3A),
+      height: width * 0.70, // Change as per your requirement
+      width: height * 0.70, // Change as per your requirement
+      child: ListView.builder(
+        shrinkWrap: false,
+        itemCount: languages.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
+            title: Text(languages[index], style: const TextStyle(
+              color: Color(0xFFFFAE00)
+            ),),
+          );
+        },
+      ),
+    );
+  }
+
+  Future showSelectDialog(BuildContext context, double width, double height) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: const Color(0xFF3A3A3A),
+            title: const Text("Select Language", style: TextStyle(color: Color(0xFFFFAE00)),),
+            content: setupAlertDialoadContainer(width, height),
+          );
+        }
     );
   }
 
