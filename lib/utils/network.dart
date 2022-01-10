@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Model/generate_otp.dart';
 import 'package:genie_money/Model/login_model.dart';
 import 'package:genie_money/Model/registration_model.dart';
+import 'package:genie_money/Model/pincode_model.dart';
 import 'package:genie_money/Screens/otp_screen.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:http/http.dart' as http;
@@ -73,7 +74,7 @@ class NetworkCall {
   }
 
   Future<Login_model> fetchLoginPosts(String username, String password,
-      String otp, BuildContext context) async {
+      String otp, String type, BuildContext context) async {
     final body = {"username": username, "password": password, "otp": otp};
 
     final response = await http.post(
@@ -93,7 +94,8 @@ class NetworkCall {
         await prefs.setString("name", response_server['userdetail']['name']);
         await prefs.setString("email", response_server['userdetail']['email']);
         await prefs.setString("phone", response_server['userdetail']['phone']);
-        
+        await prefs.setString("type", type);
+
         _createToast("Login Successful");
         Navigator.pushAndRemoveUntil<dynamic>(
           context,
@@ -114,7 +116,7 @@ class NetworkCall {
   }
 
   Future<Generate_otp> generateOtp(
-      String username, String password, BuildContext context) async {
+      String username, String password, String type, BuildContext context) async {
     final body = {"username": username, "password": password};
 
     final response = await http.post(
@@ -134,7 +136,7 @@ class NetworkCall {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => OTPScreen(username, password)));
+                  builder: (context) => OTPScreen(username, password, type)));
         }
         return Generate_otp.fromJson(json.decode(response.body));
       } else {
@@ -174,6 +176,30 @@ class NetworkCall {
       }
     } else {
       _createToast("Login Failed");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<Pincode_model> getStateAndCity(String pincode, BuildContext context) async {
+
+    final response = await http.get(
+      Uri.parse(
+          'http://www.postalpincode.in/api/pincode/' + pincode),
+    );
+
+    if (response.statusCode == 200) {
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+      if (response_server['Status'] == "Success") {
+        return Pincode_model.fromJson(json.decode(response.body));
+      } else {
+        _createToast("Something went wrong");
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Something went wrong");
       throw Exception('Failed to load album');
     }
   }

@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/essentials_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'optionsfile.dart';
 
@@ -18,7 +20,9 @@ class HomeScreen extends StatefulWidget {
 class MyHomeClass extends State<HomeScreen> {
   int _currentPosition = 0;
 
-  late List<HomePageList> homepageList;
+  late bool _load = true;
+  late List<HomePageList> homepageList = [];
+  var type;
 
   List<String> imgList = [
     "images/banner1.png",
@@ -35,32 +39,67 @@ class MyHomeClass extends State<HomeScreen> {
     return result;
   }
 
+  Future<void> _check_preference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    type = prefs.get("type") ?? "Sales Partner";
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
-    homepageList = [
-      HomePageList(id: "7", name: "Finance", image: "images/finance.png"),
-      HomePageList(
-          id: "1",
-          name: "Personal Security",
-          image: "images/personal_security.png"),
-      HomePageList(
-          id: "5",
-          name: "Device Security",
-          image: "images/device_security.png"),
-      HomePageList(
-          id: "2", name: "Value Addition", image: "images/valueaddition.png"),
-      HomePageList(
-          id: "6", name: "Entertainment", image: "images/entertainment.png"),
-      HomePageList(
-          id: "3",
-          name: "Privilage Offer",
-          image: "images/privilage_offer.png"),
-      // HomePageList(
-      //     id: "4",
-      //     name: "Recharge/Bill Payment",
-      //     image: "images/Rechargebillpayment.png")
-    ];
+    _check_preference().then((value) => {
+      _load = false,
+          if (type == "Customer")
+            {
+              homepageList = [
+                HomePageList(
+                    id: "1", name: "Finance", image: "images/finance.png"),
+                HomePageList(
+                    id: "2", name: "Essentials", image: "images/essential.png"),
+                HomePageList(
+                    id: "3",
+                    name: "Personal Security",
+                    image: "images/personal_security.png"),
+                HomePageList(
+                    id: "4",
+                    name: "Device Security",
+                    image: "images/device_security.png"),
+                HomePageList(
+                    id: "5",
+                    name: "Value Addition",
+                    image: "images/valueaddition.png"),
+                HomePageList(
+                    id: "6",
+                    name: "Entertainment",
+                    image: "images/entertainment.png"),
+                HomePageList(
+                    id: "7",
+                    name: "Privilage Offer",
+                    image: "images/privilage_offer.png")
+              ]
+            }
+          else
+            {
+              homepageList = [
+                HomePageList(
+                    id: "1", name: "Generate Code", image: "images/generate_code.png"),
+                HomePageList(
+                    id: "2", name: "Apps History", image: "images/app_history.png"),
+                HomePageList(
+                    id: "3",
+                    name: "Portfolio",
+                    image: "images/profolio.png"),
+                HomePageList(
+                    id: "4",
+                    name: "Advertisement",
+                    image: "images/advertisement.png"),
+                HomePageList(
+                    id: "5",
+                    name: "Retailer",
+                    image: "images/retailer.png")
+              ]
+            }
+        });
+    // _load = false;
     super.initState();
   }
 
@@ -93,14 +132,14 @@ class MyHomeClass extends State<HomeScreen> {
                     size: 26.0, color: Color(0xFFFFAE00)),
               )),
           Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: const Icon(
-                  Icons.notifications,
-                  color: Color(0xFFFFAE00),
-                ),
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {},
+              child: const Icon(
+                Icons.notifications,
+                color: Color(0xFFFFAE00),
               ),
+            ),
           ),
         ],
       ),
@@ -172,19 +211,38 @@ class MyHomeClass extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              child: GridView.count(
+              child: _load ? Center(
+                child: Container(
+                  color: Color(0xFF111111),
+                  width: width,
+                  height: 70.0,
+                  child: new Padding(padding: const EdgeInsets.all(5.0),child: new Center(child: new CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFAE00)),
+                  ))),
+                ),
+              ): GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 children: homepageList.map((e) {
                   return GestureDetector(
                     onTap: () {
-                      ZoomDrawer.of(context)!.isOpen()
-                          ? ZoomDrawer.of(context)!.toggle()
-                          : Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AllOptions(e.name)));
+                      if (e.name == "Essentials") {
+                        ZoomDrawer.of(context)!.isOpen()
+                            ? ZoomDrawer.of(context)!.toggle()
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EssentialsScreen()));
+                      } else {
+                        ZoomDrawer.of(context)!.isOpen()
+                            ? ZoomDrawer.of(context)!.toggle()
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AllOptions(e.name)));
+                      }
                     },
                     child: Card(
                       elevation: 10,

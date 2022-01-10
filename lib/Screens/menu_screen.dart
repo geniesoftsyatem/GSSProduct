@@ -6,6 +6,7 @@ import 'package:genie_money/Screens/cashback_screen.dart';
 import 'package:genie_money/Screens/refer_and_earn_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
 
+import 'essentials_screen.dart';
 import 'optionsfile.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -159,6 +160,39 @@ class _MenuScreen extends State<MenuScreen> {
                                 ),
                                 Text(
                                   "Finance",
+                                  style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: InkWell(
+                          onTap: () {
+                            _navigate("Essentials");
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              children: const [
+                                Image(
+                                  image: AssetImage("images/essential.png"),
+                                  width: 24.0,
+                                  height: 24.0,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "Essentials",
                                   style: TextStyle(
                                     color: Color(0xFFFFAE00),
                                     fontSize: 22,
@@ -489,7 +523,12 @@ class _MenuScreen extends State<MenuScreen> {
     if (ZoomDrawer.of(context)!.isOpen()) {
       ZoomDrawer.of(context)!.toggle();
     }
-    if (name == "Settings") {
+    if (name == "Essentials") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const EssentialsScreen()));
+    } else if (name == "Settings") {
       Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => AllOptions(name)));

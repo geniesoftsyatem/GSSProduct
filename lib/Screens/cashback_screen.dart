@@ -183,7 +183,7 @@ class _CashbackScreenState extends State<CashbackScreen> {
                                 "₹10",
                                 style: TextStyle(
                                     color: Color(0xFFFFAE00),
-                                    fontSize: 35.0,
+                                    fontSize: 32.0,
                                     fontWeight: FontWeight.bold),
                               ),
                               Container(
@@ -224,7 +224,7 @@ class _CashbackScreenState extends State<CashbackScreen> {
                                 "1,698",
                                 style: TextStyle(
                                     color: Color(0xFFFFAE00),
-                                    fontSize: 35.0,
+                                    fontSize: 32.0,
                                     fontWeight: FontWeight.bold),
                               ),
                               Container(
@@ -263,7 +263,7 @@ class _CashbackScreenState extends State<CashbackScreen> {
                                 "10",
                                 style: TextStyle(
                                     color: Color(0xFFFFAE00),
-                                    fontSize: 35.0,
+                                    fontSize: 32.0,
                                     fontWeight: FontWeight.bold),
                               ),
                               Container(

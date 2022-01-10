@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/credit_score_screen.dart';
 import 'package:genie_money/Screens/insurance_screen.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 
@@ -159,8 +160,7 @@ class _ALlOptions extends State<AllOptions> {
               child: Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: GridView.builder(
-                  gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                     crossAxisCount: 3,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
@@ -170,7 +170,10 @@ class _ALlOptions extends State<AllOptions> {
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        if (homepageList[index].name == "Recharge and Bill Payment") {
+                        if (homepageList[index].name == "Credit Score") {
+                          Route route = MaterialPageRoute(builder: (context) => const CreditScoreScreen());
+                          Navigator.push(context, route);
+                        } else if (homepageList[index].name == "Recharge and Bill Payment") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(

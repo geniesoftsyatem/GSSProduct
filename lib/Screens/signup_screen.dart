@@ -11,7 +11,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+
+  String type;
+
+  SignupScreen(this.type, {Key? key}) : super(key: key);
 
   @override
   _SignupScreen createState() {
@@ -24,19 +27,26 @@ class _SignupScreen extends State<SignupScreen> {
   final TextEditingController _email_controller = TextEditingController();
   final TextEditingController _mobile_controller = TextEditingController();
   final TextEditingController _password_controller = TextEditingController();
-  final TextEditingController _confirm_password_controller =
-      TextEditingController();
+  final TextEditingController _confirm_password_controller = TextEditingController();
 
   NetworkCall networkCall = NetworkCall();
   late String longitude = '00.00000';
   late String latitude = '00.00000';
   late LocationPermission permission;
   late bool serviceEnabled = false;
-  bool isChecked = false;
+  bool isChecked = true;
   bool showWeb = false;
   bool isLoading = true;
   String url = "http://geniesoftsystem.com/";
   final _key = UniqueKey();
+  late String selected_type;
+
+  List<String> business_type_list = [
+    'Select Business Type',
+    'Customer',
+    'Sales Partner',
+    'Employee'
+  ];
 
   Future<void> _getLocation() async {
     permission = await Geolocator.checkPermission();
@@ -66,6 +76,12 @@ class _SignupScreen extends State<SignupScreen> {
     } else {
       return true;
     }
+  }
+
+  @override
+  void initState() {
+    selected_type = widget.type;
+    super.initState();
   }
 
   @override
@@ -323,6 +339,50 @@ class _SignupScreen extends State<SignupScreen> {
                                   isDense: true,
                                 ),
                               ),
+                              SizedBox(height: height * 0.02),
+                              DropdownButtonFormField<String>(
+                                dropdownColor: const Color(0xFF3A3A3A),
+                                isExpanded: true,
+                                decoration: const InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  isDense: true,
+                                ),
+                                value: selected_type,
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Color(0xFFFFAE00),
+                                ),
+                                iconSize: 24,
+                                elevation: 16,
+                                style: const TextStyle(color: Color(0xFFFFAE00), fontSize: 18),
+                                onChanged: (String? data) {
+                                  setState(() {
+                                    selected_type = data ?? "Select Business Type";
+                                  });
+                                },
+                                items: business_type_list
+                                    .map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
                               Container(
                                 margin: EdgeInsets.only(top: height * 0.02),
                                 child: Row(
@@ -362,8 +422,7 @@ class _SignupScreen extends State<SignupScreen> {
                                         "Terms & Conditions.",
                                         style: TextStyle(
                                           color: Colors.blue,
-                                          decoration:
-                                              TextDecoration.underline,
+                                          decoration: TextDecoration.underline,
                                         ),
                                         maxLines: 1,
                                       ),

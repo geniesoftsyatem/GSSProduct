@@ -7,9 +7,9 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:genie_money/utils/network.dart';
 
 class OTPScreen extends StatefulWidget {
-  String username, password;
+  String username, password, type;
 
-  OTPScreen(this.username, this.password, {Key? key}) : super(key: key);
+  OTPScreen(this.username, this.password, this.type, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _OtpScreen();
@@ -127,6 +127,7 @@ class _OtpScreen extends State<OTPScreen> {
                                     widget.username,
                                     widget.password,
                                     verificationCode,
+                                    widget.type,
                                     context);
                               }, // end onSubmit
                             ),

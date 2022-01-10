@@ -71,7 +71,6 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
 
   @override
   void initState() {
-    personal_details_list = ["Basic Info", "Residential Info", "References"];
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
