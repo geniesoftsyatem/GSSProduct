@@ -228,7 +228,7 @@ class _OnBoardScreen extends State<OnBoardScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignupScreen("Customer")));
+                                  builder: (context) => const SignupScreen()));
                         },
                       ),
                     ),

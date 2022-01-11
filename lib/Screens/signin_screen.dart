@@ -17,10 +17,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMixin {
-  final TextEditingController _email_mobile_controller =
-      TextEditingController();
-
+  final TextEditingController _email_mobile_controller = TextEditingController();
   final TextEditingController _password_controller = TextEditingController();
+  final TextEditingController _employee_code_controller = TextEditingController();
+
   late String longitude = '00.00000';
   late String latitude = '00.00000';
   late LocationPermission permission;
@@ -86,7 +86,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
             child: Column(
               children: [
                 TabBar(
-                  indicator: BoxDecoration(
+                  indicator: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10)),
@@ -99,8 +99,12 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                         height_angle = 330;
                       } else if (value == 1) {
                         title = "Sales Partner";
+                        curve = 490;
+                        height_angle = 420;
                       } else {
                         title = "Employee";
+                        curve = 460;
+                        height_angle = 390;
                       }
                     });
                   },
@@ -134,45 +138,10 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                   ],
                 ),
                 customer_login_ui(height, context, width),
-                // SizedBox(
-                //   height: height * 1.0,
-                //   child: TabBarView(
-                //     // controller: _tabController,
-                //       children: [
-                //         customer_login_ui(height, context, width),
-                //         customer_login_ui(height, context, width),
-                //         customer_login_ui(height, context, width),
-                //       ]
-                //   ),
-                // ),
               ],
             ),
           ),
         ),
-      ),
-      floatingActionButton: ElevatedButton(
-        child: const Text(
-          "SIGN UP",
-          style: TextStyle(
-              color: Color(0xFF111111),
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold),
-        ),
-        style: ElevatedButton.styleFrom(
-          fixedSize:
-          Size(width * 0.90, MediaQuery.of(context).size.height * 0.05),
-          primary: const Color(0xFFFFAE00),
-          shadowColor: const Color(0xFFFFAE00),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SignupScreen(title)));
-        },
       ),
     );
   }
@@ -184,7 +153,6 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
             top: 10.0,
             left: MediaQuery.of(context).size.width * 0.05,
             right: MediaQuery.of(context).size.width * 0.05),
-        height: height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -291,6 +259,23 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: title == "Employee" ? true : false,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                        top: 10.0),
+                    child: TextField(
+                      controller: _employee_code_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        labelText: 'Employee Code',
+                        isDense: true,
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
                   margin: const EdgeInsets.only(
                       top: 20.0),
@@ -382,7 +367,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                   ),
                 ),
                 const SizedBox(
-                  height: 80.0,
+                  height: 70.0,
                 ),
                 const Center(
                   child: Text(
@@ -394,6 +379,33 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                   ),
                 ),
               ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: height * 0.10),
+              child: ElevatedButton(
+                child: const Text(
+                  "SIGN UP",
+                  style: TextStyle(
+                      color: Color(0xFF111111),
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  fixedSize:
+                  Size(width * 0.90, MediaQuery.of(context).size.height * 0.05),
+                  primary: const Color(0xFFFFAE00),
+                  shadowColor: const Color(0xFFFFAE00),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignupScreen()));
+                },
+              ),
             ),
           ],
         ),

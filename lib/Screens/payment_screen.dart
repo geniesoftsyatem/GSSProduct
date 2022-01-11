@@ -1350,28 +1350,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: height * 0.4493,
-              // ),
-              // ElevatedButton(
-              //   child: const Text(
-              //     "PAY",
-              //     style: TextStyle(
-              //         color: Color(0xFF111111),
-              //         fontSize: 15.0,
-              //         fontWeight: FontWeight.bold),
-              //   ),
-              //   style: ElevatedButton.styleFrom(
-              //     fixedSize:
-              //         Size(width, MediaQuery.of(context).size.height * 0.05),
-              //     primary: const Color(0xFFFFAE00),
-              //     shadowColor: const Color(0xFFFFAE00),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(5.0),
-              //     ),
-              //   ),
-              //   onPressed: () {},
-              // ),
             ],
           ),
         ),

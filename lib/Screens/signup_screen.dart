@@ -11,10 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SignupScreen extends StatefulWidget {
-
-  String type;
-
-  SignupScreen(this.type, {Key? key}) : super(key: key);
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   _SignupScreen createState() {
@@ -23,11 +20,13 @@ class SignupScreen extends StatefulWidget {
   }
 }
 
-class _SignupScreen extends State<SignupScreen> {
+class _SignupScreen extends State<SignupScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _email_controller = TextEditingController();
   final TextEditingController _mobile_controller = TextEditingController();
   final TextEditingController _password_controller = TextEditingController();
   final TextEditingController _confirm_password_controller = TextEditingController();
+  final TextEditingController _employee_code_controller = TextEditingController();
 
   NetworkCall networkCall = NetworkCall();
   late String longitude = '00.00000';
@@ -39,13 +38,18 @@ class _SignupScreen extends State<SignupScreen> {
   bool isLoading = true;
   String url = "http://geniesoftsystem.com/";
   final _key = UniqueKey();
-  late String selected_type;
+  late String selected_type = "Retailer";
+  late String type = "Customer";
+
+  late TabController _tabController;
+
+  double curve = 130;
+  double height_angle = 190;
 
   List<String> business_type_list = [
-    'Select Business Type',
-    'Customer',
-    'Sales Partner',
-    'Employee'
+    'Retailer',
+    'Distributor',
+    'Super Stockist'
   ];
 
   Future<void> _getLocation() async {
@@ -80,8 +84,14 @@ class _SignupScreen extends State<SignupScreen> {
 
   @override
   void initState() {
-    selected_type = widget.type;
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -98,436 +108,543 @@ class _SignupScreen extends State<SignupScreen> {
         backgroundColor: const Color(0xFF111111),
         resizeToAvoidBottomInset: true,
         body: SafeArea(
-          child: Column(
-            children: [
-              Visibility(
-                visible: showWeb,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 1.0),
-                      height: height * 0.95,
-                      child: WebView(
-                        key: _key,
-                        initialUrl: url,
-                        javascriptMode: JavascriptMode.unrestricted,
-                        onPageStarted: (value) {
-                          Center(
-                            child: Visibility(
-                              visible: isLoading,
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        },
-                        onPageFinished: (finish) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Visibility(
+                  visible: showWeb,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 1.0),
+                        height: height * 0.95,
+                        child: WebView(
+                          key: _key,
+                          initialUrl: url,
+                          javascriptMode: JavascriptMode.unrestricted,
+                          onPageStarted: (value) {
+                            Center(
+                              child: Visibility(
+                                visible: isLoading,
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                          onPageFinished: (finish) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Visibility(
+                Visibility(
                   visible: !showWeb,
-                  child: Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: CustomPaint(
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              left: 10.0, right: 10.0, top: 40.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Existing user?",
-                                style: TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold),
+                  child: DefaultTabController(
+                    length: 3,
+                    child: Column(
+                      children: [
+                        TabBar(
+                          indicator: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10)),
+                              color: Color(0xFFFFAE00)),
+                          onTap: (value) {
+                            setState(() {
+                              if (value == 0) {
+                                type = "Customer";
+                              } else if (value == 1) {
+                                type = "Sales Partner";
+                              } else {
+                                type = "Employee";
+                              }
+                            });
+                          },
+                          isScrollable: true,
+                          indicatorColor: Colors.white,
+                          controller: _tabController,
+                          labelColor: const Color(0xFF111111),
+                          unselectedLabelColor: const Color(0xFFFFAE00),
+                          tabs: const [
+                            Tab(
+                              child: Text(
+                                "Customer",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18.0),
                               ),
-                              const SizedBox(
-                                height: 10.0,
+                            ),
+                            Tab(
+                              child: Text(
+                                "Sales Partner",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18.0),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignInScreen()));
-                                },
-                                child: const Text(
-                                  "LOGIN",
+                            ),
+                            Tab(
+                              child: Text(
+                                "Employee",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomPaint(
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                                left: 10.0, right: 10.0, top: 30.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Existing user?",
                                   style: TextStyle(
-                                    color: Color(0xFFFFAE00),
-                                    fontSize: 16.0,
-                                  ),
+                                      color: Color(0xFF111111),
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: Size(width, 40.0),
-                                  primary: const Color(0xFF111111),
-                                  shadowColor: const Color(0xFF111111),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
+                                const SizedBox(
+                                  height: 10.0,
                                 ),
-                              ),
-                              SizedBox(
-                                height: height * 0.20,
-                              ),
-                              const Text(
-                                "Sign up with",
-                                style: TextStyle(
-                                    color: Color(0xFFFFAE00),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                "Genie Money",
-                                style: TextStyle(
-                                    color: Color(0xFFFFAE00),
-                                    fontSize: 26.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 20),
-                              TextField(
-                                style:
-                                    const TextStyle(color: Color(0xFFFFAE00)),
-                                cursorColor: const Color(0xFFFFAE00),
-                                keyboardType: TextInputType.emailAddress,
-                                controller: _email_controller,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  labelStyle:
-                                      const TextStyle(color: Color(0xFFFFAE00)),
-                                  // hintText: 'Email / Mobile No.',
-                                  labelText: 'Enter Email',
-                                  isDense: true,
-                                ),
-                              ),
-                              SizedBox(height: height * 0.02),
-                              TextField(
-                                cursorColor: const Color(0xFFFFAE00),
-                                keyboardType: TextInputType.phone,
-                                controller: _mobile_controller,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(10)
-                                ],
-                                style:
-                                    const TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  labelStyle:
-                                      const TextStyle(color: Color(0xFFFFAE00)),
-                                  // hintText: 'Email / Mobile No.',
-                                  labelText: 'Mobile number',
-                                  isDense: true,
-                                ),
-                              ),
-                              SizedBox(height: height * 0.02),
-                              TextField(
-                                obscureText: true,
-                                cursorColor: const Color(0xFFFFAE00),
-                                keyboardType: TextInputType.visiblePassword,
-                                controller: _password_controller,
-                                style:
-                                    const TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  labelStyle:
-                                      const TextStyle(color: Color(0xFFFFAE00)),
-                                  // hintText: 'Email / Mobile No.',
-                                  labelText: 'Password',
-                                  isDense: true,
-                                ),
-                              ),
-                              SizedBox(height: height * 0.02),
-                              TextField(
-                                cursorColor: const Color(0xFFFFAE00),
-                                keyboardType: TextInputType.visiblePassword,
-                                controller: _confirm_password_controller,
-                                style:
-                                    const TextStyle(color: Color(0xFFFFAE00)),
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  labelStyle:
-                                      const TextStyle(color: Color(0xFFFFAE00)),
-                                  // hintText: 'Email / Mobile No.',
-                                  labelText: 'Re-confirm Password',
-                                  isDense: true,
-                                ),
-                              ),
-                              SizedBox(height: height * 0.02),
-                              DropdownButtonFormField<String>(
-                                dropdownColor: const Color(0xFF3A3A3A),
-                                isExpanded: true,
-                                decoration: const InputDecoration(
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFFFAE00)),
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  isDense: true,
-                                ),
-                                value: selected_type,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Color(0xFFFFAE00),
-                                ),
-                                iconSize: 24,
-                                elevation: 16,
-                                style: const TextStyle(color: Color(0xFFFFAE00), fontSize: 18),
-                                onChanged: (String? data) {
-                                  setState(() {
-                                    selected_type = data ?? "Select Business Type";
-                                  });
-                                },
-                                items: business_type_list
-                                    .map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: height * 0.02),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Checkbox(
-                                      // title: const Text(
-                                      //   "I agree to the terms and conditions.",
-                                      //   style: TextStyle(color: Color(0xFFFFAE00)),
-                                      // ),
-                                      checkColor: Colors.white,
-                                      activeColor: const Color(0xFFFFAE00),
-                                      value: isChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          isChecked = value!;
-                                        });
-                                      },
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignInScreen()));
+                                  },
+                                  child: const Text(
+                                    "LOGIN",
+                                    style: TextStyle(
+                                      color: Color(0xFFFFAE00),
+                                      fontSize: 16.0,
                                     ),
-                                    const Text(
-                                      "I Agree to the ",
-                                      style: TextStyle(
-                                        color: Color(0xFFFFAE00),
-                                      ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: Size(width, 40.0),
+                                    primary: const Color(0xFF111111),
+                                    shadowColor: const Color(0xFF111111),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          if (showWeb) {
-                                            showWeb = false;
-                                          } else {
-                                            showWeb = true;
-                                          }
-                                        });
-                                      },
-                                      child: const Text(
-                                        "Terms & Conditions.",
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                        maxLines: 1,
-                                      ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 80.0,
+                                ),
+                                const Text(
+                                  "Sign up with",
+                                  style: TextStyle(
+                                      color: Color(0xFFFFAE00),
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "Genie Money",
+                                  style: TextStyle(
+                                      color: Color(0xFFFFAE00),
+                                      fontSize: 26.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 20),
+                                TextField(
+                                  style:
+                                      const TextStyle(color: Color(0xFFFFAE00)),
+                                  cursorColor: const Color(0xFFFFAE00),
+                                  keyboardType: TextInputType.emailAddress,
+                                  controller: _email_controller,
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelStyle: const TextStyle(
+                                        color: Color(0xFFFFAE00)),
+                                    // hintText: 'Email / Mobile No.',
+                                    labelText: 'Enter Email',
+                                    isDense: true,
+                                  ),
+                                ),
+                                SizedBox(height: height * 0.02),
+                                TextField(
+                                  cursorColor: const Color(0xFFFFAE00),
+                                  keyboardType: TextInputType.phone,
+                                  controller: _mobile_controller,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(10)
                                   ],
+                                  style:
+                                      const TextStyle(color: Color(0xFFFFAE00)),
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelStyle: const TextStyle(
+                                        color: Color(0xFFFFAE00)),
+                                    // hintText: 'Email / Mobile No.',
+                                    labelText: 'Mobile number',
+                                    isDense: true,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  DeviceInfoPlugin deviceInfo =
-                                      DeviceInfoPlugin();
-                                  var model, manufacturer, release, sdkInt, id;
-                                  if (Platform.isAndroid) {
-                                    AndroidDeviceInfo androidInfo =
-                                        await deviceInfo.androidInfo;
-                                    model = androidInfo.model;
-                                    manufacturer = androidInfo.manufacturer;
-                                    release = androidInfo.version.release;
-                                    sdkInt = androidInfo.version.sdkInt;
-                                    id = androidInfo.androidId;
-                                  } else {
-                                    IosDeviceInfo iosDevice =
-                                        await deviceInfo.iosInfo;
-                                    model = iosDevice.name;
-                                    manufacturer = iosDevice.model;
-                                    release = iosDevice.systemName;
-                                    sdkInt = iosDevice.systemVersion;
-                                    id = iosDevice.identifierForVendor;
-                                  }
+                                SizedBox(height: height * 0.02),
+                                TextField(
+                                  obscureText: true,
+                                  cursorColor: const Color(0xFFFFAE00),
+                                  keyboardType: TextInputType.visiblePassword,
+                                  controller: _password_controller,
+                                  style:
+                                      const TextStyle(color: Color(0xFFFFAE00)),
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelStyle: const TextStyle(
+                                        color: Color(0xFFFFAE00)),
+                                    // hintText: 'Email / Mobile No.',
+                                    labelText: 'Password',
+                                    isDense: true,
+                                  ),
+                                ),
+                                SizedBox(height: height * 0.02),
+                                TextField(
+                                  cursorColor: const Color(0xFFFFAE00),
+                                  keyboardType: TextInputType.visiblePassword,
+                                  controller: _confirm_password_controller,
+                                  style:
+                                      const TextStyle(color: Color(0xFFFFAE00)),
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFFFAE00)),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelStyle: const TextStyle(
+                                        color: Color(0xFFFFAE00)),
+                                    // hintText: 'Email / Mobile No.',
+                                    labelText: 'Re-confirm Password',
+                                    isDense: true,
+                                  ),
+                                ),
+                                SizedBox(height: height * 0.02),
+                                Visibility(
+                                  visible: type == "Sales Partner" ? true : false,
+                                  child: DropdownButtonFormField<String>(
+                                    dropdownColor: const Color(0xFF3A3A3A),
+                                    isExpanded: true,
+                                    decoration: const InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Color(0xFFFFAE00)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                      disabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Color(0xFFFFAE00)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Color(0xFFFFAE00)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Color(0xFFFFAE00)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    value: selected_type,
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Color(0xFFFFAE00),
+                                    ),
+                                    iconSize: 24,
+                                    elevation: 16,
+                                    style: const TextStyle(
+                                        color: Color(0xFFFFAE00), fontSize: 18),
+                                    onChanged: (String? data) {
+                                      setState(() {
+                                        selected_type =
+                                            data ?? "Select Business Type";
+                                      });
+                                    },
+                                    items: business_type_list
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: type == "Employee" ? true : false,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 10.0),
+                                    child: TextField(
+                                      cursorColor: const Color(0xFFFFAE00),
+                                      controller: _employee_code_controller,
+                                      style:
+                                      const TextStyle(color: Color(0xFFFFAE00)),
+                                      decoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFFFFAE00)),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        disabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFFFFAE00)),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFFFFAE00)),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFFFFAE00)),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        labelStyle: const TextStyle(
+                                            color: Color(0xFFFFAE00)),
+                                        // hintText: 'Email / Mobile No.',
+                                        labelText: 'Employee Code',
+                                        isDense: true,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: height * 0.02),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: const Color(0xFFFFAE00),
+                                        value: isChecked,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            isChecked = value!;
+                                          });
+                                        },
+                                      ),
+                                      const Text(
+                                        "I Agree to the ",
+                                        style: TextStyle(
+                                          color: Color(0xFFFFAE00),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            if (showWeb) {
+                                              showWeb = false;
+                                            } else {
+                                              showWeb = true;
+                                            }
+                                          });
+                                        },
+                                        child: const Text(
+                                          "Terms & Conditions.",
+                                          style: TextStyle(
+                                            color: Colors.blue,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    DeviceInfoPlugin deviceInfo =
+                                        DeviceInfoPlugin();
+                                    var model,
+                                        manufacturer,
+                                        release,
+                                        sdkInt,
+                                        id;
+                                    if (Platform.isAndroid) {
+                                      AndroidDeviceInfo androidInfo =
+                                          await deviceInfo.androidInfo;
+                                      model = androidInfo.model;
+                                      manufacturer = androidInfo.manufacturer;
+                                      release = androidInfo.version.release;
+                                      sdkInt = androidInfo.version.sdkInt;
+                                      id = androidInfo.androidId;
+                                    } else {
+                                      IosDeviceInfo iosDevice =
+                                          await deviceInfo.iosInfo;
+                                      model = iosDevice.name;
+                                      manufacturer = iosDevice.model;
+                                      release = iosDevice.systemName;
+                                      sdkInt = iosDevice.systemVersion;
+                                      id = iosDevice.identifierForVendor;
+                                    }
 
-                                  String sdk = "$sdkInt";
-                                  if (_email_controller.text.isNotEmpty) {
-                                    if (_mobile_controller.text.isNotEmpty) {
-                                      if (_mobile_controller.text.length ==
-                                          10) {
-                                        if (_password_controller
-                                            .text.isNotEmpty) {
-                                          if (_confirm_password_controller
+                                    String sdk = "$sdkInt";
+                                    if (_email_controller.text.isNotEmpty) {
+                                      if (_mobile_controller.text.isNotEmpty) {
+                                        if (_mobile_controller.text.length ==
+                                            10) {
+                                          if (_password_controller
                                               .text.isNotEmpty) {
-                                            if (_password_controller.text ==
-                                                _confirm_password_controller
-                                                    .text) {
-                                              networkCall
-                                                  .fetchRegistrationPosts(
-                                                      _email_controller.text,
-                                                      _mobile_controller.text,
-                                                      _password_controller.text,
-                                                      release +
-                                                          " (" +
-                                                          sdk +
-                                                          ")",
-                                                      model,
-                                                      latitude,
-                                                      longitude,
-                                                      "",
-                                                      context);
+                                            if (_confirm_password_controller
+                                                .text.isNotEmpty) {
+                                              if (_password_controller.text ==
+                                                  _confirm_password_controller
+                                                      .text) {
+                                                networkCall
+                                                    .fetchRegistrationPosts(
+                                                        _email_controller.text,
+                                                        _mobile_controller.text,
+                                                        _password_controller
+                                                            .text,
+                                                        release +
+                                                            " (" +
+                                                            sdk +
+                                                            ")",
+                                                        model,
+                                                        latitude,
+                                                        longitude,
+                                                        "",
+                                                        context);
+                                              } else {
+                                                _createToast(
+                                                    "Password does not match");
+                                              }
                                             } else {
                                               _createToast(
-                                                  "Password does not match");
+                                                  "Please enter re-confirm password");
                                             }
                                           } else {
                                             _createToast(
-                                                "Please enter re-confirm password");
+                                                "Please enter password");
                                           }
                                         } else {
-                                          _createToast("Please enter password");
+                                          _createToast(
+                                              "Please enter valid mobile number");
                                         }
                                       } else {
                                         _createToast(
-                                            "Please enter valid mobile number");
+                                            "Please enter mobile number");
                                       }
                                     } else {
-                                      _createToast(
-                                          "Please enter mobile number");
+                                      _createToast("Please enter email id");
                                     }
-                                  } else {
-                                    _createToast("Please enter email id");
-                                  }
-                                },
-                                child: const Text(
-                                  "SIGN UP",
-                                  style: TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 16.0,
+                                  },
+                                  child: const Text(
+                                    "SIGN UP",
+                                    style: TextStyle(
+                                      color: Color(0xFF111111),
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: Size(width, 40.0),
+                                    primary: const Color(0xFFFFAE00),
+                                    shadowColor: const Color(0xFFFFAE00),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
                                   ),
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: Size(width, 40.0),
-                                  primary: const Color(0xFFFFAE00),
-                                  shadowColor: const Color(0xFFFFAE00),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
+                              ],
+                            ),
                           ),
+                          painter: HeaderCurvedContainer(height_angle, curve),
                         ),
-                        painter: HeaderCurvedContainer(height),
-                      ),
+                      ],
                     ),
-                  )),
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -545,25 +662,17 @@ class _SignupScreen extends State<SignupScreen> {
 
 class HeaderCurvedContainer extends CustomPainter {
   double height;
+  double curve;
 
-  HeaderCurvedContainer(this.height);
+  HeaderCurvedContainer(this.height, this.curve);
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Paint paint = Paint()..color = const Color(0xFFFFAE00);
-    // Path path = Path()
-    //   ..lineTo(0, 150)
-    //   ..lineTo(0, size.height - 50)
-    //   ..quadraticBezierTo(
-    //       size.width / 2, size.height - 50, size.width, size.height - 50)
-    //   ..lineTo(size.width, 0)
-    //   ..lineTo(0, 0)
-    //   ..close();
     Paint paint = Paint()..color = const Color(0xFFFFAE00);
     Path path = Path()
-      ..relativeLineTo(0, height * 0.30)
-      ..quadraticBezierTo(size.width / 2, 130.0, size.width, height * 0.30)
-      ..relativeLineTo(0, -height * 0.30)
+      ..relativeLineTo(0, height)
+      ..quadraticBezierTo(size.width / 2, curve, size.width, height)
+      ..relativeLineTo(0, -height)
       ..close();
 
     canvas.drawPath(path, paint);
