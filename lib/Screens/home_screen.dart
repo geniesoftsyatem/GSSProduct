@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
 import 'package:genie_money/Screens/essentials_screen.dart';
+import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/Screens/sales_partner_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -266,7 +267,14 @@ class MyHomeClass extends State<HomeScreen> {
                       children: homepageList.map((e) {
                         return GestureDetector(
                           onTap: () {
-                            if (e.name == "Generate Code" || e.name == "Apps History" || e.name == "Portfolio" || e.name == "Advertisement" || e.name == "Retailer") {
+                            if (e.name == "Portfolio") {
+                              ZoomDrawer.of(context)!.isOpen()
+                                  ? ZoomDrawer.of(context)!.toggle()
+                                  : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const PortfolioScreen()));
+                            } else if (e.name == "Generate Code" || e.name == "Apps History" || e.name == "Advertisement" || e.name == "Retailer") {
                               ZoomDrawer.of(context)!.isOpen()
                                   ? ZoomDrawer.of(context)!.toggle()
                                   : Navigator.push(

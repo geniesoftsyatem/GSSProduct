@@ -15,7 +15,7 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
   final TextEditingController _search_controller = TextEditingController();
 
   late List<AppHistoryModel> appHistoryList = [];
-  late List<AppHistoryModel> appHistorySearchList = [];
+  List<AppHistoryModel> dummySearchList = [];
 
   @override
   void initState() {
@@ -94,8 +94,7 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
                                 size: 30.0,
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFFFAE00)),
+                                borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               disabledBorder: OutlineInputBorder(
@@ -485,8 +484,7 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
   }
 
   void filterSearchResults(String query) {
-    List<AppHistoryModel> dummySearchList = [];
-    if (dummySearchList.length <= 0) {
+    if (dummySearchList.isEmpty) {
       dummySearchList.addAll(appHistoryList);
     }
     if(query.isNotEmpty) {
