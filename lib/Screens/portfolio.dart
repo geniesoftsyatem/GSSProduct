@@ -11,7 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 
 class PortfolioScreen extends StatefulWidget {
-  const PortfolioScreen({Key? key}) : super(key: key);
+  String type;
+
+  PortfolioScreen(this.type, {Key? key}) : super(key: key);
 
   @override
   _PortfolioScreenState createState() => _PortfolioScreenState();
@@ -48,6 +50,32 @@ class _PortfolioScreenState extends State<PortfolioScreen>
   int _currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
 
+  String category = 'General Store';
+
+  List<String> categoryList = [
+    "General Store",
+    "Vegetable Vendor",
+    "AC/ Appliance Repair",
+    "Electricians",
+    "Plumber",
+    "Carpenter",
+    "Car / Bike Mechanic",
+    "Cleaning",
+    "Tutor",
+    "Maid",
+    "Laundry",
+    "Cable Vendor",
+    "Saloon, Spa, Massage",
+    "Home Painting",
+    "Pest Control",
+    "Medicine Shop",
+    "Emergency",
+    "Gas/ Cylinder Vendor",
+    "Internet Provider",
+    "Restaurants",
+    "Gardener"
+  ];
+
   Future<void> GetAddressFromLatLong() async {
     if (_currentAddress.isEmpty) {
       LocationFinder locationFinder = LocationFinder();
@@ -69,6 +97,10 @@ class _PortfolioScreenState extends State<PortfolioScreen>
 
   late Future<Pincode_model> pincode_model;
   var _adsImage;
+  var _ads_1_file;
+  var _ads_2_file;
+  var _ads_3_file;
+  var _ads_4_file;
 
   @override
   void initState() {
@@ -91,16 +123,6 @@ class _PortfolioScreenState extends State<PortfolioScreen>
         }
       }
     });
-    setState(() {
-      _name_controller.text = "Sharad Yadav";
-      _mobile_no_controller.text = "9873523232";
-      _email_controller.text = "sharadyadav@gmail.com";
-      _about_us_controller.text = "I am retailer";
-      _facebook_controller.text = "https://m.facebook.com";
-      _whatsapp_controller.text = "https://api.whatsapp.com";
-      _youtube_controller.text = "https://m.youtube.com/channel";
-      _twitter_controller.text = "https://mobile.twitter.com";
-    });
     super.initState();
   }
 
@@ -122,102 +144,98 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFF111111),
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leading: IconButton(
-            icon: const Icon(Icons.share),
-            color: Colors.white,
-            onPressed: () {},
+        appBar: widget.type == "Employee" ? AppBar(
+          backgroundColor: const Color(0xFF3A3A3A),
+          title: const Text(
+            "Portfolio",
+            style: TextStyle(color: Color(0xFFFFAE00)),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(CupertinoIcons.pencil_circle),
-              color: Colors.white,
-            )
-          ],
+        ) : AppBar(
+          backgroundColor: const Color(0xFF3A3A3A),
+          title: const Text(
+            "Portfolio",
+            style: TextStyle(color: Color(0xFFFFAE00)),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: const Color(0xFFFFAE00),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              SizedBox(
-                height: height * 0.40,
-                child: pageviewList.length > 0
-                    ? PageView.builder(
-                        itemCount: pageviewList.length,
-                        scrollDirection: Axis.horizontal,
-                        controller: _pageController,
-                        onPageChanged: (value) {
-                          //When page change, start the controller
-                          _animationController.forward();
-                        },
-                        itemBuilder: (BuildContext context, int index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                              constraints: const BoxConstraints.expand(
-                                height: 200.0,
-                              ),
-                              alignment: Alignment.centerRight,
-                              padding: const EdgeInsets.only(
-                                  left: 16.0, bottom: 8.0),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(
-                                    pageviewList[index],
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      _showPicker(context);
-                                    },
-                                    icon:
-                                        const Icon(Icons.cloud_upload_outlined),
-                                    color: Colors.white,
-                                    iconSize: 40.0,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      _showPicker(context);
-                                    },
-                                    icon: const Icon(Icons.delete_outline),
-                                    color: Colors.white,
-                                    iconSize: 40.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        })
-                    : Container(
-                        constraints: const BoxConstraints.expand(
-                          height: 200.0,
-                        ),
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/image_not_available.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            _showPicker(context);
-                          },
-                          icon: const Icon(Icons.cloud_upload_outlined),
-                          color: Colors.white,
-                          iconSize: 40.0,
-                        ),
-                      ),
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ads_1_Column(context),
+                    ads_2_Column(context),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ads_3_Column(context),
+                    ads_4_Column(context),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+                child: DropdownButtonFormField<String>(
+                  dropdownColor: const Color(0xFF111111),
+                  isExpanded: true,
+                  decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    labelStyle: TextStyle(color: Color(0xFFFFAE00)),
+                    label: Text("Category"),
+                    isDense: true,
+                  ),
+                  value: category,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Color(0xFFFFAE00),
+                  ),
+                  iconSize: 24,
+                  elevation: 16,
+                  style:
+                  const TextStyle(color: Color(0xFFFFAE00), fontSize: 18),
+                  onChanged: (String? data) {
+                    setState(() {
+                      category = data!;
+                    });
+                  },
+                  items: categoryList
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
               Container(
                 margin:
@@ -769,6 +787,28 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                   ],
                 ),
               ),
+              Container(
+                margin:
+                    const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+                child: ElevatedButton(
+                  onPressed: () async {},
+                  child: const Text(
+                    "SUBMIT",
+                    style: TextStyle(
+                      color: Color(0xFF111111),
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(width, 40.0),
+                    primary: const Color(0xFFFFAE00),
+                    shadowColor: const Color(0xFFFFAE00),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -1146,7 +1186,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
         timeInSecForIosWeb: 1);
   }
 
-  void _showPicker(context) {
+  void _showPicker(context, String which_image) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -1155,16 +1195,16 @@ class _PortfolioScreenState extends State<PortfolioScreen>
               children: <Widget>[
                 ListTile(
                     leading: const Icon(Icons.photo_library),
-                    title: const Text('Gallery'),
+                    title: const Text('Photo Library'),
                     onTap: () {
-                      _imgFromGallery();
+                      _imgFromGallery(which_image);
                       Navigator.of(context).pop();
                     }),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('Camera'),
                   onTap: () {
-                    _imgFromCamera();
+                    _imgFromCamera(which_image);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -1174,23 +1214,227 @@ class _PortfolioScreenState extends State<PortfolioScreen>
         });
   }
 
-  _imgFromCamera() async {
+  _imgFromCamera(String which_image) async {
     final ImagePicker _picker = ImagePicker();
     XFile? image =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
-    _adsImage = image == null ? null : File(image.path);
+
     setState(() {
-      pageviewList.add(_adsImage);
+      if (which_image == "ads_1") {
+        _ads_1_file = image == null ? null : File(image.path);
+      } else if (which_image == "ads_2") {
+        _ads_2_file = image == null ? null : File(image.path);
+      } else if (which_image == "ads_3") {
+        _ads_3_file = image == null ? null : File(image.path);
+      } else if (which_image == "ads_4") {
+        _ads_4_file = image == null ? null : File(image.path);
+      }
     });
   }
 
-  _imgFromGallery() async {
+  _imgFromGallery(String which_image) async {
     final ImagePicker _picker = ImagePicker();
     XFile? image =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
-    _adsImage = image == null ? null : File(image.path);
+
     setState(() {
-      pageviewList.add(_adsImage);
+      if (which_image == "ads_1") {
+        _ads_1_file = image == null ? null : File(image.path);
+      } else if (which_image == "ads_2") {
+        _ads_2_file = image == null ? null : File(image.path);
+      } else if (which_image == "ads_3") {
+        _ads_3_file = image == null ? null : File(image.path);
+      } else if (which_image == "ads_4") {
+        _ads_4_file = image == null ? null : File(image.path);
+      }
     });
+  }
+
+  Column ads_4_Column(BuildContext context) {
+    return Column(
+      children: [
+        const Center(
+          child: Text(
+            "Advertisement 4",
+            style: TextStyle(
+              color: Color(0xFFFFAE00),
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                _showPicker(context, "ads_4");
+              },
+              child: ClipRect(
+                child: _ads_4_file != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.file(
+                          _ads_4_file,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Color(0xFFFFAE00),
+                          size: 100,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column ads_3_Column(BuildContext context) {
+    return Column(
+      children: [
+        const Center(
+          child: Text(
+            "Advertisement 3",
+            style: TextStyle(
+              color: Color(0xFFFFAE00),
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                _showPicker(context, "ads_3");
+              },
+              child: ClipRect(
+                child: _ads_3_file != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.file(
+                          _ads_3_file,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Color(0xFFFFAE00),
+                          size: 100,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column ads_2_Column(BuildContext context) {
+    return Column(
+      children: [
+        const Center(
+          child: Text(
+            "Advertisement 2",
+            style: TextStyle(
+              color: Color(0xFFFFAE00),
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                _showPicker(context, "ads_2");
+              },
+              child: ClipRect(
+                child: _ads_2_file != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.file(
+                          _ads_2_file,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Color(0xFFFFAE00),
+                          size: 100,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column ads_1_Column(BuildContext context) {
+    return Column(
+      children: [
+        const Center(
+          child: Text(
+            "Advertisement 1",
+            style: TextStyle(
+              color: Color(0xFFFFAE00),
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                _showPicker(context, "ads_1");
+              },
+              child: ClipRect(
+                child: _ads_1_file != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.file(
+                          _ads_1_file,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Color(0xFFFFAE00),
+                          size: 100,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

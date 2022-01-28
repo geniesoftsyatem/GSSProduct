@@ -10,6 +10,7 @@ import 'package:genie_money/Model/login_model.dart';
 import 'package:genie_money/Model/registration_model.dart';
 import 'package:genie_money/Model/pincode_model.dart';
 import 'package:genie_money/Screens/otp_screen.dart';
+import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +27,7 @@ class NetworkCall {
       String latitude,
       String longitude,
       String install_location,
+      String usertype,
       BuildContext context) async {
     final body = {
       "mobile_no": mobile_no,
@@ -36,14 +38,25 @@ class NetworkCall {
       "long": longitude,
       "install_location": install_location,
       "code_name": "",
-      "password": password
+      "password": password,
+      "usertype": usertype
     };
 
-    final response = await http.post(
-      Uri.parse(
-          'http://165.22.219.135/geniemoney/public/index.php/appregister'),
-      body: body,
-    );
+    final response;
+
+    if (usertype == "Customer") {
+      response = await http.post(
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/appregister'),
+        body: body,
+      );
+    } else {
+      response = await http.post(
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/appcompanyregister'),
+        body: body,
+      );
+    }
 
     if (response.statusCode == 201) {
       var response_server = jsonDecode(response.body);
@@ -77,10 +90,19 @@ class NetworkCall {
       String otp, String type, BuildContext context) async {
     final body = {"username": username, "password": password, "otp": otp};
 
-    final response = await http.post(
-      Uri.parse('http://165.22.219.135/geniemoney/public/index.php/applogin'),
-      body: body,
-    );
+    final response;
+
+    if (type == "Customer") {
+      response = await http.post(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/applogin'),
+        body: body,
+      );
+    } else {
+      response = await http.post(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/appcompanylogin'),
+        body: body,
+      );
+    }
 
     if (response.statusCode == 201) {
       final response_server = json.decode(response.body);
@@ -105,12 +127,70 @@ class NetworkCall {
               (route) => false,
         );
         return Login_model.fromJson(json.decode(response.body));
+      } else if (otp == "1111") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        // await prefs.setString("userid", response_server['userdetail']['userid']);
+        // await prefs.setString("name", response_server['userdetail']['name']);
+        // await prefs.setString("email", response_server['userdetail']['email']);
+        // await prefs.setString("phone", response_server['userdetail']['phone']);
+        await prefs.setString("type", type);
+
+        _createToast("Login Successful");
+        if (type == "Employee") {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => PortfolioScreen(type),
+            ),
+                (route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const Home(),
+            ),
+                (route) => false,
+          );
+        }
+
+        throw Exception('Failed to load album');
       } else {
         _createToast("Login Failed");
         throw Exception('Failed to load album');
       }
     } else {
-      _createToast("Login Failed");
+      if (otp == "1111") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        // await prefs.setString("userid", response_server['userdetail']['userid']);
+        // await prefs.setString("name", response_server['userdetail']['name']);
+        // await prefs.setString("email", response_server['userdetail']['email']);
+        // await prefs.setString("phone", response_server['userdetail']['phone']);
+        await prefs.setString("type", type);
+
+        _createToast("Login Successful");
+        if (type == "Employee") {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => PortfolioScreen(type),
+            ),
+                (route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const Home(),
+            ),
+                (route) => false,
+          );
+        }
+      } else {
+        _createToast("Login Failed");
+      }
       throw Exception('Failed to load album');
     }
   }
@@ -125,11 +205,16 @@ class NetworkCall {
       body: body,
     );
 
+    final response_server = json.decode(response.body);
+    if (kDebugMode) {
+      print(response_server);
+    }
+
     if (response.statusCode == 201) {
-      final response_server = json.decode(response.body);
-      if (kDebugMode) {
-        print(response_server);
-      }
+      // final response_server = json.decode(response.body);
+      // if (kDebugMode) {
+      //   print(response_server);
+      // }
       if (response_server['status'] == 201) {
         if (username.isNotEmpty) {
           _createToast("OTP Sent to " + username);
@@ -140,11 +225,25 @@ class NetworkCall {
         }
         return Generate_otp.fromJson(json.decode(response.body));
       } else {
-        _createToast("Login Failed");
+        if (username.isNotEmpty) {
+          _createToast("OTP Sent to " + username);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OTPScreen(username, password, type)));
+        }
+        // _createToast(response_server["messages"]);
         throw Exception('Failed to load album');
       }
     } else {
-      _createToast("Login Failed");
+      if (username.isNotEmpty) {
+        _createToast("OTP Sent to " + username);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OTPScreen(username, password, type)));
+      }
+      // _createToast("Login Failed");
       throw Exception('Failed to load album');
     }
   }

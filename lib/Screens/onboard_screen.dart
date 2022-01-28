@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/onboard_screen_model.dart';
+import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,20 +28,35 @@ class _OnBoardScreen extends State<OnBoardScreen> {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var isLogedIn = false;
+    var type = "Customer";
     if (prefs.containsKey("isLoggedIn")) {
       isLogedIn = prefs.getBool("isLoggedIn") ?? false;
+    }
+    
+    if (prefs.containsKey("type")) {
+      type = prefs.getString("type") ?? "Customer";
     }
 
     setState(() {
       if (isLogedIn) {
         isLayoutVisible = false;
-        Navigator.pushAndRemoveUntil<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => const Home(),
-          ),
-              (route) => false,
-        );
+        if (type == "Employee") {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => PortfolioScreen(type),
+            ),
+                (route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const Home(),
+            ),
+                (route) => false,
+          );
+        }
       } else {
         isLayoutVisible = true;
       }

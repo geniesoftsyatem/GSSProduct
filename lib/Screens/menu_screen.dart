@@ -476,39 +476,6 @@ class _MenuScreen extends State<MenuScreen> {
                           ),
                         ),
                       ),
-                      // Align(
-                      //   alignment: FractionalOffset.bottomCenter,
-                      //   child: Padding(
-                      //     padding: const EdgeInsets.all(2.0),
-                      //     child: InkWell(
-                      //       onTap: () {
-                      //         // _navigate("Privilage Offer");
-                      //         _alertDialog();
-                      //       },
-                      //       child: Container(
-                      //         margin: const EdgeInsets.only(left: 10.0),
-                      //         child: Row(
-                      //           children: const [
-                      //             Icon(
-                      //               Icons.logout,
-                      //               color: Color(0xFFFFAE00),
-                      //             ),
-                      //             SizedBox(
-                      //               width: 15,
-                      //             ),
-                      //             Text(
-                      //               "Logout",
-                      //               style: TextStyle(
-                      //                 color: Color(0xFFFFAE00),
-                      //                 fontSize: 22,
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -529,7 +496,7 @@ class _MenuScreen extends State<MenuScreen> {
           MaterialPageRoute(
               builder: (context) => const EssentialsScreen()));
     } else if (name == "Settings") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen("Customer")));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => AllOptions(name)));
     }

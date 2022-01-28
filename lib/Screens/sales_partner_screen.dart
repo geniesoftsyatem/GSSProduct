@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:genie_money/Model/app_history_model.dart';
 
 class SalesPartnerScreen extends StatefulWidget {
@@ -60,318 +61,312 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
             },
           ),
         ),
-        body: Container(
-          margin: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Visibility(
-                  visible: widget.title == "Generate Code" ? true : false,
-                  child: generateCodeCard(width, height),
-                ),
-                Visibility(
-                  visible: widget.title == "Apps History" ? true : false,
-                  child: SizedBox(
-                    height: height,
-                    child: Column(
-                      children: [
-                        Container(
-                          color: const Color(0xFF3A3A3A),
-                          margin: const EdgeInsets.only(top: 10.0),
-                          width: width,
-                          child: TextField(
-                            cursorColor: const Color(0xFFFFAE00),
-                            keyboardType: TextInputType.name,
-                            style: const TextStyle(color: Color(0xFFFFAE00)),
-                            controller: _search_controller,
-                            decoration: InputDecoration(
-                              suffixIcon: const Icon(
-                                Icons.search,
-                                color: Color(0xFFFFAE00),
-                                size: 30.0,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Color(0xFFFFAE00)),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFFFAE00)),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFFFAE00)),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFFFAE00)),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              labelStyle:
-                                  const TextStyle(color: Color(0xFFFFAE00)),
-                              labelText: 'Search...',
-                              isDense: true,
-                            ),
-                            onChanged: (text) {
-                              filterSearchResults(text);
-                            },
-                          ),
-                        ),
-                        Container(
-                          height: height * 0.72,
-                          margin: const EdgeInsets.only(top: 10.0),
-                          child: appHistoryList.length > 0 ? ListView.builder(
-                            itemCount: appHistoryList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                color: const Color(0xFF3A3A3A),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  side: BorderSide(
+        body: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+            height: height,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: SizedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Visibility(
+                      visible: widget.title == "Generate Code" ? true : false,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: generateCodeCard(width, height),
+                      ),
+                    ),
+                    Visibility(
+                      visible: widget.title == "Apps History" ? true : false,
+                      child: SizedBox(
+                        height: height * 0.99,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              color: const Color(0xFF3A3A3A),
+                              width: width,
+                              child: TextField(
+                                cursorColor: const Color(0xFFFFAE00),
+                                keyboardType: TextInputType.name,
+                                style: const TextStyle(color: Color(0xFFFFAE00)),
+                                controller: _search_controller,
+                                decoration: InputDecoration(
+                                  suffixIcon: const Icon(
+                                    Icons.search,
                                     color: Color(0xFFFFAE00),
-                                    width: 2.0,
+                                    size: 30.0,
                                   ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Color(0xFFFFAE00)),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+                                  labelText: 'Search...',
+                                  isDense: true,
                                 ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: width,
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10)),
-                                        color: const Color(0xFFFFAE00),
-                                      ),
-                                      child: Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 10.0, right: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            const Text(
-                                              "Genie Money",
-                                              style: TextStyle(
-                                                color: Color(0xFF111111),
-                                                fontSize: 18.0,
-                                              ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(Icons.share),
-                                              color: Color(0xFF111111),
-                                            )
-                                          ],
+                                onChanged: (text) {
+                                  filterSearchResults(text);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 10.0),
+                                child: ListView.builder(
+                                  padding: EdgeInsets.only(bottom: 80.0),
+                                  shrinkWrap: true,
+                                  itemCount: appHistoryList.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Card(
+                                      color: const Color(0xFF3A3A3A),
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                        side: BorderSide(
+                                          color: Color(0xFFFFAE00),
+                                          width: 2.0,
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin:
-                                      const EdgeInsets.only(top: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                      child: Column(
                                         children: [
                                           Container(
+                                            width: width,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10)),
+                                              color: const Color(0xFFFFAE00),
+                                            ),
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 10.0, right: 10.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    "Genie Money",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF111111),
+                                                      fontSize: 18.0,
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () {},
+                                                    icon: Icon(Icons.share),
+                                                    color: Color(0xFF111111),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.only(top: 10.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  margin:
+                                                      const EdgeInsets.only(left: 10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Code : ",
+                                                        style: TextStyle(
+                                                          color: Color(0xFFFFAE00),
+                                                          fontSize: 16.0,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        appHistoryList[index].code,
+                                                        style: const TextStyle(
+                                                          color: Color(0xFFFFAE00),
+                                                          fontSize: 16.0,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(Icons.copy),
+                                                  color: Color(0xFFFFAE00),
+                                                  iconSize: 18.0,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
                                             margin: const EdgeInsets.only(
-                                                left: 10.0),
+                                                top: 10.0, left: 10.0, right: 10.0),
                                             child: Row(
                                               children: [
                                                 const Text(
-                                                  "Code : ",
+                                                  "Mobile No. : ",
                                                   style: TextStyle(
-                                                    color:
-                                                    Color(0xFFFFAE00),
+                                                    color: Color(0xFFFFAE00),
                                                     fontSize: 16.0,
                                                   ),
                                                 ),
                                                 Text(
-                                                  appHistoryList[index]
-                                                      .code,
+                                                  appHistoryList[index].mobile_no,
                                                   style: const TextStyle(
-                                                    color:
-                                                    Color(0xFFFFAE00),
+                                                    color: Color(0xFFFFAE00),
                                                     fontSize: 16.0,
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.copy),
-                                            color: Color(0xFFFFAE00),
-                                            iconSize: 18.0,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 10.0,
-                                          right: 10.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Mobile No. : ",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 10.0, left: 10.0, right: 10.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  "IMEI No. : ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  appHistoryList[index].imei,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Text(
-                                            appHistoryList[index].mobile_no,
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 10.0, left: 10.0, right: 10.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  "Date Created : ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  appHistoryList[index].date_created,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 10.0,
-                                          right: 10.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "IMEI No. : ",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 10.0, left: 10.0, right: 10.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  "Date Expire : ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  appHistoryList[index].date_expire,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Text(
-                                            appHistoryList[index].imei,
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 10.0, left: 10.0, right: 10.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  "Validity : ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  appHistoryList[index].validity,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 10.0,
-                                          right: 10.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Date Created : ",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                          Text(
-                                            appHistoryList[index]
-                                                .date_created,
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 10.0,
-                                          right: 10.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Date Expire : ",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                          Text(
-                                            appHistoryList[index]
-                                                .date_expire,
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 10.0,
-                                          right: 10.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Validity : ",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                          Text(
-                                            appHistoryList[index].validity,
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 10.0,
+                                                left: 10.0,
+                                                right: 10.0,
+                                                bottom: 10.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  "Name : ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  appHistoryList[index].name,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFFFFAE00),
+                                                    fontSize: 16.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10.0,
-                                          left: 10.0,
-                                          right: 10.0,
-                                          bottom: 10.0),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Name : ",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                          Text(
-                                            appHistoryList[index].name,
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFAE00),
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ) : null,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -487,10 +482,13 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
     if (dummySearchList.isEmpty) {
       dummySearchList.addAll(appHistoryList);
     }
-    if(query.isNotEmpty) {
+    if (query.isNotEmpty) {
       List<AppHistoryModel> dummyListData = [];
       dummySearchList.forEach((item) {
-        if(item.code.contains(query) || item.name.contains(query) || item.validity.contains(query) || item.mobile_no.contains(query)) {
+        if (item.code.contains(query) ||
+            item.name.contains(query) ||
+            item.validity.contains(query) ||
+            item.mobile_no.contains(query)) {
           dummyListData.add(item);
         }
       });

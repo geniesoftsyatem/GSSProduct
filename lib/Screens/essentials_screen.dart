@@ -38,7 +38,7 @@ class _EssentialsScreenState extends State<EssentialsScreen> {
       ServiceModel("Gas/ Cylinder Vendor", "images/gas_cylinder_vendor.png", 0.0),
       ServiceModel("Internet Provider", "images/internet_provider.png", 0.0),
       ServiceModel("Restaurants", "images/resturant.png", 0.0),
-      ServiceModel("Gardener", "images/gardener.png", 0.0),
+      ServiceModel("Gardener", "images/gardener.png", 0.0)
     ];
     super.initState();
   }

@@ -49,7 +49,7 @@ class _SignupScreen extends State<SignupScreen>
   List<String> business_type_list = [
     'Retailer',
     'Distributor',
-    'Super Stockist'
+    'Super Distributor'
   ];
 
   Future<void> _getLocation() async {
@@ -579,21 +579,58 @@ class _SignupScreen extends State<SignupScreen>
                                               if (_password_controller.text ==
                                                   _confirm_password_controller
                                                       .text) {
-                                                networkCall
-                                                    .fetchRegistrationPosts(
-                                                        _email_controller.text,
-                                                        _mobile_controller.text,
-                                                        _password_controller
-                                                            .text,
-                                                        release +
-                                                            " (" +
-                                                            sdk +
-                                                            ")",
-                                                        model,
-                                                        latitude,
-                                                        longitude,
-                                                        "",
-                                                        context);
+                                                if (type == "Customer") {
+                                                  networkCall
+                                                      .fetchRegistrationPosts(
+                                                      _email_controller.text,
+                                                      _mobile_controller.text,
+                                                      _password_controller
+                                                          .text,
+                                                      release +
+                                                          " (" +
+                                                          sdk +
+                                                          ")",
+                                                      model,
+                                                      latitude,
+                                                      longitude,
+                                                      "",
+                                                      "Customer",
+                                                      context);
+                                                } else if (type == "Employee") {
+                                                  networkCall
+                                                      .fetchRegistrationPosts(
+                                                      _email_controller.text,
+                                                      _mobile_controller.text,
+                                                      _password_controller
+                                                          .text,
+                                                      release +
+                                                          " (" +
+                                                          sdk +
+                                                          ")",
+                                                      model,
+                                                      latitude,
+                                                      longitude,
+                                                      "",
+                                                      "Employee",
+                                                      context);
+                                                } else {
+                                                  networkCall
+                                                      .fetchRegistrationPosts(
+                                                      _email_controller.text,
+                                                      _mobile_controller.text,
+                                                      _password_controller
+                                                          .text,
+                                                      release +
+                                                          " (" +
+                                                          sdk +
+                                                          ")",
+                                                      model,
+                                                      latitude,
+                                                      longitude,
+                                                      "",
+                                                      selected_type,
+                                                      context);
+                                                }
                                               } else {
                                                 _createToast(
                                                     "Password does not match");

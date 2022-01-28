@@ -37,7 +37,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
   List<String> business_type_list = [
     'Retailer',
     'Distributor',
-    'Super Stockist'
+    'Super Distributor'
   ];
 
   Future<void> _getLocation() async {
@@ -327,12 +327,21 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                           RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
                               .hasMatch(_email_mobile_controller.text);
                           if (emailValid || mobileValid) {
-                            NetworkCall networdCall = NetworkCall();
-                            networdCall.generateOtp(
-                                _email_mobile_controller.text,
-                                _password_controller.text,
-                                title,
-                                context);
+                            if (title == "Sales Partner") {
+                              NetworkCall networdCall = NetworkCall();
+                              networdCall.generateOtp(
+                                  _email_mobile_controller.text,
+                                  _password_controller.text,
+                                  selected_type,
+                                  context);
+                            } else {
+                              NetworkCall networdCall = NetworkCall();
+                              networdCall.generateOtp(
+                                  _email_mobile_controller.text,
+                                  _password_controller.text,
+                                  title,
+                                  context);
+                            }
                           } else {
                             _createToast(
                                 "Please enter valid email id / mobile no");

@@ -8,7 +8,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+
+  String title;
+
+  SettingsScreen(this.title, {Key? key}) : super(key: key);
 
   @override
   State createState() {
@@ -36,21 +39,43 @@ class _SettingsScreen extends State<SettingsScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    homepageList = [
-      HomePageList(
-          id: "7",
-          name: "Profile Setting",
-          image: "images/profile_setting.png"),
-      HomePageList(
-          id: "8",
-          name: "Payment Setting",
-          image: "images/payment_setting.png"),
-      HomePageList(
-          id: "9",
-          name: "Change Language",
-          image: "images/change_language.png"),
-      HomePageList(id: "10", name: "Logout", image: "images/logout.png")
-    ];
+    if(widget.title == "Customer") {
+      homepageList = [
+        HomePageList(
+            id: "7",
+            name: "Profile Setting",
+            image: "images/profile_setting.png"),
+        HomePageList(
+            id: "8",
+            name: "Payment Setting",
+            image: "images/payment_setting.png"),
+        HomePageList(
+            id: "9",
+            name: "Change Language",
+            image: "images/change_language.png"),
+        HomePageList(id: "10", name: "Logout", image: "images/logout.png")
+      ];
+    } else {
+      homepageList = [
+        HomePageList(
+            id: "7",
+            name: "My Topup History",
+            image: "images/topup_history.png"),
+        HomePageList(
+            id: "7",
+            name: "Change Password",
+            image: "images/change_password.png"),
+        HomePageList(
+            id: "8",
+            name: "Help",
+            image: "images/help.png"),
+        HomePageList(
+            id: "9",
+            name: "Change Language",
+            image: "images/change_language.png"),
+        HomePageList(id: "10", name: "Logout", image: "images/logout.png")
+      ];
+    }
 
     super.initState();
   }
