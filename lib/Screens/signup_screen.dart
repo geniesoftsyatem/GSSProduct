@@ -4,7 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:genie_money/utils/network.dart';
 import 'package:geolocator/geolocator.dart';
@@ -689,11 +689,11 @@ class _SignupScreen extends State<SignupScreen>
   }
 
   void _createToast(String message) {
-    Fluttertoast.showToast(
+/*    Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1);
+        timeInSecForIosWeb: 1);*/
   }
 }
 

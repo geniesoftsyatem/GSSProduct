@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/cowin_screen.dart';
 import 'package:genie_money/Screens/credit_score_screen.dart';
 import 'package:genie_money/Screens/insurance_screen.dart';
+import 'package:genie_money/Screens/offer_screen.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 
 import 'package:genie_money/utils/silver_delegate.dart';
@@ -120,10 +122,18 @@ class _ALlOptions extends State<AllOptions> {
             id: "7",
             name: "Accidental Insurance",
             image: "images/accidental_insurance.png"),
-        HomePageList(
+        /*HomePageList(
             id: "8",
             name: "COVID-19 Insurance",
-            image: "images/covid_insurance.png")
+            image: "images/covid_insurance.png"),*/
+        HomePageList(
+            id: "24",
+            name: "Offers",
+            image: "images/offers.png"),
+        HomePageList(
+            id: "25",
+            name: "CoWIN",
+            image: "images/cowinlogo.png")
       ];
     }
 
@@ -281,6 +291,18 @@ class _ALlOptions extends State<AllOptions> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       MoneyTransfer()));
+                        }else if(homepageList[index].name == "Offers"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OfferScreen()));
+                        }else if(homepageList[index].name == "CoWIN"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CowinScreen()));
                         }
                         else {
                           _alertDialog();

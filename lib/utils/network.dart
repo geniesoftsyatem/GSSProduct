@@ -304,10 +304,10 @@ class NetworkCall {
   }
 
   void _createToast(String message) {
-    Fluttertoast.showToast(
+    /*Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1);
+        timeInSecForIosWeb: 1);*/
   }
 }

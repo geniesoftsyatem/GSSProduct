@@ -64,6 +64,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   location: ^4.3.0
   syncfusion_flutter_gauges: ^19.4.41
+  dotted_border: ^2.0.0+2
 
 dev_dependencies:
   flutter_test:
