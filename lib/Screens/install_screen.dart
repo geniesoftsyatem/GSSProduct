@@ -128,6 +128,19 @@ class _InstallApps extends State<InstallApps> {
       title = "Education";
       description =
       "Install app for continuing your studies at home. App contains almost all Boards textbooks and its solutions as well as search nearest jobs and more ...";
+    } else if(widget.name == "Health / Fitness"){
+      image_list = [
+        "images/fitness_gs_1.png",
+        "images/fitness_gs_2.png",
+        "images/fitness_gs_3.png",
+        "images/fitness_gs_4.png",
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/health.apk";
+      _fileName = "health.apk";
+      app_package_name = "com.gss.gssfitness";
+      title = "Health/Fitness";
+      description =
+      "Install Health & Fitness App, We provide you workout, Yoga, Pedometer & Meditation to keep physical fitness, healthy body and also provides dynamic and creative intellectual activity.";
     }
     _getPackageStatus();
     _getFileDirectory();
@@ -335,6 +348,12 @@ class _InstallApps extends State<InstallApps> {
                           OpenFile.open(open_path);
                         }
                       } else if (option == "Education") {
+                        if (isInstalled) {
+                          DeviceApps.openApp(app_package_name);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      }else if(option == "Health / Fitness"){
                         if (isInstalled) {
                           DeviceApps.openApp(app_package_name);
                         } else {

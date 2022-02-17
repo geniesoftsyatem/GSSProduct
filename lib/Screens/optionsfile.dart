@@ -303,6 +303,17 @@ class _ALlOptions extends State<AllOptions> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       CowinScreen()));
+                        }else if(homepageList[index].name == "Health / Fitness"){
+                          bool installed = await DeviceApps.isAppInstalled("com.gss.gssfitness");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          }else{
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
                         }
                         else {
                           _alertDialog();
@@ -493,6 +504,22 @@ class _ALlOptions extends State<AllOptions> {
           );
           await intent.launch();
           //}
+        } else {
+          print("not installed");
+        }
+      }else if(pageName == "Health / Fitness"){
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.gssfitness',
+            componentName: 'com.gss.gssfitness.ui.FitnessActivity',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
         } else {
           print("not installed");
         }
