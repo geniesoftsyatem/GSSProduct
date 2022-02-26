@@ -13,6 +13,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InstallApps extends StatefulWidget {
   String name;
@@ -356,25 +357,25 @@ class _InstallApps extends State<InstallApps> {
                           widget.name == "Other Channels" ||
                           widget.name == "Facebook video") {
                         if (isInstalled) {
-                          DeviceApps.openApp(app_package_name);
+                          launchNativeActivity(option);
                         } else {
                           OpenFile.open(open_path);
                         }
                       } else if (option == "Jobs") {
                         if (isInstalled) {
-                          DeviceApps.openApp(app_package_name);
+                          launchNativeActivity(option);
                         } else {
                           OpenFile.open(open_path);
                         }
                       } else if (option == "Education") {
                         if (isInstalled) {
-                          DeviceApps.openApp(app_package_name);
+                          launchNativeActivity(option);
                         } else {
                           OpenFile.open(open_path);
                         }
                       } else if(option == "Health / Fitness"){
                         if (isInstalled) {
-                          DeviceApps.openApp(app_package_name);
+                          launchNativeActivity(option);
                         } else {
                           OpenFile.open(open_path);
                         }
@@ -487,25 +488,158 @@ class _InstallApps extends State<InstallApps> {
   }
 
   void launchNativeActivity(String pageName) async {
-    final Map<String, String> someMap = {"activity": pageName};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userid = prefs.getString('userid')?? '';
+    var name = prefs.getString('name')?? '';
+    var email = prefs.getString('email')?? '';
+    var phone = prefs.getString('phone')?? '';
+
+    final Map<String, String> someMap = {
+      "activity" : pageName,
+      "userid" : userid,
+      "name" : name,
+      "email" : email,
+      "phone" : phone
+    };
+
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
-      bool isInstalled = await DeviceApps.isAppInstalled('com.gss.genieshield');
-      if (isInstalled == true) {
-        AndroidIntent intent;
-        //if (pageName == "Anti Hacking") {
+      if (pageName == "Spy Camera" ||
+          pageName == "Life Saver" ||
+          pageName == "Secure Chat" ||
+          pageName == "Anti Hacking" ||
+          pageName == "Anti Virus" ||
+          pageName == "Anti Theft" ||
+          pageName == "Wi-Fi Protect") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.genieshield');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
 
-        intent = AndroidIntent(
-          action: 'android_send',
-          package: 'com.gss.genieshield',
-          componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
-          data: 'com.gss.genieshield',
-          arguments: someMap,
-        );
-        await intent.launch();
-        //}
-      } else {
-        print("not installed");
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
+            data: 'com.gss.genieshield',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "YouTube Download") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "News Channels") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Other Channels") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Jobs") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.education',
+            componentName: 'com.gss.education.cbse.ui.Dashboard',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Education") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.education',
+            componentName: 'com.gss.education.cbse.ui.EducationActivity',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if(pageName == "Health / Fitness"){
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.gssfitness',
+            componentName: 'com.gss.gssfitness.ui.FitnessActivity',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
       }
     }
   }
