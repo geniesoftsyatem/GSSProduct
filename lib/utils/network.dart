@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:genie_money/Model/generate_otp.dart';
 import 'package:genie_money/Model/login_model.dart';
 import 'package:genie_money/Model/registration_model.dart';
@@ -12,6 +11,7 @@ import 'package:genie_money/Model/pincode_model.dart';
 import 'package:genie_money/Screens/otp_screen.dart';
 import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
+import 'package:genie_money/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,13 +58,13 @@ class NetworkCall {
       );
     }
 
+    var response_server = jsonDecode(response.body);
+
+    if (kDebugMode) {
+      print(response_server);
+    }
+
     if (response.statusCode == 201) {
-      var response_server = jsonDecode(response.body);
-
-      if (kDebugMode) {
-        print(response_server);
-      }
-
       if (response_server["status"] == 201) {
         _createToast("User registered successfully, Please login");
 
@@ -73,7 +73,7 @@ class NetworkCall {
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => const SignInScreen(),
           ),
-              (route) => false,
+          (route) => false,
         );
         return RegistrationModel.fromJson(json.decode(response.body));
       } else {
@@ -81,7 +81,11 @@ class NetworkCall {
         throw Exception('Failed to load album');
       }
     } else {
-      _createToast("Failed to register User");
+      if (response.statusCode == 404) {
+        _createToast("Email Or Phone number already exist");
+      } else {
+        _createToast("Failed to register User");
+      }
       throw Exception('Failed to load album');
     }
   }
@@ -99,111 +103,11 @@ class NetworkCall {
       );
     } else {
       response = await http.post(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/appcompanylogin'),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/appcompanylogin'),
         body: body,
       );
     }
-
-    if (response.statusCode == 201) {
-      final response_server = json.decode(response.body);
-      if (kDebugMode) {
-        print(response_server);
-      }
-      if (response_server['status'] == 201) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        await prefs.setString("userid", response_server['userdetail']['userid']);
-        await prefs.setString("name", response_server['userdetail']['name']);
-        await prefs.setString("email", response_server['userdetail']['email']);
-        await prefs.setString("phone", response_server['userdetail']['phone']);
-        await prefs.setString("type", type);
-
-        _createToast("Login Successful");
-        Navigator.pushAndRemoveUntil<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => const Home(),
-          ),
-              (route) => false,
-        );
-        return Login_model.fromJson(json.decode(response.body));
-      } else if (otp == "1111") {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        // await prefs.setString("userid", response_server['userdetail']['userid']);
-        // await prefs.setString("name", response_server['userdetail']['name']);
-        // await prefs.setString("email", response_server['userdetail']['email']);
-        // await prefs.setString("phone", response_server['userdetail']['phone']);
-        await prefs.setString("type", type);
-
-        _createToast("Login Successful");
-        if (type == "Employee") {
-          Navigator.pushAndRemoveUntil<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => PortfolioScreen(type),
-            ),
-                (route) => false,
-          );
-        } else {
-          Navigator.pushAndRemoveUntil<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const Home(),
-            ),
-                (route) => false,
-          );
-        }
-
-        throw Exception('Failed to load album');
-      } else {
-        _createToast("Login Failed");
-        throw Exception('Failed to load album');
-      }
-    } else {
-      if (otp == "1111") {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        // await prefs.setString("userid", response_server['userdetail']['userid']);
-        // await prefs.setString("name", response_server['userdetail']['name']);
-        // await prefs.setString("email", response_server['userdetail']['email']);
-        // await prefs.setString("phone", response_server['userdetail']['phone']);
-        await prefs.setString("type", type);
-
-        _createToast("Login Successful");
-        if (type == "Employee") {
-          Navigator.pushAndRemoveUntil<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => PortfolioScreen(type),
-            ),
-                (route) => false,
-          );
-        } else {
-          Navigator.pushAndRemoveUntil<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const Home(),
-            ),
-                (route) => false,
-          );
-        }
-      } else {
-        _createToast("Login Failed");
-      }
-      throw Exception('Failed to load album');
-    }
-  }
-
-  Future<Generate_otp> generateOtp(
-      String username, String password, String type, BuildContext context) async {
-    final body = {"username": username, "password": password};
-
-    final response = await http.post(
-      Uri.parse(
-          'http://165.22.219.135/geniemoney/public/index.php/appotp'),
-      body: body,
-    );
 
     final response_server = json.decode(response.body);
     if (kDebugMode) {
@@ -211,10 +115,74 @@ class NetworkCall {
     }
 
     if (response.statusCode == 201) {
-      // final response_server = json.decode(response.body);
-      // if (kDebugMode) {
-      //   print(response_server);
-      // }
+      if (response_server['status'] == 201) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        Constants.userid = response_server['userdetail']['userid'];
+        Constants.name = response_server['userdetail']['name'];
+        Constants.email = response_server['userdetail']['email'];
+        Constants.phone = response_server['userdetail']['phone'];
+        Constants.type = type;
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString("userid", Constants.userid);
+        await prefs.setString("name", Constants.name);
+        await prefs.setString("email", Constants.email);
+        await prefs.setString("phone", Constants.phone);
+        await prefs.setString("type", Constants.type);
+
+        _createToast("Login Successful");
+        if (type == "Employee") {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => PortfolioScreen(type),
+            ),
+                (route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const Home(),
+            ),
+                (route) => false,
+          );
+        }
+
+        return Login_model.fromJson(json.decode(response.body));
+      } else {
+        _createToast("Login Failed");
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Login Failed");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<Generate_otp> generateOtp(String username, String password,
+      String type, BuildContext context) async {
+    final body = {"username": username, "password": password};
+
+    final response;
+
+    if (type == "customer") {
+      response = await http.post(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/appotp'),
+        body: body,
+      );
+    } else {
+      response = await http.post(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/appcompanyotp'),
+        body: body,
+      );
+    }
+
+    final response_server = json.decode(response.body);
+    if (kDebugMode) {
+      print(response_server);
+    }
+
+    if (response.statusCode == 201) {
       if (response_server['status'] == 201) {
         if (username.isNotEmpty) {
           _createToast("OTP Sent to " + username);
@@ -248,12 +216,12 @@ class NetworkCall {
     }
   }
 
-  Future<Generate_otp> resendOtp(String username, String password, BuildContext context) async {
+  Future<Generate_otp> resendOtp(
+      String username, String password, BuildContext context) async {
     final body = {"username": username, "password": password};
 
     final response = await http.post(
-      Uri.parse(
-          'http://165.22.219.135/geniemoney/public/index.php/appotp'),
+      Uri.parse('http://165.22.219.135/geniemoney/public/index.php/appotp'),
       body: body,
     );
 
@@ -279,11 +247,10 @@ class NetworkCall {
     }
   }
 
-  Future<Pincode_model> getStateAndCity(String pincode, BuildContext context) async {
-
+  Future<Pincode_model> getStateAndCity(
+      String pincode, BuildContext context) async {
     final response = await http.get(
-      Uri.parse(
-          'http://www.postalpincode.in/api/pincode/' + pincode),
+      Uri.parse('http://www.postalpincode.in/api/pincode/' + pincode),
     );
 
     if (response.statusCode == 200) {
@@ -304,10 +271,10 @@ class NetworkCall {
   }
 
   void _createToast(String message) {
-    /*Fluttertoast.showToast(
+    Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1);*/
+        timeInSecForIosWeb: 1);
   }
 }

@@ -113,8 +113,8 @@ class _ALlOptions extends State<AllOptions> {
     } else if (option.endsWith("Value Addition")) {
       homepageList = [
         HomePageList(id: "7", name: "Education", image: "images/education.png"),
-        HomePageList(
-            id: "8", name: "Health / Fitness", image: "images/fitness.png")
+        HomePageList(id: "8", name: "Health / Fitness", image: "images/fitness.png"),
+        HomePageList(id: "8", name: "Jobs", image: "images/jobs.png")
       ];
     } else if (option.endsWith("Privilage Offer")) {
       homepageList = [
@@ -273,7 +273,7 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "Education") {
+                        } else if (homepageList[index].name == "Education" || homepageList[index].name == "Jobs") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.education");
                           if (installed) {
@@ -488,7 +488,7 @@ class _ALlOptions extends State<AllOptions> {
         } else {
           print("not installed");
         }
-      } else if (pageName == "Education") {
+      } else if (pageName == "Jobs") {
         bool isInstalled =
         await DeviceApps.isAppInstalled('com.gss.education');
         if (isInstalled == true) {
@@ -507,7 +507,26 @@ class _ALlOptions extends State<AllOptions> {
         } else {
           print("not installed");
         }
-      }else if(pageName == "Health / Fitness"){
+      } else if (pageName == "Education") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.education',
+            componentName: 'com.gss.education.cbse.ui.EducationActivity',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if(pageName == "Health / Fitness"){
         bool isInstalled =
         await DeviceApps.isAppInstalled('com.gss.education');
         if (isInstalled == true) {

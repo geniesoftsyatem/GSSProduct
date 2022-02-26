@@ -8,7 +8,7 @@ class Generate_otp {
       int? status, 
       dynamic error, 
       Messages? messages, 
-      String? otp,}){
+      int? otp,}){
     _status = status;
     _error = error;
     _messages = messages;
@@ -24,12 +24,12 @@ class Generate_otp {
   int? _status;
   dynamic _error;
   Messages? _messages;
-  String? _otp;
+  int? _otp;
 
   int? get status => _status;
   dynamic get error => _error;
   Messages? get messages => _messages;
-  String? get otp => _otp;
+  int? get otp => _otp;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

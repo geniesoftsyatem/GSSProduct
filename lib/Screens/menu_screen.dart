@@ -5,6 +5,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Screens/cashback_screen.dart';
 import 'package:genie_money/Screens/refer_and_earn_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
+import 'package:genie_money/utils/constants.dart';
 
 import 'essentials_screen.dart';
 import 'optionsfile.dart';
@@ -57,9 +58,9 @@ class _MenuScreen extends State<MenuScreen> {
                       Center(
                         child: Container(
                             margin: EdgeInsets.only(top: height * 0.01),
-                            child: const Text(
-                              "User Name",
-                              style: TextStyle(
+                            child: Text(
+                              Constants.name.isNotEmpty ? Constants.name : "User Name",
+                              style: const TextStyle(
                                 color: Color(0xFFFFAE00),
                               ),
                               textAlign: TextAlign.center,
@@ -69,9 +70,9 @@ class _MenuScreen extends State<MenuScreen> {
                       Center(
                         child: Container(
                           margin: EdgeInsets.only(top: height * 0.01),
-                            child: const Text(
-                              "mobile number",
-                              style: TextStyle(
+                            child: Text(
+                              Constants.phone.isNotEmpty ? Constants.phone : "mobile number",
+                              style: const TextStyle(
                                 color: Color(0xFFFFAE00),
                               ),
                               textAlign: TextAlign.center,

@@ -116,6 +116,19 @@ class _InstallApps extends State<InstallApps> {
       title = "Youtube Download / Channels / Facebook video Download";
       description =
           "You can search, download any videos of youtube or facebook videos and save in your devices. Also you can watch your channels and various live news channels.";
+    } else if (widget.name == "Jobs") {
+      image_list = [
+        "images/jobs_gs_1.png",
+        "images/jobs_gs_2.png",
+        "images/Jobs_gs_3.png",
+        "images/jobs_gs_4.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/education.apk";
+      _fileName = "education.apk";
+      app_package_name = "com.gss.education";
+      title = "Jobs";
+      description =
+      "Install the Jobs App to find and apply for Government, Private Jobs. You can search for any jobs according to your location. You can also create your resume in your favorite templates.";
     } else if (widget.name == "Education") {
       image_list = [
         "images/education_gs_1.png",
@@ -347,13 +360,19 @@ class _InstallApps extends State<InstallApps> {
                         } else {
                           OpenFile.open(open_path);
                         }
+                      } else if (option == "Jobs") {
+                        if (isInstalled) {
+                          DeviceApps.openApp(app_package_name);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
                       } else if (option == "Education") {
                         if (isInstalled) {
                           DeviceApps.openApp(app_package_name);
                         } else {
                           OpenFile.open(open_path);
                         }
-                      }else if(option == "Health / Fitness"){
+                      } else if(option == "Health / Fitness"){
                         if (isInstalled) {
                           DeviceApps.openApp(app_package_name);
                         } else {
