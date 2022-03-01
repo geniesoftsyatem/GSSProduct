@@ -131,26 +131,26 @@ class _CashbackScreenState extends State<CashbackScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFF111111),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF3A3A3A),
-          title: const Text(
-            "Cashback & Offers",
-            style: TextStyle(
-              color: Color(0xFFFFAE00),
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: const Color(0xFFFFAE00),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return Scaffold(
+      backgroundColor: const Color(0xFF111111),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF3A3A3A),
+        title: const Text(
+          "Cashback & Offers",
+          style: TextStyle(
+            color: Color(0xFFFFAE00),
           ),
         ),
-        body: Container(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(0xFFFFAE00),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: SafeArea(
+        child: Container(
           margin: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -297,13 +297,13 @@ class _CashbackScreenState extends State<CashbackScreen> {
                 Container(
                   margin: EdgeInsets.only(top: height * 0.02),
                   child: SizedBox(
-                    height: 191.9,
+                    height: 200,
                     child: ListView.separated(
                       itemCount: paymentrechargeList.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
                         return SizedBox(
-                          height: 191.9,
+                          height: 200,
                           width: 155.0,
                           child: Card(
                             color: const Color(0xFF3A3A3A),
@@ -376,13 +376,13 @@ class _CashbackScreenState extends State<CashbackScreen> {
                 Container(
                   margin: EdgeInsets.only(top: height * 0.02),
                   child: SizedBox(
-                    height: 191.9,
+                    height: 200,
                     child: ListView.separated(
                       itemCount: paymentcashbackList.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
                         return SizedBox(
-                          height: 191.9,
+                          height: 200,
                           width: 155.0,
                           child: Card(
                             color: const Color(0xFF3A3A3A),
@@ -455,13 +455,13 @@ class _CashbackScreenState extends State<CashbackScreen> {
                 Container(
                   margin: const EdgeInsets.only(top: 10.0),
                   child: SizedBox(
-                    height: 191.9,
+                    height: 200,
                     child: ListView.separated(
                       itemCount: paymentshoppingList.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
                         return SizedBox(
-                          height: 191.9,
+                          height: 200,
                           width: 155.0,
                           child: Card(
                             color: const Color(0xFF3A3A3A),

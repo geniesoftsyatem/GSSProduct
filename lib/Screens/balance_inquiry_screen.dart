@@ -14,6 +14,7 @@ class _BalanceInquiry extends State<BalanceInquiry>{
   late List<String> deviceList;
   late String selectedBank;
   late String selectedDevice;
+
   @override
   void initState() {
     bankList = [
@@ -123,6 +124,7 @@ class _BalanceInquiry extends State<BalanceInquiry>{
     selectedDevice = deviceList[0];
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

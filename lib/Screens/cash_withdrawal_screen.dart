@@ -14,6 +14,7 @@ class _CashWithdrawalScreen extends State<CashWithdrawalScreen>{
   late List<String> deviceList;
   late String selectedBank;
   late String selectedDevice;
+
   @override
   void initState() {
     bankList = [
@@ -123,6 +124,7 @@ class _CashWithdrawalScreen extends State<CashWithdrawalScreen>{
     selectedDevice = deviceList[0];
     super.initState();
   }
+
     @override
     Widget build(BuildContext context) {
       // TODO: implement build
@@ -134,9 +136,9 @@ class _CashWithdrawalScreen extends State<CashWithdrawalScreen>{
         backgroundColor: const Color(0xFF111111),
         appBar: AppBar(
           backgroundColor: const Color(0xFF3A3A3A),
-          title: Text(
+          title: const Text(
             "Cash Withdrawal",
-            style: const TextStyle(
+            style: TextStyle(
               color: Color(0xFFFFAE00),
             ),
           ),

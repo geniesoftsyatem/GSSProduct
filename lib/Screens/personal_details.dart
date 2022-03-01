@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Screens/address_screen.dart';
+import 'package:genie_money/utils/constants.dart';
+import 'package:genie_money/utils/network.dart';
 import 'package:intl/intl.dart';
 
 class PersonalDetailsScreen extends StatefulWidget {
@@ -33,6 +38,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
   TextEditingController _city_controller = TextEditingController();
   TextEditingController _state_controller = TextEditingController();
   TextEditingController _reference_name_1_controller = TextEditingController();
+  TextEditingController date_controller = TextEditingController();
   TextEditingController _reference_mobile_no_1_controller =
       TextEditingController();
   TextEditingController _reference_relation_type_1_controller =
@@ -56,6 +62,10 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
   GenderCharacter? _character = GenderCharacter.Male;
   Marital? _marital_status = Marital.Single;
 
+  String selected_date = "", basic_info_json = "", residential_info_json = "", ownership = "",
+      per_ownership = "", residing = "", years = "", locality = "", per_locality = "", urf_id_1 = "",
+      urf_id_2 = "",  urf_id_3 = "", urf_id_4 = "", ur_id_cur = "", ur_id_per = "", ur_same = "";
+
   final format = DateFormat("dd-MM-yyyy");
 
   String qualification_type = 'Undergraduate';
@@ -67,11 +77,96 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
   ];
 
   bool isToggle = true;
-  bool show_permanent_address = true;
+  bool show_permanent_address = false;
+
+  late Map<String, dynamic> basicInfobody;
+  var residentialInfoBody;
+
+  NetworkCall networkCall = NetworkCall();
+  List date = [];
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    var user_details, residential_details, reference_details;
+    networkCall.getPersonalDetails().then((value) => {
+      if(value.userdetails!.basicinfo!.isNotEmpty) {
+        user_details = jsonDecode(value.userdetails!.basicinfo!),
+        setState((){
+          _full_name_controller.text = user_details["fname"];
+          _mobile_no_controller.text = user_details["phone"];
+          alt_mobile_no_controller.text = user_details["alt_mobile_no"];
+          _character = user_details["gender"] == "male" || user_details["gender"] == "Male" ? GenderCharacter.Male : user_details["gender"] == "female" || user_details["gender"] == "Female" ? GenderCharacter.Female : GenderCharacter.Transgender;
+          email_controller.text = user_details["email"];
+          selected_date = user_details["dob"];
+          date = selected_date.split("-");
+          date_controller.text = date[2] + "-" + date[1] + "-" + date[0];
+          qualification_type = user_details["qualification"] == "1" ? "Undergraduate" : user_details["qualification"] == "2" ? "Graduate" : "Postgraduate";
+          _pan_card_no_controller.text = user_details["pancard"];
+          _aadhar_card_no_controller.text = user_details["adharcard"];
+          _marital_status = user_details["maritalstatus"] == "Single" || user_details["maritalstatus"] == "single" ? Marital.Single : user_details["maritalstatus"] == "Married" || user_details["maritalstatus"] == "married" ? Marital.Married : Marital.Others;
+        }),
+      },
+      if (value.userdetails!.residentialinfo!.isNotEmpty) {
+        residential_details = jsonDecode(value.userdetails!.residentialinfo!),
+        print(residential_details),
+        setState((){
+          ur_id_cur = residential_details[0]["ur_id"];
+          ur_same = residential_details[0]["ur_same"];
+          _current_address_controller.text = residential_details[0]["ur_address"] + ", " + residential_details[0]["ur_locality"];
+          _pincode_controller.text = residential_details[0]["ur_pincode"];
+          _city_controller.text = residential_details[0]["ur_city"];
+          _state_controller.text = residential_details[0]["ur_state"];
+          if (ur_same == "1") {
+            isToggle = true;
+            show_permanent_address = false;
+          } else {
+            isToggle = false;
+            show_permanent_address = true;
+          }
+          if (residential_details.length == 2 || residential_details.length > 2) {
+            ur_id_per = residential_details[1]["ur_id"];
+            _permanent_address_controller.text = residential_details[1]["ur_address"] + ", " + residential_details[1]["ur_locality"];
+          }
+        }),
+      },
+      if (value.userdetails!.references!.isNotEmpty) {
+        reference_details = jsonDecode(value.userdetails!.references!),
+        print(reference_details),
+        setState((){
+          urf_id_1 = reference_details[0]["urf_id"];
+          _reference_name_1_controller.text = reference_details[0]["urf_name"];
+          _reference_mobile_no_1_controller.text = reference_details[0]["urf_mobile"];
+          _reference_relation_type_1_controller.text = reference_details[0]["urf_relation"];
+
+          if (reference_details.length == 2 || reference_details.length > 2) {
+            urf_id_2 = reference_details[1]["urf_id"];
+            _reference_name_2_controller.text = reference_details[1]["urf_name"];
+            _reference_mobile_no_2_controller.text = reference_details[1]["urf_mobile"];
+            _reference_relation_type_2_controller.text = reference_details[0]["urf_relation"];
+          }
+
+          if (reference_details.length == 3 || reference_details.length > 3) {
+            urf_id_3 = reference_details[2]["urf_id"];
+            _reference_name_3_controller.text = reference_details[2]["urf_name"];
+            _reference_mobile_no_3_controller.text = reference_details[2]["urf_mobile"];
+            _reference_relation_type_3_controller.text = reference_details[0]["urf_relation"];
+          }
+
+          if (reference_details.length == 4 || reference_details.length > 4) {
+            urf_id_4 = reference_details[3]["urf_id"];
+            _reference_name_4_controller.text = reference_details[3]["urf_name"];
+            _reference_mobile_no_4_controller.text = reference_details[3]["urf_mobile"];
+            _reference_relation_type_4_controller.text = reference_details[0]["urf_relation"];
+          }
+        }),
+      }
+    });
+    setState(() {
+      _full_name_controller.text = Constants.name;
+      _mobile_no_controller.text = Constants.phone;
+      email_controller.text = Constants.email;
+    });
     super.initState();
   }
 
@@ -133,7 +228,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
             children: [
               _basicInfo(width, context),
               _residentialInfo(width, height),
-              _reference(width),
+              _reference(width, context),
             ],
           ),
         ),
@@ -186,6 +281,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 keyboardType: TextInputType.number,
                 maxLength: 10,
                 decoration: InputDecoration(
+                  counterText: "",
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.circular(10.0),
@@ -216,6 +312,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 keyboardType: TextInputType.number,
                 maxLength: 10,
                 decoration: InputDecoration(
+                  counterText: "",
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.circular(10.0),
@@ -340,6 +437,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
             Container(
               margin: const EdgeInsets.only(top: 10.0),
               child: DateTimeField(
+                  controller: date_controller,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
@@ -369,6 +467,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                       initialDate: currentValue ?? DateTime.now(),
                       lastDate: DateTime(2100));
                 },
+                onChanged: (date) {
+                  selected_date = date!.day.toString() + "-" + date.month.toString() + "-" + date.year.toString();
+                },
               ),
             ),
             Container(
@@ -393,7 +494,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                     borderSide: BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
-                  labelStyle: TextStyle(color: Color(0xFFFFAE00)),
+                  labelStyle: TextStyle(color: Color(0xFFFFAE00),),
                   label: Text("Qualification"),
                   isDense: true,
                 ),
@@ -551,7 +652,53 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
               margin: const EdgeInsets.only(top: 10.0),
               child: ElevatedButton(
                 onPressed: () {
-                  _tabController.animateTo(1);
+                  if (_full_name_controller.text.isNotEmpty) {
+                    if (_mobile_no_controller.text.isNotEmpty) {
+                      if (_mobile_no_controller.text.length == 10) {
+                        if (email_controller.text.isNotEmpty) {
+                          if (selected_date.isNotEmpty) {
+                            if (qualification_type.isNotEmpty) {
+                              if (_pan_card_no_controller.text.isNotEmpty) {
+                                if (_aadhar_card_no_controller.text.isNotEmpty) {
+                                  basicInfobody = {
+                                    "fname" : _full_name_controller.text,
+                                    "altmobile" : alt_mobile_no_controller.text,
+                                    "gender" : _character == GenderCharacter.Male ? "Male" : _character == GenderCharacter.Female ? "Female" : "Transgender",
+                                    "email" : email_controller.text,
+                                    "dob" : selected_date,
+                                    "qualification" : qualification_type == "Undergraduate" ? "1" : qualification_type == "Graduate" ? "2" : "3",
+                                    "pancard" : _pan_card_no_controller.text,
+                                    "adharcard" : _aadhar_card_no_controller.text,
+                                    "maritalstatus" : _marital_status == Marital.Single ? "Single" : _marital_status == Marital.Married ? " Married" : "Others"
+
+                                  };
+                                  basic_info_json = jsonEncode(basicInfobody);
+                                  print(basic_info_json);
+                                  _tabController.animateTo(1);
+                                } else {
+                                  _createToast("Please enter aadhar card number");
+                                }
+                              } else {
+                                _createToast("Please enter PAN card");
+                              }
+                            } else {
+                              _createToast("Please enter qualification");
+                            }
+                          } else {
+                            _createToast("Please enter date of birth");
+                          }
+                        } else {
+                          _createToast("Please enter email id");
+                        }
+                      } else {
+                        _createToast("Please enter valid mobile number");
+                      }
+                    } else {
+                      _createToast("Please enter mobile number");
+                    }
+                  } else {
+                    _createToast("Please enter full name");
+                  }
                 },
                 child: const Text(
                   "Save and Continue",
@@ -594,15 +741,22 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                   );
 
                   if (result != null) {
+                    final data = jsonDecode(result);
                     setState(() {
-                      _current_address_controller.text = result;
+                      _current_address_controller.text = data["address"];
+                      ownership = data["ownership"];
+                      residing = data["residing"];
+                      years = data["years"];
+                      locality = data["locality"];
+                      _city_controller.text = data["city"];
+                      _state_controller.text = data["state"];
+                      _pincode_controller.text = data["pincode"];
                     });
                   }
                 },
                 readOnly: true,
                 style: const TextStyle(color: Color(0xFFFFAE00)),
                 controller: _current_address_controller,
-                keyboardType: TextInputType.none,
                 minLines: 1,
                 maxLines: 10,
                 decoration: InputDecoration(
@@ -653,6 +807,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                         ],
                       ),
                       FlutterSwitch(
+                        activeColor: const Color(0xFFFFAE00),
                         width: width * 0.15,
                         height: height * 0.05,
                         toggleSize: 25.0,
@@ -685,8 +840,12 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                           );
 
                           if (result != null) {
+                            final data = jsonDecode(result);
                             setState(() {
-                              _permanent_address_controller.text = result;
+                              _permanent_address_controller.text = data["address"];
+                              _city_controller.text = data["city"];
+                              _state_controller.text = data["state"];
+                              _pincode_controller.text = data["pincode"];
                             });
                           }
                         },
@@ -818,7 +977,94 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
               margin: const EdgeInsets.only(top: 10.0),
               child: ElevatedButton(
                 onPressed: () {
-                  _tabController.animateTo(2);
+                  if (_current_address_controller.text.isNotEmpty) {
+                    if (isToggle) {
+                      if (_pincode_controller.text.isNotEmpty) {
+                        if (_city_controller.text.isNotEmpty) {
+                          if (_state_controller.text.isNotEmpty) {
+                            final addresses = {
+                              "ur_id" : ur_id_cur,
+                              "ur_same" : "1",
+                              "ur_userid" : Constants.userid,
+                              "ur_ownership" : ownership,
+                              "ur_residingwith" : residing,
+                              "ur_noofyears" : years,
+                              "ur_address" : _current_address_controller.text,
+                              "ur_locality" : locality,
+                              "ur_pincode" : _pincode_controller.text,
+                              "ur_city" : _city_controller.text,
+                              "ur_state" : _state_controller.text,
+                            };
+                            residentialInfoBody = [
+                              addresses,
+                              addresses
+                            ];
+                            residential_info_json = jsonEncode(residentialInfoBody);
+                            print(residential_info_json);
+                            _tabController.animateTo(2);
+                          } else {
+                            _createToast("Please enter your state");
+                          }
+                        } else {
+                          _createToast("Please enter your city");
+                        }
+                      } else {
+                        _createToast("Please enter your pincode");
+                      }
+                    } else {
+                      if (_permanent_address_controller.text.isNotEmpty) {
+                        if (_pincode_controller.text.isNotEmpty) {
+                          if (_city_controller.text.isNotEmpty) {
+                            if (_state_controller.text.isNotEmpty) {
+                              final current_address = {
+                                "ur_id" : ur_id_cur,
+                                "ur_same" : "0",
+                                "ur_userid" : Constants.userid,
+                                "ur_ownership" : ownership,
+                                "ur_residingwith" : residing,
+                                "ur_noofyears" : years,
+                                "ur_address" : _current_address_controller.text,
+                                "ur_locality" : locality,
+                                "ur_pincode" : _pincode_controller.text,
+                                "ur_city" : _city_controller.text,
+                                "ur_state" : _state_controller.text,
+                              };
+                              final permanent_address = {
+                                "ur_id" : ur_id_per,
+                                "ur_same" : "0",
+                                "ur_userid" : Constants.userid,
+                                "ur_ownership" : "",
+                                "ur_residingwith" : "",
+                                "ur_noofyears" : "",
+                                "ur_address" : _permanent_address_controller.text,
+                                "ur_locality" : locality,
+                                "ur_pincode" : _pincode_controller.text,
+                                "ur_city" : _city_controller.text,
+                                "ur_state" : _state_controller.text,
+                              };
+                              final request = [
+                                current_address,
+                                permanent_address
+                              ];
+                              residential_info_json = jsonEncode(request);
+                              print(residential_info_json);
+                              _tabController.animateTo(2);
+                            } else {
+                              _createToast("Please enter your state");
+                            }
+                          } else {
+                            _createToast("Please enter your city");
+                          }
+                        } else {
+                          _createToast("Please enter your pincode");
+                        }
+                      } else {
+                        _createToast("Please enter your permanent address");
+                      }
+                    }
+                  } else {
+                    _createToast("Please enter your current address");
+                  }
                 },
                 child: const Text(
                   "Save and Continue",
@@ -843,7 +1089,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
     );
   }
 
-  Widget _reference(double width) {
+  Widget _reference(double width, BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10.0),
       child: SingleChildScrollView(
@@ -869,6 +1115,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(
                   color: Color(0xFFFFAE00),
                   fontSize: 18.0,
+                    fontWeight: FontWeight.bold
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -967,6 +1214,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(
                   color: Color(0xFFFFAE00),
                   fontSize: 18.0,
+                    fontWeight: FontWeight.bold
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -1065,6 +1313,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(
                   color: Color(0xFFFFAE00),
                   fontSize: 18.0,
+                  fontWeight: FontWeight.bold
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -1163,6 +1412,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(
                   color: Color(0xFFFFAE00),
                   fontSize: 18.0,
+                    fontWeight: FontWeight.bold
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -1256,7 +1506,183 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
             Container(
               margin: const EdgeInsets.only(top: 10.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  var reference_1;
+                  var reference_2;
+                  var reference_3;
+                  var reference_4;
+                  var refer;
+                  if (_reference_name_1_controller.text.isNotEmpty) {
+                    if (_reference_mobile_no_1_controller.text.isNotEmpty) {
+                      if (_reference_mobile_no_1_controller.text.length == 10) {
+                        if (_reference_relation_type_1_controller.text.isNotEmpty) {
+                          final referenceData = {
+                            "urf_id" : urf_id_1,
+                            "urf_userid" : Constants.userid,
+                            "urf_name" : _reference_name_1_controller.text,
+                            "urf_mobile" : _reference_mobile_no_1_controller.text,
+                            "urf_relation" : _reference_relation_type_1_controller.text
+                          };
+                          reference_1 = referenceData;
+                        } else {
+                          _createToast("Please enter relation type for reference 1");
+                        }
+                      } else {
+                        _createToast("Please provide valid mobile number for reference 1");
+                      }
+                    } else {
+                      _createToast("Please enter reference 1 mobile number");
+                    }
+                  }
+                  if (_reference_name_2_controller.text.isNotEmpty) {
+                    if (_reference_mobile_no_2_controller.text.isNotEmpty) {
+                      if (_reference_mobile_no_2_controller.text.length == 10) {
+                        if (_reference_relation_type_2_controller.text.isNotEmpty) {
+                          final referenceData = {
+                            "urf_id" : urf_id_2,
+                            "urf_userid" : Constants.userid,
+                            "urf_name" : _reference_name_2_controller.text,
+                            "urf_mobile" : _reference_mobile_no_2_controller.text,
+                            "urf_relation" : _reference_relation_type_2_controller.text
+                          };
+                          reference_2 = referenceData;
+                        } else {
+                          _createToast("Please enter relation type for reference 2");
+                        }
+                      } else {
+                        _createToast("Please provide valid mobile number for reference 2");
+                      }
+                    } else {
+                      _createToast("Please enter reference 2 mobile number");
+                    }
+                  }
+                  if (_reference_name_3_controller.text.isNotEmpty) {
+                    if (_reference_mobile_no_3_controller.text.isNotEmpty) {
+                      if (_reference_mobile_no_3_controller.text.length == 10) {
+                        if (_reference_relation_type_3_controller.text.isNotEmpty) {
+                          final referenceData = {
+                            "urf_id" : urf_id_3,
+                            "urf_userid" : Constants.userid,
+                            "urf_name" : _reference_name_3_controller.text,
+                            "urf_mobile" : _reference_mobile_no_3_controller.text,
+                            "urf_relation" : _reference_relation_type_3_controller.text
+                          };
+                          reference_3 = referenceData;
+                        } else {
+                          _createToast("Please enter relation type for reference 3");
+                        }
+                      } else {
+                        _createToast("Please provide valid mobile number for reference 3");
+                      }
+                    } else {
+                      _createToast("Please enter reference 3 mobile number");
+                    }
+                  }
+                  if (_reference_name_4_controller.text.isNotEmpty) {
+                    if (_reference_mobile_no_4_controller.text.isNotEmpty) {
+                      if (_reference_mobile_no_4_controller.text.length == 10) {
+                        if (_reference_relation_type_4_controller.text.isNotEmpty) {
+                          final referenceData = {
+                            "urf_id" : urf_id_4,
+                            "urf_userid" : Constants.userid,
+                            "urf_name" : _reference_name_4_controller.text,
+                            "urf_mobile" : _reference_mobile_no_4_controller.text,
+                            "urf_relation" : _reference_relation_type_4_controller.text
+                          };
+                          reference_4 = referenceData;
+                        } else {
+                          _createToast("Please enter relation type for reference 4");
+                        }
+                      } else {
+                        _createToast("Please provide valid mobile number for reference 4");
+                      }
+                    } else {
+                      _createToast("Please enter reference 4 mobile number");
+                    }
+                  }
+
+                  String data = "";
+                  if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_2,
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty){
+                    refer = [
+                      reference_2,
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty){
+                    refer = [
+                      reference_1,
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isNotEmpty){
+                    refer = [
+                      reference_1,
+                      reference_2,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_2,
+                      reference_3
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_2,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_2,
+                      reference_3
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_3
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_2
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isEmpty && reference_3.isEmpty && reference_4.isEmpty) {
+                    refer = [
+                      ""
+                    ];
+                    data = jsonEncode(refer);
+                  }
+                  NetworkCall network = NetworkCall();
+                  network.update_profile(basicInfobody, residentialInfoBody, refer, context);
+                },
                 child: const Text(
                   "Save",
                   style: TextStyle(
@@ -1278,5 +1704,13 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
         ),
       ),
     );
+  }
+
+  void _createToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1);
   }
 }

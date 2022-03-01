@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:genie_money/utils/network.dart';
 
 class AddressScreen extends StatefulWidget {
   var title;
@@ -43,11 +46,39 @@ class _AddressScreenState extends State<AddressScreen> {
   String residing_with = 'Family';
   String number_of_yrs = 'Less than Six Months';
 
+  NetworkCall networkCall = NetworkCall();
+
   @override
   void initState() {
     if (widget.title == "Current Address") {
       isCurrentAddress = true;
     }
+    var residential_details;
+    networkCall.getPersonalDetails().then((value) => {
+      if (value.userdetails!.residentialinfo!.isNotEmpty) {
+        residential_details = jsonDecode(value.userdetails!.residentialinfo!),
+        print(residential_details),
+        setState((){
+          // ur_id_cur = residential_details[0]["ur_id"];
+          // ur_same = residential_details[0]["ur_same"];
+          if (residential_details[0]["ur_ownership"] != "sd") {
+            ownership = residential_details[0]["ur_ownership"];
+          }
+          if (residential_details[0]["ur_residingwith"] != "sdsd") {
+            residing_with = residential_details[0]["ur_residingwith"];
+          }
+          if (residential_details[0]["ur_noofyears"] != "2") {
+            number_of_yrs = residential_details[0]["ur_noofyears"];
+          }
+          _current_address_controller.text = residential_details[0]["ur_address"];
+          _locality_controller.text = residential_details[0]["ur_locality"];
+          _pincode_controller.text = residential_details[0]["ur_pincode"];
+          _city_controller.text = residential_details[0]["ur_city"];
+          _state_controller.text = residential_details[0]["ur_state"];
+
+        }),
+      },
+    });
     super.initState();
   }
 
@@ -55,26 +86,26 @@ class _AddressScreenState extends State<AddressScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFF111111),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF3A3A3A),
-          title: Text(
-            widget.title,
-            style: const TextStyle(
-              color: Color(0xFFFFAE00),
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: const Color(0xFFFFAE00),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return Scaffold(
+      backgroundColor: const Color(0xFF111111),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF3A3A3A),
+        title: Text(
+          widget.title,
+          style: const TextStyle(
+            color: Color(0xFFFFAE00),
           ),
         ),
-        body: Container(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(0xFFFFAE00),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: SafeArea(
+        child: Container(
           margin: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -404,7 +435,28 @@ class _AddressScreenState extends State<AddressScreen> {
                           if (_city_controller.text.isNotEmpty) {
                             if (_state_controller.text.isNotEmpty) {
                               if (_pincode_controller.text.isNotEmpty) {
-                                var result = _current_address_controller.text + ", " + _locality_controller.text + ", " + _city_controller.text + ", " + _state_controller.text + ", " + _pincode_controller.text;
+                                final data;
+                                if (isCurrentAddress) {
+                                  data = {
+                                    "ownership" : ownership,
+                                    "residing": residing_with,
+                                    "years" : number_of_yrs,
+                                    "address" :  _current_address_controller.text + ", " + _locality_controller.text,
+                                    "locality" : _locality_controller.text,
+                                    "city" : _city_controller.text,
+                                    "state" : _state_controller.text,
+                                    "pincode" : _pincode_controller.text
+                                  };
+                                } else {
+                                  data = {
+                                    "address" :  _current_address_controller.text + ", " + _locality_controller.text,
+                                    "city" : _city_controller.text,
+                                    "locality" : _locality_controller.text,
+                                    "state" : _state_controller.text,
+                                    "pincode" : _pincode_controller.text
+                                  };
+                                }
+                                var result =  jsonEncode(data);
                                 Navigator.pop(context, result);
                               } else {
                                 _createToast("Please enter Pincode");

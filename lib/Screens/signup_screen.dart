@@ -43,8 +43,8 @@ class _SignupScreen extends State<SignupScreen>
 
   late TabController _tabController;
 
-  double curve = 130;
-  double height_angle = 190;
+  double curve = 140;
+  double height_angle = 170;
 
   List<String> business_type_list = [
     'Retailer',

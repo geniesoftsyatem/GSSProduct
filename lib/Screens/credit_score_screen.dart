@@ -52,26 +52,26 @@ class _CreditScoreScreenState extends State<CreditScoreScreen>
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFF111111),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF3A3A3A),
-          title: const Text(
-            "Credit Score",
-            style: TextStyle(
-              color: Color(0xFFFFAE00),
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: const Color(0xFFFFAE00),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return Scaffold(
+      backgroundColor: const Color(0xFF111111),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF3A3A3A),
+        title: const Text(
+          "Credit Score",
+          style: TextStyle(
+            color: Color(0xFFFFAE00),
           ),
         ),
-        body: SingleChildScrollView(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(0xFFFFAE00),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +182,7 @@ class _CreditScoreScreenState extends State<CreditScoreScreen>
                         ],
                       ),
                       SizedBox(
-                        height: height * 1.0,
+                        height: 750,
                         child: TabBarView(
                           controller: _tabController,
                           children: [
@@ -225,12 +225,11 @@ class _CreditScoreScreenState extends State<CreditScoreScreen>
   Widget cibil_screen(double width, double height) {
     double value = 799;
     return Container(
+      height: height * 0.20,
       margin: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+      child: ListView(
+        physics: NeverScrollableScrollPhysics(),
+        children: [
             Center(
               child: Text(
                 "Hi Arvind, your Dec '21 score is up by 1 points",
@@ -746,7 +745,6 @@ class _CreditScoreScreenState extends State<CreditScoreScreen>
               ),
             ),
           ],
-        ),
       ),
     );
   }

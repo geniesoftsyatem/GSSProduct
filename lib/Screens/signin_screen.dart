@@ -29,8 +29,8 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
   late TabController _tabController;
   late String title = "Customer";
 
-  double curve = 400;
-  double height_angle = 330;
+  late double curve;
+  late double height_angle;
 
   late String selected_type = "Retailer";
 
@@ -39,6 +39,8 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
     'Distributor',
     'Super Distributor'
   ];
+
+  bool isFirst = false;
 
   Future<void> _getLocation() async {
     permission = await Geolocator.checkPermission();
@@ -60,6 +62,9 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
 
   @override
   void initState() {
+    setState(() {
+      isFirst = true;
+    });
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
@@ -74,6 +79,19 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    if (isFirst) {
+      if (height <= 593) {
+        curve = height * 0.65;
+        height_angle = height * 0.55;
+      } else if (height > 593 && height <= 672) {
+        curve = height * 0.55;
+        height_angle = height * 0.50;
+      } else {
+        curve = height * 0.45;
+        height_angle = height * 0.40;
+      }
+      isFirst = false;
+    }
     _getLocation();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -95,16 +113,40 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                     setState(() {
                       if (value == 0) {
                         title = "Customer";
-                        curve = 400;
-                        height_angle = 330;
+                        if (height <= 593) {
+                          curve = height * 0.65;
+                          height_angle = height * 0.55;
+                        } else if (height > 593 && height <= 672) {
+                          curve = height * 0.55;
+                          height_angle = height * 0.50;
+                        } else {
+                          curve = height * 0.45;
+                          height_angle = height * 0.40;
+                        }
                       } else if (value == 1) {
                         title = "Sales Partner";
-                        curve = 490;
-                        height_angle = 420;
+                        if (height <= 593) {
+                          curve = height * 0.79;
+                          height_angle = height * 0.69;
+                        } else if (height > 593 && height <= 672) {
+                          curve = height * 0.70;
+                          height_angle = height * 0.65;
+                        } else {
+                          curve = height * 0.55;
+                          height_angle = height * 0.50;
+                        }
                       } else {
                         title = "Employee";
-                        curve = 460;
-                        height_angle = 390;
+                        if (height <= 593) {
+                          curve = height * 0.77;
+                          height_angle = height * 0.67;
+                        } else if (height > 593 && height <= 672) {
+                          curve = height * 0.65;
+                          height_angle = height * 0.58;
+                        } else {
+                          curve = height * 0.55;
+                          height_angle = height * 0.48;
+                        }
                       }
                     });
                   },
@@ -376,7 +418,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                   ),
                 ),
                 const SizedBox(
-                  height: 70.0,
+                  height: 100.0,
                 ),
                 const Center(
                   child: Text(

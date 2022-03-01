@@ -4,6 +4,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/onboard_screen_model.dart';
 import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
+import 'package:genie_money/utils/constants.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,6 +30,11 @@ class _OnBoardScreen extends State<OnBoardScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var isLogedIn = false;
     var type = "Customer";
+    Constants.userid = prefs.getString("userid") ?? "";
+    Constants.name = prefs.getString("name") ?? "";
+    Constants.email = prefs.getString("email") ?? "";
+    Constants.phone = prefs.getString("phone") ?? "";
+    Constants.type = prefs.getString("type") ?? "Customer";
     if (prefs.containsKey("isLoggedIn")) {
       isLogedIn = prefs.getBool("isLoggedIn") ?? false;
     }
