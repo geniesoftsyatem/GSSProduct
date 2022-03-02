@@ -1155,7 +1155,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(color: Color(0xFFFFAE00)),
                 controller: _reference_mobile_no_1_controller,
                 keyboardType: TextInputType.number,
+                maxLength: 10,
                 decoration: InputDecoration(
+                  counterText: "",
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.circular(10.0),
@@ -1254,7 +1256,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(color: Color(0xFFFFAE00)),
                 controller: _reference_mobile_no_2_controller,
                 keyboardType: TextInputType.number,
+                maxLength: 10,
                 decoration: InputDecoration(
+                  counterText: "",
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.circular(10.0),
@@ -1353,7 +1357,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(color: Color(0xFFFFAE00)),
                 controller: _reference_mobile_no_3_controller,
                 keyboardType: TextInputType.number,
+                maxLength: 10,
                 decoration: InputDecoration(
+                  counterText: "",
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.circular(10.0),
@@ -1452,7 +1458,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                 style: TextStyle(color: Color(0xFFFFAE00)),
                 controller: _reference_mobile_no_4_controller,
                 keyboardType: TextInputType.number,
+                maxLength: 10,
                 decoration: InputDecoration(
+                  counterText: "",
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: Color(0xFFFFAE00)),
                     borderRadius: BorderRadius.circular(10.0),
@@ -1507,10 +1515,10 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
               margin: const EdgeInsets.only(top: 10.0),
               child: ElevatedButton(
                 onPressed: () {
-                  var reference_1;
-                  var reference_2;
-                  var reference_3;
-                  var reference_4;
+                  Map<String, dynamic> reference_1 = Map<String, dynamic>();
+                  Map<String, dynamic> reference_2 = Map<String, dynamic>();
+                  Map<String, dynamic> reference_3 = Map<String, dynamic>();
+                  Map<String, dynamic> reference_4 = Map<String, dynamic>();
                   var refer;
                   if (_reference_name_1_controller.text.isNotEmpty) {
                     if (_reference_mobile_no_1_controller.text.isNotEmpty) {
