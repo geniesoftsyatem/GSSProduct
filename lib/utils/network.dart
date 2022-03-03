@@ -5,19 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:genie_money/Model/generate_otp.dart';
-import 'package:genie_money/Model/login_model.dart';
 import 'package:genie_money/Model/personal_details_model.dart';
-import 'package:genie_money/Model/registration_model.dart';
 import 'package:genie_money/Model/pincode_model.dart';
-import 'package:genie_money/Screens/home_screen.dart';
-import 'package:genie_money/Screens/otp_screen.dart';
-import 'package:genie_money/Screens/portfolio.dart';
-import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:genie_money/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Model/bank_details_model.dart';
+import '../Model/employment_details_model.dart';
 import '../home.dart';
 
 class NetworkCall {
@@ -38,7 +33,7 @@ class NetworkCall {
     return isConnected;
   }
 
-  Future<RegistrationModel> fetchRegistrationPosts(
+  Future<bool> fetchRegistrationPosts(
       String email,
       String mobile_no,
       String password,
@@ -91,18 +86,10 @@ class NetworkCall {
       if (response.statusCode == 201) {
         if (response_server["status"] == 201) {
           _createToast("User registered successfully, Please login");
-
-          Navigator.pushAndRemoveUntil<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const SignInScreen(),
-            ),
-                (route) => false,
-          );
-          return RegistrationModel.fromJson(json.decode(response.body));
+          return true;
         } else {
           _createToast("Failed to register User");
-          throw Exception('Failed to load album');
+          return false;
         }
       } else {
         if (response.statusCode == 404) {
@@ -110,15 +97,15 @@ class NetworkCall {
         } else {
           _createToast("Failed to register User");
         }
-        throw Exception('Failed to load album');
+        return false;
       }
     } else {
       _createToast("Please connect to internet");
-      throw Exception('Failed to load album');
+      return false;
     }
   }
 
-  Future<Login_model> fetchLoginPosts(String username, String password,
+  Future<bool> fetchLoginPosts(String username, String password,
       String otp, String type, BuildContext context) async {
 
     bool isConnected = await isNetworkConnected();
@@ -162,32 +149,15 @@ class NetworkCall {
           await prefs.setString("type", Constants.type);
 
           _createToast("Login Successful");
-          if (type == "Employee") {
-            Navigator.pushAndRemoveUntil<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => PortfolioScreen(type),
-              ),
-                  (route) => false,
-            );
-          } else {
-            Navigator.pushAndRemoveUntil<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const Home(),
-              ),
-                  (route) => false,
-            );
-          }
 
-          return Login_model.fromJson(json.decode(response.body));
+          return true;
         } else {
           if (response_server['status'] == 404) {
             _createToast(response_server["messages"]["error"]);
           } else {
             _createToast("Something wend wrong");
           }
-          throw Exception('Failed to load album');
+          return false;
         }
       } else {
         if (response.statusCode == 404) {
@@ -195,15 +165,15 @@ class NetworkCall {
         } else {
           _createToast("Something wend wrong");
         }
-        throw Exception('Failed to load album');
+        return false;
       }
     } else {
       _createToast("Please connect to internet");
-      throw Exception('Failed to load album');
+      return false;
     }
   }
 
-  Future<Generate_otp> generateOtp(String username, String password,
+  Future<bool> generateOtp(String username, String password,
       String type, BuildContext context) async {
 
     bool isConnected = await isNetworkConnected();
@@ -234,15 +204,11 @@ class NetworkCall {
         if (response_server['status'] == 201) {
           if (username.isNotEmpty) {
             _createToast("OTP Sent to " + username);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OTPScreen(username, password, type),),);
           }
-          return Generate_otp.fromJson(json.decode(response.body));
+          return true;
         } else {
           _createToast("Login Failed");
-          throw Exception('Failed to load album');
+          return false;
         }
       } else {
         if (response.statusCode == 404) {
@@ -252,15 +218,15 @@ class NetworkCall {
         } else {
           _createToast("Something went wrong");
         }
-        throw Exception('Failed to load album');
+        return false;
       }
     } else {
       _createToast("Please connect to internet");
-      throw Exception('Failed to load album');
+      return false;
     }
   }
 
-  Future<Generate_otp> resendOtp(
+  Future<bool> resendOtp(
       String username, String password, BuildContext context) async {
 
     bool isConnected = await isNetworkConnected();
@@ -284,18 +250,18 @@ class NetworkCall {
           } else {
             _createToast("OTP Sent to " + username);
           }
-          return Generate_otp.fromJson(json.decode(response.body));
+          return true;
         } else {
           _createToast("Login Failed");
-          throw Exception('Failed to load album');
+          return false;
         }
       } else {
         _createToast("Login Failed");
-        throw Exception('Failed to load album');
+        return false;
       }
     } else {
       _createToast("Please connect to internet");
-      throw Exception('Failed to load album');
+      return false;
     }
   }
 
@@ -401,6 +367,166 @@ class NetworkCall {
       } else {
         if (response.statusCode == 404) {
           _createToast("Failed to update Details");
+        } else {
+          _createToast("Something went wrong");
+        }
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Please connect to internet");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<EmploymentDetailsModel> getEmploymentDetails() async {
+
+    bool isConnected = await isNetworkConnected();
+
+    if (isConnected) {
+
+      final response = await http.get(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/getemploymentdetail?userid=' + Constants.userid),
+      );
+
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+
+      if (response.statusCode == 201) {
+        if (response_server['status'] == 201) {
+
+          return EmploymentDetailsModel.fromJson(json.decode(response.body));
+        } else {
+          _createToast("No Data Found");
+          throw Exception('Failed to load album');
+        }
+      } else {
+        if (response.statusCode == 404) {
+          _createToast("No Data Found");
+        } else {
+          _createToast("Something went wrong");
+        }
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Please connect to internet");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> update_employment(var employmentdetail, BuildContext context) async {
+
+    bool isConnected = await isNetworkConnected();
+
+    if (isConnected) {
+      final body = {
+        "userid": Constants.userid,
+        "employmentdetail": jsonEncode(employmentdetail)
+      };
+
+      final response = await http.post(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/updatemploymentdetail'),
+        body: body,
+      );
+
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+
+      if (response.statusCode == 201) {
+        if (response_server['status'] == 201) {
+          _createToast("Details Updated Successfully");
+          Route newRoute = MaterialPageRoute(builder: (context) => const Home());
+          Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
+        } else {
+          _createToast("Failed to update Details");
+          throw Exception('Failed to load album');
+        }
+      } else {
+        if (response.statusCode == 404) {
+          _createToast("Failed to update Details");
+        } else {
+          _createToast("Something went wrong");
+        }
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Please connect to internet");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> update_bank(var bankDetails, BuildContext context) async {
+
+    bool isConnected = await isNetworkConnected();
+
+    if (isConnected) {
+      final body = {
+        "userid": Constants.userid,
+        "bankdetail": jsonEncode(bankDetails)
+      };
+
+      final response = await http.post(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/updatbankdetail'),
+        body: body,
+      );
+
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+
+      if (response.statusCode == 201) {
+        if (response_server['status'] == 201) {
+          _createToast("Details Updated Successfully");
+          Route newRoute = MaterialPageRoute(builder: (context) => const Home());
+          Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
+        } else {
+          _createToast("Failed to update Details");
+          throw Exception('Failed to load album');
+        }
+      } else {
+        if (response.statusCode == 404) {
+          _createToast("Failed to update Details");
+        } else {
+          _createToast("Something went wrong");
+        }
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Please connect to internet");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<BankDetailsModel> getbankDetails() async {
+
+    bool isConnected = await isNetworkConnected();
+
+    if (isConnected) {
+
+      final response = await http.get(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/getbankdetail?userid=' + Constants.userid),
+      );
+
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+
+      if (response.statusCode == 201) {
+        if (response_server['status'] == 201) {
+
+          return BankDetailsModel.fromJson(json.decode(response.body));
+        } else {
+          _createToast("No Data Found");
+          throw Exception('Failed to load album');
+        }
+      } else {
+        if (response.statusCode == 404) {
+          _createToast("No Data Found");
         } else {
           _createToast("Something went wrong");
         }

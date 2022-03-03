@@ -75,7 +75,6 @@ class _AddressScreenState extends State<AddressScreen> {
           _pincode_controller.text = residential_details[0]["ur_pincode"];
           _city_controller.text = residential_details[0]["ur_city"];
           _state_controller.text = residential_details[0]["ur_state"];
-
         }),
       },
     });

@@ -1,6 +1,12 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:genie_money/utils/constants.dart';
+import 'package:genie_money/utils/network.dart';
 import 'package:intl/intl.dart';
+
+import '../Model/bank_details_model.dart';
+import '../Model/employment_details_model.dart';
 
 class EmploymentAndBankDetailsScreen extends StatefulWidget {
   // const EmploymentAndBankDetailsScreen({Key? key}) : super(key: key);
@@ -25,6 +31,7 @@ class _EmploymentAndBankDetailsScreenState
   String designation_type = 'Executive';
   String work_sector_type = 'Agriculture';
   String organization_type = 'Private Company';
+  String job_function_id = "1", work_sector_id = "1", organisation_id = "1";
 
   final format = DateFormat("dd-MM-yyyy");
 
@@ -42,6 +49,7 @@ class _EmploymentAndBankDetailsScreenState
       TextEditingController();
   final TextEditingController _ifsc_code_controller = TextEditingController();
   final TextEditingController _upi_id_controller = TextEditingController();
+  final TextEditingController _date_controller = TextEditingController();
 
   List<String> emp_type_list = ['Salaried', 'UnEmployed', 'Self-Employed'];
 
@@ -99,14 +107,88 @@ class _EmploymentAndBankDetailsScreenState
   'Trust'
   ];
 
+  NetworkCall _networkCall = NetworkCall();
+  List<Employmentdetail>? employmentdetail = [];
+  List<Bankdetail>? bankdetail = [];
+  String ue_id = "", ub_id = "";
+
   @override
   void initState() {
     super.initState();
     if (widget.title == "Employment Details") {
       isEmployment = true;
+      _networkCall.getEmploymentDetails().then((value) => {
+        if(value.employmentdetail != null && value.employmentdetail!.isNotEmpty) {
+          for (int i = 0; i < value.employmentdetail!.length; i++) {
+            setState(() {
+              employmentdetail!.add(value.employmentdetail![i]);
+            }),
+          },
+          setState(() {
+            ue_id = employmentdetail![6].ueId!;
+            emp_type = employmentdetail![6].ueEmptype! == "1" ? "Salaried" : employmentdetail![6].ueEmptype! == "2" ? "UnEmployed" : "Self-Employed";
+            _employer_name_controller.text = employmentdetail![6].ueEmployername!;
+            _official_email_controller.text = employmentdetail![6].ueOfficeemail!;
+            _date_controller.text = employmentdetail![6].ueWorkingsince!;
+            _net_monthly_salary_controller.text = employmentdetail![6].ueMonthsalary!;
+            salary_type = employmentdetail![6].ueSalaryaccount!;
+            if (isNumeric(employmentdetail![6].ueDesignation!)) {
+              int a = int.parse(employmentdetail![6].ueDesignation!);
+              for (int i = 0; i < designation_type_list.length; i++) {
+                if ((a - 1) == i) {
+                  designation_type = designation_type_list[i];
+                }
+              }
+            } else {
+              designation_type = employmentdetail![6].ueDesignation!;
+            }
+            work_sector_id = employmentdetail![6].ueWorksector!;
+            if (work_sector_id.isNotEmpty && int.parse(work_sector_id) > 0) {
+              int a = int.parse(work_sector_id);
+              for (int i = 0; i < work_sector_type_list.length; i++) {
+                if ((a - 1) == i) {
+                  work_sector_type = work_sector_type_list[i];
+                }
+              }
+            }
+            organisation_id = employmentdetail![6].ueOrgtype!;
+            if (organisation_id.isNotEmpty && int.parse(organisation_id) > 0) {
+              int a = int.parse(organisation_id);
+              for (int i = 0; i < organization_type_list.length; i++) {
+                if ((a - 1) == i) {
+                  organization_type = organization_type_list[i];
+                }
+              }
+            }
+            _office_address_controller.text = employmentdetail![6].ueOfficeaddress!;
+          }),
+        }
+      });
     } else if (widget.title == "Bank Details") {
       isBank = true;
+      _networkCall.getbankDetails().then((value) => {
+        if (value.bankdetail != null && value.bankdetail!.isNotEmpty) {
+          for (int i = 0; i < value.bankdetail!.length; i++) {
+            bankdetail!.add(value.bankdetail![i]),
+          },
+          setState((){
+            ub_id = bankdetail![0].ubId!;
+            _bank_name_controller.text = bankdetail![0].ubName!;
+            _account_no_controller.text = bankdetail![0].ubAcnumber!;
+            _confirm_account_no_controller.text = bankdetail![0].ubAcnumber!;
+            _ifsc_code_controller.text = bankdetail![0].ubIfsccode!;
+            _upi_id_controller.text = bankdetail![0].ubUpi!;
+    }),
+        }
+      });
     }
+  }
+
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 
   @override
@@ -268,6 +350,7 @@ class _EmploymentAndBankDetailsScreenState
                       Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: DateTimeField(
+                          controller: _date_controller,
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide:
@@ -435,6 +518,12 @@ class _EmploymentAndBankDetailsScreenState
                           onChanged: (String? data) {
                             setState(() {
                               job_function_type = data!;
+                              for (int i = 0; i < job_function_type_list.length; i++) {
+                                if (job_function_type == job_function_type_list[i]) {
+                                  int selected = i++;
+                                  job_function_id = selected.toString();
+                                }
+                              }
                             });
                           },
                           items: job_function_type_list
@@ -541,6 +630,12 @@ class _EmploymentAndBankDetailsScreenState
                           onChanged: (String? data) {
                             setState(() {
                               work_sector_type = data!;
+                              for (int i = 0; i < work_sector_type_list.length; i++) {
+                                if (work_sector_type == work_sector_type_list[i]) {
+                                  int selected = i + 1;
+                                  work_sector_id = selected.toString();
+                                }
+                              }
                             });
                           },
                           items: work_sector_type_list
@@ -594,6 +689,12 @@ class _EmploymentAndBankDetailsScreenState
                           onChanged: (String? data) {
                             setState(() {
                               organization_type = data!;
+                              for (int i = 0; i < organization_type_list.length; i++) {
+                                if (organization_type == organization_type_list[i]) {
+                                  int selected = i + 1;
+                                  organisation_id = selected.toString();
+                                }
+                              }
                             });
                           },
                           items: organization_type_list
@@ -645,7 +746,47 @@ class _EmploymentAndBankDetailsScreenState
                       Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_employer_name_controller.text.isNotEmpty) {
+                              if (_official_email_controller.text.isNotEmpty) {
+                                if (_date_controller.text.isNotEmpty) {
+                                  if (_net_monthly_salary_controller.text.isNotEmpty) {
+                                    if (_office_address_controller.text.isNotEmpty) {
+                                      final data = {
+                                        "ue_id" : ue_id,
+                                        "ue_userid" : Constants.userid,
+                                        "ue_emptype" : emp_type == "Salaried" ? "1" : emp_type == "UnEmployed" ? "2" : "3",
+                                        "ue_employername" : _employer_name_controller.text,
+                                        "ue_officeemail" : _official_email_controller.text,
+                                        "ue_workingsince" : _date_controller.text,
+                                        "ue_monthsalary" : _net_monthly_salary_controller.text,
+                                        "ue_salaryaccount" : salary_type,
+                                        "ue_jobcategory" : job_function_id,
+                                        "ue_designation" : designation_type,
+                                        "ue_worksector" : work_sector_id,
+                                        "ue_orgtype" : organisation_id,
+                                        "ue_officeaddress" : _office_address_controller.text
+                                      };
+                                      final employmentdetail = [
+                                        data
+                                      ];
+                                      _networkCall.update_employment(employmentdetail, context);
+                                    } else {
+                                      _createToast("Please enter work/office address");
+                                    }
+                                  } else {
+                                    _createToast("Please enter net monthly salary");
+                                  }
+                                } else {
+                                  _createToast("Please enter working since");
+                                }
+                              } else {
+                                _createToast("Please enter official email");
+                              }
+                            } else {
+                              _createToast("Please enter employer name");
+                            }
+                          },
                           child: const Text(
                             "Save",
                             style: TextStyle(
@@ -848,7 +989,44 @@ class _EmploymentAndBankDetailsScreenState
                       Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_bank_name_controller.text.isNotEmpty) {
+                              if (_account_no_controller.text.isNotEmpty) {
+                                if (_confirm_account_no_controller.text.isNotEmpty) {
+                                  if (_confirm_account_no_controller.text == _account_no_controller.text) {
+                                    if (_ifsc_code_controller.text.isNotEmpty) {
+                                      if (_upi_id_controller.text.isNotEmpty) {
+                                        final data = {
+                                          "ub_id" : ub_id,
+                                          "ub_userid" : Constants.userid,
+                                          "ub_name" : _bank_name_controller.text,
+                                          "ub_acnumber" : _account_no_controller.text,
+                                          "ub_ifsccode" : _ifsc_code_controller.text,
+                                          "ub_upi" : _upi_id_controller.text
+                                        };
+                                        final bankDetails = [
+                                          data
+                                        ];
+                                        _networkCall.update_bank(bankDetails, context);
+                                      } else {
+                                        _createToast("Please enter upi id");
+                                      }
+                                    } else {
+                                      _createToast("Please enter IFSC code");
+                                    }
+                                  } else {
+                                    _createToast("Account number does not match");
+                                  }
+                                } else {
+                                  _createToast("Please confirm account number");
+                                }
+                              } else {
+                                _createToast("Please enter account number");
+                              }
+                            } else {
+                              _createToast("Please enter bank name");
+                            }
+                          },
                           child: const Text(
                             "Save",
                             style: TextStyle(
@@ -875,5 +1053,13 @@ class _EmploymentAndBankDetailsScreenState
         ),
       ),
     );
+  }
+
+  void _createToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1);
   }
 }

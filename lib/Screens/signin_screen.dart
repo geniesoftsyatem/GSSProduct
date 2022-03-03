@@ -9,6 +9,8 @@ import 'package:genie_money/Screens/signup_screen.dart';
 import 'package:genie_money/utils/network.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'otp_screen.dart';
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -24,7 +26,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
   late String longitude = '00.00000';
   late String latitude = '00.00000';
   late LocationPermission permission;
-  late bool serviceEnabled = false;
+  late bool serviceEnabled = false, _isLoading = false;
 
   late TabController _tabController;
   late String title = "Customer";
@@ -97,92 +99,104 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF111111),
       body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: DefaultTabController(
-            length: 3,
-            child: Column(
-              children: [
-                TabBar(
-                  indicator: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      color: Color(0xFFFFAE00)),
-                  onTap: (value) {
-                    setState(() {
-                      if (value == 0) {
-                        title = "Customer";
-                        if (height <= 593) {
-                          curve = height * 0.65;
-                          height_angle = height * 0.55;
-                        } else if (height > 593 && height <= 672) {
-                          curve = height * 0.55;
-                          height_angle = height * 0.50;
-                        } else {
-                          curve = height * 0.45;
-                          height_angle = height * 0.40;
-                        }
-                      } else if (value == 1) {
-                        title = "Sales Partner";
-                        if (height <= 593) {
-                          curve = height * 0.79;
-                          height_angle = height * 0.69;
-                        } else if (height > 593 && height <= 672) {
-                          curve = height * 0.70;
-                          height_angle = height * 0.65;
-                        } else {
-                          curve = height * 0.55;
-                          height_angle = height * 0.50;
-                        }
-                      } else {
-                        title = "Employee";
-                        if (height <= 593) {
-                          curve = height * 0.77;
-                          height_angle = height * 0.67;
-                        } else if (height > 593 && height <= 672) {
-                          curve = height * 0.65;
-                          height_angle = height * 0.58;
-                        } else {
-                          curve = height * 0.55;
-                          height_angle = height * 0.48;
-                        }
-                      }
-                    });
-                  },
-                  isScrollable: true,
-                  indicatorColor: Colors.white,
-                  controller: _tabController,
-                  labelColor: const Color(0xFF111111),
-                  unselectedLabelColor: const Color(0xFFFFAE00),
-                  tabs: const [
-                    Tab(
-                      child: Text(
-                        "Customer",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18.0),
-                      ),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DefaultTabController(
+                length: 3,
+                child: Column(
+                  children: [
+                    TabBar(
+                      indicator: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10)),
+                          color: Color(0xFFFFAE00)),
+                      onTap: (value) {
+                        setState(() {
+                          if (value == 0) {
+                            title = "Customer";
+                            if (height <= 593) {
+                              curve = height * 0.65;
+                              height_angle = height * 0.55;
+                            } else if (height > 593 && height <= 672) {
+                              curve = height * 0.55;
+                              height_angle = height * 0.50;
+                            } else {
+                              curve = height * 0.45;
+                              height_angle = height * 0.40;
+                            }
+                          } else if (value == 1) {
+                            title = "Sales Partner";
+                            if (height <= 593) {
+                              curve = height * 0.79;
+                              height_angle = height * 0.69;
+                            } else if (height > 593 && height <= 672) {
+                              curve = height * 0.70;
+                              height_angle = height * 0.65;
+                            } else {
+                              curve = height * 0.55;
+                              height_angle = height * 0.50;
+                            }
+                          } else {
+                            title = "Employee";
+                            if (height <= 593) {
+                              curve = height * 0.77;
+                              height_angle = height * 0.67;
+                            } else if (height > 593 && height <= 672) {
+                              curve = height * 0.65;
+                              height_angle = height * 0.58;
+                            } else {
+                              curve = height * 0.55;
+                              height_angle = height * 0.48;
+                            }
+                          }
+                        });
+                      },
+                      isScrollable: true,
+                      indicatorColor: Colors.white,
+                      controller: _tabController,
+                      labelColor: const Color(0xFF111111),
+                      unselectedLabelColor: const Color(0xFFFFAE00),
+                      tabs: const [
+                        Tab(
+                          child: Text(
+                            "Customer",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            "Sales Partner",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            "Employee",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        ),
+                      ],
                     ),
-                    Tab(
-                      child: Text(
-                        "Sales Partner",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        "Employee",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    ),
+                    customer_login_ui(height, context, width),
                   ],
                 ),
-                customer_login_ui(height, context, width),
-              ],
+              ),
             ),
-          ),
+            Visibility(
+              visible: _isLoading,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFFFAE00),
+                  ),
+                ),
+            ),
+          ],
         ),
       ),
     );
@@ -371,18 +385,42 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                           if (emailValid || mobileValid) {
                             if (title == "Sales Partner") {
                               NetworkCall networdCall = NetworkCall();
-                              networdCall.generateOtp(
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              bool status = await networdCall.generateOtp(
                                   _email_mobile_controller.text,
                                   _password_controller.text,
                                   selected_type,
                                   context);
+                              setState(() {
+                                _isLoading = false;
+                              });
+                              if (status) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OTPScreen(_email_mobile_controller.text, _password_controller.text, selected_type),),);
+                              }
                             } else {
                               NetworkCall networdCall = NetworkCall();
-                              networdCall.generateOtp(
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              bool status = await networdCall.generateOtp(
                                   _email_mobile_controller.text,
                                   _password_controller.text,
                                   title,
                                   context);
+                              setState(() {
+                                _isLoading = false;
+                              });
+                              if (status) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OTPScreen(_email_mobile_controller.text, _password_controller.text, title),),);
+                              }
                             }
                           } else {
                             _createToast(

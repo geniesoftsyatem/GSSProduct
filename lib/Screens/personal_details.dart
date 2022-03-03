@@ -100,7 +100,11 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
           email_controller.text = user_details["email"];
           selected_date = user_details["dob"];
           date = selected_date.split("-");
-          date_controller.text = date[2] + "-" + date[1] + "-" + date[0];
+          if (date[0].toString().length == 4) {
+            date_controller.text = date[2] + "-" + date[1] + "-" + date[0];
+          } else {
+            date_controller.text = date[0] + "-" + date[1] + "-" + date[2];
+          }
           qualification_type = user_details["qualification"] == "1" ? "Undergraduate" : user_details["qualification"] == "2" ? "Graduate" : "Postgraduate";
           _pan_card_no_controller.text = user_details["pancard"];
           _aadhar_card_no_controller.text = user_details["adharcard"];
