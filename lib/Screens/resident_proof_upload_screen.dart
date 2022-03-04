@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:genie_money/utils/network.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../Model/user_proof_model.dart';
 
 class ResidentUploadImage extends StatefulWidget {
   String title;
@@ -97,8 +101,381 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
   var house_first_path;
   var house_second_path;
 
+  NetworkCall _networkCall = NetworkCall();
+  List<Docdetail>? docdetail = [];
+  String base_url = "";
+  String aadhar_both_url = "", aadhar_front_url = "", aadhar_back_url = "", utility_first_url = "",
+      utility_second_url = "", utility_third_url = "", utility_all_url = "", tele_first_url = "",
+      tele_second_url = "", tele_third_url = "", tele_all_url = "", passport_all_url = "", passport_first_url = "",
+      passport_last_url = "", voter_all_url = "", voter_front_url = "", voter_last_url = "", driving_all_url = "",
+      driving_front_url = "", driving_back_url = "", rental_all_url = "", rental_front_url = "", rental_back_url = "",
+      company_all_url = "", company_first_url = "", company_second_url = "", house_all_url = "", house_first_url = "",
+      house_second_url = "";
+
+  String aadhar_both_id = "", aadhar_front_id = "", aadhar_back_id = "", utility_first_id = "",
+      utility_second_id = "", utility_third_id = "", utility_all_id = "", tele_first_id = "", tele_second_id = "",
+      tele_third_id = "", tele_all_id = "", passport_all_id = "", passport_first_id = "", passport_last_id = "",
+      voter_all_id = "", voter_front_id = "", voter_last_id = "", driving_all_id = "", driving_front_id = "",
+      driving_back_id = "", rental_all_id = "", rental_front_id = "", rental_back_id = "", company_all_id = "",
+      company_first_id = "", company_second_id = "", house_all_id = "", house_first_id = "", house_second_id = "";
+
   @override
   void initState() {
+    _networkCall.getUserProofs().then((value) => {
+      if (value.docdetail != null && value.docdetail!.isNotEmpty)
+        {
+          for (int i = 0; i < value.docdetail!.length; i++)
+            {
+              docdetail!.add(value.docdetail![i]),
+            },
+          setState(() {
+            base_url = value.baseUrl!;
+            if (docdetail != null && docdetail!.isNotEmpty) {
+              for (int i = 0; i < docdetail!.length; i++) {
+                if (isAadharCard) {
+                  if (docdetail![i].udType! == "adhar" && docdetail![i].udDoctype == "front") {
+                    aadhar_front_id = docdetail![9].udId!;
+                    aadhar_front_url = base_url +
+                        "/" +
+                        docdetail![9].udUserid! +
+                        "/" +
+                        docdetail![9].udDocumentname!;
+                    isAadharBoth = false;
+                    isAadharFront = true;
+                    isAadharBoth = false;
+                    isAadharToggle = false;
+                  } else if (docdetail![i].udType! == "adhar" && docdetail![i].udDoctype == "back") {
+                    aadhar_back_id = docdetail![10].udId!;
+                    aadhar_back_url = base_url +
+                        "/" +
+                        docdetail![10].udUserid! +
+                        "/" +
+                        docdetail![10].udDocumentname!;
+                    isAadharBoth = false;
+                    isAadharBack = true;
+                    isAadharBoth = false;
+                    isAadharToggle = false;
+                  } else if (docdetail![i].udType! == "adhar" && (docdetail![i].udDoctype == "all" || docdetail![i].udDoctype == "both")) {
+                    aadhar_both_id = docdetail![i].udId!;
+                    aadhar_both_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isAadharBack = false;
+                    isAadharFront = false;
+                    isAadharBoth = true;
+                    isAadharToggle = true;
+                    break;
+                  }
+                } else if (isUtilityBill) {
+                  if (docdetail![i].udType! == "utility" && docdetail![i].udDoctype == "all") {
+                    utility_all_id = docdetail![i].udId!;
+                    utility_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isUtilityToggle = true;
+                    isUtilityInOne = true;
+                    isShow2Utility = false;
+                    break;
+                  } else if (docdetail![i].udType! == "utility" && docdetail![i].udDoctype == "first") {
+                    utility_first_id = docdetail![i].udId!;
+                    utility_first_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isUtilityToggle = false;
+                    isUtilityInOne = false;
+                    isShow2Utility = true;
+                  } else if (docdetail![i].udType! == "utility" && docdetail![i].udDoctype == "second") {
+                    utility_second_id = docdetail![i].udId!;
+                    utility_second_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isUtilityToggle = false;
+                    isUtilityInOne = false;
+                    isShow2Utility = true;
+                  } else if (docdetail![i].udType! == "utility" && docdetail![i].udDoctype == "third") {
+                    utility_third_id = docdetail![i].udId!;
+                    utility_third_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isUtilityToggle = false;
+                    isUtilityInOne = false;
+                    isShow2Utility = true;
+                  }
+                } else if (isTelephoneBill) {
+                  if (docdetail![i].udType! == "telephone" && docdetail![i].udDoctype == "all") {
+                    tele_all_id = docdetail![i].udId!;
+                    tele_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isTelephoneToggle = true;
+                    isTelephoneInOne = true;
+                    isShow2Telephone = false;
+                    break;
+                  } else if (docdetail![i].udType! == "telephone" && docdetail![i].udDoctype == "first") {
+                    tele_first_id = docdetail![i].udId!;
+                    tele_first_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isTelephoneToggle = false;
+                    isTelephoneInOne = false;
+                    isShow2Telephone = true;
+                  } else if (docdetail![i].udType! == "telephone" && docdetail![i].udDoctype == "second") {
+                    tele_second_id = docdetail![i].udId!;
+                    tele_second_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isTelephoneToggle = false;
+                    isTelephoneInOne = false;
+                    isShow2Telephone = true;
+                  } else if (docdetail![i].udType! == "telephone" && docdetail![i].udDoctype == "third") {
+                    tele_third_id = docdetail![i].udId!;
+                    tele_third_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isTelephoneToggle = false;
+                    isTelephoneInOne = false;
+                    isShow2Telephone = true;
+                  }
+                } else if (isPassportCard) {
+                  if (docdetail![i].udType! == "passport" && docdetail![i].udDoctype == "all") {
+                    passport_all_id = docdetail![i].udId!;
+                    passport_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isPassportToggle = true;
+                    isPassportBoth = true;
+                    isPassportFront = false;
+                    isPassportBack = false;
+                    break;
+                  } else if (docdetail![i].udType! == "passport" && docdetail![i].udDoctype == "first") {
+                    passport_first_id = docdetail![i].udId!;
+                    passport_first_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isPassportToggle = false;
+                    isPassportBoth = false;
+                    isPassportFront = true;
+                    isPassportBack = true;
+                  } else if (docdetail![i].udType! == "passport" && docdetail![i].udDoctype == "last") {
+                    passport_last_id = docdetail![i].udId!;
+                    passport_last_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isPassportToggle = false;
+                    isPassportBoth = false;
+                    isPassportFront = true;
+                    isPassportBack = true;
+                  }
+                } else if (isVoterCard) {
+                  if (docdetail![i].udType! == "voter" && docdetail![i].udDoctype == "all") {
+                    voter_all_id = docdetail![i].udId!;
+                    voter_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isVoterToggle = true;
+                    isVoterBoth = true;
+                    isVoterFront = false;
+                    isVoterBack = false;
+                    break;
+                  } else if (docdetail![i].udType! == "voter" && docdetail![i].udDoctype == "front") {
+                    voter_front_id = docdetail![i].udId!;
+                    voter_front_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isVoterToggle = false;
+                    isVoterBoth = false;
+                    isVoterFront = true;
+                    isVoterBack = true;
+                  } else if (docdetail![i].udType! == "voter" && docdetail![i].udDoctype == "last") {
+                    voter_last_id = docdetail![i].udId!;
+                    voter_last_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isVoterToggle = false;
+                    isVoterBoth = false;
+                    isVoterFront = true;
+                    isVoterBack = true;
+                  }
+                } else if (isDrivingCard) {
+                  if (docdetail![i].udType! == "drivinglicense" && docdetail![i].udDoctype == "all") {
+                    driving_all_id = docdetail![i].udId!;
+                    driving_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isDrivingToggle = true;
+                    isDrivingBoth = true;
+                    isDrivingFront = false;
+                    isDrivingBack = false;
+                    break;
+                  } else if (docdetail![i].udType! == "drivinglicense" && docdetail![i].udDoctype == "front") {
+                    driving_front_id = docdetail![i].udId!;
+                    driving_front_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isDrivingToggle = false;
+                    isDrivingBoth = false;
+                    isDrivingFront = true;
+                    isDrivingBack = true;
+                  } else if (docdetail![i].udType! == "drivinglicense" && docdetail![i].udDoctype == "back") {
+                    driving_back_id = docdetail![i].udId!;
+                    driving_back_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isDrivingToggle = false;
+                    isDrivingBoth = false;
+                    isDrivingFront = true;
+                    isDrivingBack = true;
+                  }
+                } else if (isRentalCard) {
+                  if (docdetail![i].udType! == "rental" && docdetail![i].udDoctype == "all") {
+                    rental_all_id = docdetail![i].udId!;
+                    rental_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isRentalToggle = true;
+                    isRentalBoth = true;
+                    isRentalFront = false;
+                    isRentalBack = false;
+                    break;
+                  } else if (docdetail![i].udType! == "rental" && docdetail![i].udDoctype == "front") {
+                    rental_front_id = docdetail![i].udId!;
+                    rental_front_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isRentalToggle = false;
+                    isRentalBoth = false;
+                    isRentalFront = true;
+                    isRentalBack = true;
+                  } else if (docdetail![i].udType! == "rental" && docdetail![i].udDoctype == "back") {
+                    rental_back_id = docdetail![i].udId!;
+                    rental_back_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isRentalToggle = false;
+                    isRentalBoth = false;
+                    isRentalFront = true;
+                    isRentalBack = true;
+                  }
+                } else if (isHRCard) {
+                  if (docdetail![i].udType! == "companyletter" && docdetail![i].udDoctype == "all") {
+                    company_all_id = docdetail![i].udId!;
+                    company_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isHRToggle = true;
+                    isHRBoth = true;
+                    isHRFront = false;
+                    isHRBack = false;
+                    break;
+                  } else if (docdetail![i].udType! == "companyletter" && docdetail![i].udDoctype == "first") {
+                    company_first_id = docdetail![i].udId!;
+                    company_first_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isHRToggle = false;
+                    isHRBoth = false;
+                    isHRFront = true;
+                    isHRBack = true;
+                  } else if (docdetail![i].udType! == "companyletter" && docdetail![i].udDoctype == "second") {
+                    company_second_id = docdetail![i].udId!;
+                    company_second_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isHRToggle = false;
+                    isHRBoth = false;
+                    isHRFront = true;
+                    isHRBack = true;
+                  }
+                } else if (isHouseCard) {
+                  if (docdetail![i].udType! == "housepurchase" && docdetail![i].udDoctype == "all") {
+                    house_all_id = docdetail![i].udId!;
+                    house_all_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isHouseToggle = true;
+                    isHouseBoth = true;
+                    isHouseFront = false;
+                    isHouseBack = false;
+                    break;
+                  } else if (docdetail![i].udType! == "housepurchase" && docdetail![i].udDoctype == "first") {
+                    house_first_id = docdetail![i].udId!;
+                    house_first_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isHouseToggle = false;
+                    isHouseBoth = false;
+                    isHouseFront = true;
+                    isHouseBack = true;
+                  } else if (docdetail![i].udType! == "housepurchase" && docdetail![i].udDoctype == "second") {
+                    house_second_id = docdetail![i].udId!;
+                    house_second_url = base_url +
+                        "/" +
+                        docdetail![i].udUserid! +
+                        "/" +
+                        docdetail![i].udDocumentname!;
+                    isHouseToggle = false;
+                    isHouseBoth = false;
+                    isHouseFront = true;
+                    isHouseBack = true;
+                  }
+                }
+              }
+            }
+          }),
+        }
+    });
     setState(() {
       if (widget.title == "Aadhar Card") {
         isAadharCard = true;
@@ -231,6 +608,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (aadhar_both_path == null || aadhar_both_path.isEmpty) && aadhar_both_url.isNotEmpty
+                                        ? aadhar_both_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(aadhar_both_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -292,6 +684,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (aadhar_front_path == null || aadhar_front_path.isEmpty) && aadhar_front_url.isNotEmpty
+                                        ? aadhar_front_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(aadhar_front_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -352,6 +759,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (aadhar_back_path == null || aadhar_back_path.isEmpty) && aadhar_back_url.isNotEmpty
+                                        ? aadhar_back_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(aadhar_back_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -462,6 +884,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                             height: 50.0,
                                             fit: BoxFit.cover,
                                           ),
+                                        ) : (utility_first_path == null || utility_first_path.isEmpty) && utility_first_url.isNotEmpty
+                                            ? utility_first_url.contains(".pdf")
+                                            ? Icon(
+                                          Icons.picture_as_pdf,
+                                          color: Color(0xFFFFAE00),
+                                          size: 50.0,
+                                        ) : ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          child: Image(
+                                            image: NetworkImage(utility_first_url),
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.fill,
+                                          ),
                                         ) : ClipRRect(
                                           borderRadius: BorderRadius.circular(8.0),
                                           child: const Icon(
@@ -521,6 +958,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                               width: 50.0,
                                               height: 50.0,
                                               fit: BoxFit.cover,
+                                            ),
+                                          ) : (utility_second_path == null || utility_second_path.isEmpty) && utility_second_url.isNotEmpty
+                                              ? utility_second_url.contains(".pdf")
+                                              ? Icon(
+                                            Icons.picture_as_pdf,
+                                            color: Color(0xFFFFAE00),
+                                            size: 50.0,
+                                          ) : ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(8.0),
+                                            child: Image(
+                                              image: NetworkImage(utility_second_url),
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.fill,
                                             ),
                                           ) : ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
@@ -582,6 +1034,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                               width: 50.0,
                                               height: 50.0,
                                               fit: BoxFit.cover,
+                                            ),
+                                          ) : (utility_third_path == null || utility_third_path.isEmpty) && utility_third_url.isNotEmpty
+                                              ? utility_third_url.contains(".pdf")
+                                              ? Icon(
+                                            Icons.picture_as_pdf,
+                                            color: Color(0xFFFFAE00),
+                                            size: 50.0,
+                                          ) : ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(8.0),
+                                            child: Image(
+                                              image: NetworkImage(utility_third_url),
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.fill,
                                             ),
                                           ) : ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
@@ -647,6 +1114,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (utility_all_path == null || utility_all_path.isEmpty) && utility_all_url.isNotEmpty
+                                        ? utility_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(utility_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -760,6 +1242,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                             height: 50.0,
                                             fit: BoxFit.cover,
                                           ),
+                                        ) : (tele_first_path == null || tele_first_path.isEmpty) && tele_first_url.isNotEmpty
+                                            ? tele_first_url.contains(".pdf")
+                                            ? Icon(
+                                          Icons.picture_as_pdf,
+                                          color: Color(0xFFFFAE00),
+                                          size: 50.0,
+                                        ) : ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          child: Image(
+                                            image: NetworkImage(tele_first_url),
+                                            width: 50.0,
+                                            height: 50.0,
+                                            fit: BoxFit.fill,
+                                          ),
                                         ) : ClipRRect(
                                           borderRadius: BorderRadius.circular(8.0),
                                           child: const Icon(
@@ -819,6 +1316,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                               width: 50.0,
                                               height: 50.0,
                                               fit: BoxFit.cover,
+                                            ),
+                                          ) : (tele_second_path == null || tele_second_path.isEmpty) && tele_second_url.isNotEmpty
+                                              ? tele_second_url.contains(".pdf")
+                                              ? Icon(
+                                            Icons.picture_as_pdf,
+                                            color: Color(0xFFFFAE00),
+                                            size: 50.0,
+                                          ) : ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(8.0),
+                                            child: Image(
+                                              image: NetworkImage(tele_second_url),
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.fill,
                                             ),
                                           ) : ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
@@ -880,6 +1392,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                               width: 50.0,
                                               height: 50.0,
                                               fit: BoxFit.cover,
+                                            ),
+                                          ) : (tele_third_path == null || tele_third_path.isEmpty) && tele_third_url.isNotEmpty
+                                              ? tele_third_url.contains(".pdf")
+                                              ? Icon(
+                                            Icons.picture_as_pdf,
+                                            color: Color(0xFFFFAE00),
+                                            size: 50.0,
+                                          ) : ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(8.0),
+                                            child: Image(
+                                              image: NetworkImage(tele_third_url),
+                                              width: 50.0,
+                                              height: 50.0,
+                                              fit: BoxFit.fill,
                                             ),
                                           ) : ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
@@ -945,6 +1472,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (tele_all_path == null || tele_all_path.isEmpty) && tele_all_url.isNotEmpty
+                                        ? tele_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(tele_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -1058,6 +1600,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (passport_all_path == null || passport_all_path.isEmpty) && passport_all_url.isNotEmpty
+                                        ? passport_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(passport_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1119,6 +1676,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (passport_first_path == null || passport_first_path.isEmpty) && passport_first_url.isNotEmpty
+                                        ? passport_first_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(passport_first_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1179,6 +1751,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (passport_last_path == null || passport_last_path.isEmpty) && passport_last_url.isNotEmpty
+                                        ? passport_last_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(passport_last_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -1289,6 +1876,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (voter_all_path == null || voter_all_path.isEmpty) && voter_all_url.isNotEmpty
+                                        ? voter_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(voter_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1350,6 +1952,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (voter_front_path == null || voter_front_path.isEmpty) && voter_front_url.isNotEmpty
+                                        ? voter_front_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(voter_front_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1410,6 +2027,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (voter_last_path == null || voter_last_path.isEmpty) && voter_last_url.isNotEmpty
+                                        ? voter_last_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(voter_last_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -1520,6 +2152,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (driving_all_path == null || driving_all_path.isEmpty) && driving_all_url.isNotEmpty
+                                        ? driving_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(driving_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1581,6 +2228,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (driving_front_path == null || driving_front_path.isEmpty) && driving_front_url.isNotEmpty
+                                        ? driving_front_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(driving_front_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1641,6 +2303,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (driving_back_path == null || driving_back_path.isEmpty) && driving_back_url.isNotEmpty
+                                        ? driving_back_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(driving_back_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -1751,6 +2428,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (rental_all_path == null || rental_all_path.isEmpty) && rental_all_url.isNotEmpty
+                                        ? rental_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(rental_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1818,6 +2510,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (rental_front_path == null || rental_front_path.isEmpty) && rental_front_url.isNotEmpty
+                                        ? rental_front_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(rental_front_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -1878,6 +2585,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (rental_back_path == null || rental_back_path.isEmpty) && rental_back_url.isNotEmpty
+                                        ? rental_back_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(rental_back_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -1988,6 +2710,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (company_all_path == null || company_all_path.isEmpty) && company_all_url.isNotEmpty
+                                        ? company_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(company_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -2055,6 +2792,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (company_first_path == null || company_first_path.isEmpty) && company_first_url.isNotEmpty
+                                        ? company_first_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(company_first_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -2115,6 +2867,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         width: 50.0,
                                         height: 50.0,
                                         fit: BoxFit.cover,
+                                      ),
+                                    ) : (company_second_path == null || company_second_path.isEmpty) && company_second_url.isNotEmpty
+                                        ? company_second_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(company_second_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
                                       ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -2225,6 +2992,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (house_all_path == null || house_all_path.isEmpty) && house_all_url.isNotEmpty
+                                        ? house_all_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(house_all_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -2292,6 +3074,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (house_first_path == null || house_first_path.isEmpty) && house_first_url.isNotEmpty
+                                        ? house_first_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(house_first_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -2353,6 +3150,21 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
                                         height: 50.0,
                                         fit: BoxFit.cover,
                                       ),
+                                    ) : (house_second_path == null || house_second_path.isEmpty) && house_second_url.isNotEmpty
+                                        ? house_second_url.contains(".pdf")
+                                        ? Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Color(0xFFFFAE00),
+                                      size: 50.0,
+                                    ) : ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(house_second_url),
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ) : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: const Icon(
@@ -2404,6 +3216,7 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
   }
 
   void _showPicker(context, String which_image) {
+
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -2411,17 +3224,210 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
             child: Wrap(
               children: <Widget>[
                 ListTile(
+                    leading: const Icon(Icons.picture_as_pdf),
+                    title: const Text('PDF'),
+                    onTap: () async {
+                      FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['pdf'],
+                      );
+
+                      if (result != null) {
+                        File file = File(result.files.single.path!);
+                        if (which_image == "aadhar_both_image") {
+                          setState(() {
+                            aadhar_both_path = null;
+                            aadhar_both_url = ".pdf";
+                          });
+                          uploadFile(aadhar_both_id, file, "adhar", "all", context);
+                        } else if (which_image == "aadhar_front_image") {
+                          setState(() {
+                            aadhar_front_path = null;
+                            aadhar_front_url = ".pdf";
+                          });
+                          uploadFile(aadhar_front_id, file, "adhar", "front", context);
+                        } else if (which_image == "aadhar_back_image") {
+                          setState(() {
+                            aadhar_back_path = null;
+                            aadhar_back_url = ".pdf";
+                          });
+                          uploadFile(aadhar_back_id, file, "adhar", "back", context);
+                        } else if (which_image == "utility_first_image") {
+                          setState(() {
+                            utility_first_path = null;
+                            utility_first_url = ".pdf";
+                          });
+                          uploadFile(utility_first_id, file, "utility", "first", context);
+                        } else if (which_image == "utility_second_image") {
+                          setState(() {
+                            utility_second_path = null;
+                            utility_second_url = ".pdf";
+                          });
+                          uploadFile(utility_second_id, file, "utility", "second", context);
+                        } else if (which_image == "utility_third_image") {
+                          setState(() {
+                            utility_third_path = null;
+                            utility_third_url = ".pdf";
+                          });
+                          uploadFile(utility_third_id, file, "utility", "third", context);
+                        } else if (which_image == "utility_all_image") {
+                          setState(() {
+                            utility_all_path = null;
+                            utility_all_url = ".pdf";
+                          });
+                          uploadFile(utility_all_id, file, "utility", "all", context);
+                        } else if (which_image == "tele_first_image") {
+                          setState(() {
+                            tele_first_path = null;
+                            tele_first_url = ".pdf";
+                          });
+                          uploadFile(tele_first_id, file, "telephone", "first", context);
+                        } else if (which_image == "tele_second_image") {
+                          setState(() {
+                            tele_second_path = null;
+                            tele_second_url = ".pdf";
+                          });
+                          uploadFile(tele_second_id, file, "telephone", "second", context);
+                        } else if (which_image == "tele_third_image") {
+                          setState(() {
+                            tele_third_path = null;
+                            tele_third_url = ".pdf";
+                          });
+                          uploadFile(aadhar_both_id, file, "telephone", "third", context);
+                        } else if (which_image == "tele_all_image") {
+                          setState(() {
+                            tele_all_path = null;
+                            tele_all_url = ".pdf";
+                          });
+                          uploadFile(tele_all_id, file, "telephone", "all", context);
+                        } else if (which_image == "passport_all_image") {
+                          setState(() {
+                            passport_all_path = null;
+                            passport_all_url = ".pdf";
+                          });
+                          uploadFile(passport_all_id, file, "passport", "all", context);
+                        } else if (which_image == "passport_first_image") {
+                          setState(() {
+                            passport_first_path = null;
+                            passport_first_url = ".pdf";
+                          });
+                          uploadFile(passport_first_id, file, "passport", "first", context);
+                        } else if (which_image == "passport_last_image") {
+                          setState(() {
+                            passport_last_path = null;
+                            passport_last_url = ".pdf";
+                          });
+                          uploadFile(passport_last_id, file, "passport", "last", context);
+                        } else if (which_image == "voter_all_image") {
+                          setState(() {
+                            voter_all_path = null;
+                            voter_all_url = ".pdf";
+                          });
+                          uploadFile(voter_all_id, file, "voter", "all", context);
+                        } else if (which_image == "voter_front_image") {
+                          setState(() {
+                            voter_front_path = null;
+                            voter_front_url = ".pdf";
+                          });
+                          uploadFile(voter_front_id, file, "voter", "front", context);
+                        } else if (which_image == "voter_last_image") {
+                          setState(() {
+                            voter_last_path = null;
+                            voter_last_url = ".pdf";
+                          });
+                          uploadFile(voter_last_id, file, "voter", "last", context);
+                        } else if (which_image == "driving_all_image") {
+                          setState(() {
+                            driving_all_path = null;
+                            driving_all_url = ".pdf";
+                          });
+                          uploadFile(driving_all_id, file, "drivinglicense", "all", context);
+                        } else if (which_image == "driving_front_image") {
+                          setState(() {
+                            driving_front_path = null;
+                            driving_front_url = ".pdf";
+                          });
+                          uploadFile(driving_front_id, file, "drivinglicense", "front", context);
+                        } else if (which_image == "driving_back_image") {
+                          setState(() {
+                            driving_back_path = null;
+                            driving_back_url = ".pdf";
+                          });
+                          uploadFile(driving_back_id, file, "drivinglicense", "back", context);
+                        } else if (which_image == "rental_all_image") {
+                          setState(() {
+                            rental_all_path = null;
+                            rental_all_url = ".pdf";
+                          });
+                          uploadFile(rental_all_id, file, "rental", "all", context);
+                        } else if (which_image == "rental_front_image") {
+                          setState(() {
+                            rental_front_path = null;
+                            rental_front_url = ".pdf";
+                          });
+                          uploadFile(rental_front_id, file, "rental", "front", context);
+                        } else if (which_image == "rental_back_image") {
+                          setState(() {
+                            rental_back_path = null;
+                            rental_back_url = ".pdf";
+                          });
+                          uploadFile(rental_back_id, file, "rental", "back", context);
+                        } else if (which_image == "company_all_image") {
+                          setState(() {
+                            company_all_path = null;
+                            company_all_url = ".pdf";
+                          });
+                          uploadFile(company_all_id, file, "companyletter", "all", context);
+                        } else if (which_image == "company_first_image") {
+                          setState(() {
+                            company_first_path = null;
+                            company_first_url = ".pdf";
+                          });
+                          uploadFile(company_first_id, file, "companyletter", "first", context);
+                        } else if (which_image == "company_second_image") {
+                          setState(() {
+                            company_second_path = null;
+                            company_second_url = ".pdf";
+                          });
+                          uploadFile(company_second_id, file, "companyletter", "second", context);
+                        } else if (which_image == "house_all_image") {
+                          setState(() {
+                            house_all_path = null;
+                            house_all_url = ".pdf";
+                          });
+                          uploadFile(house_all_id, file, "housepurchase", "all", context);
+                        } else if (which_image == "house_first_image") {
+                          setState(() {
+                            house_first_path = null;
+                            house_first_url = ".pdf";
+                          });
+                          uploadFile(house_first_id, file, "housepurchase", "first", context);
+                        } else if (which_image == "house_second_image") {
+                          setState(() {
+                            house_second_path = null;
+                            house_second_url = ".pdf";
+                          });
+                          uploadFile(house_second_id, file, "housepurchase", "second", context);
+                        }
+                        print(file.path);
+                      } else {
+                        // User canceled the picker
+                      }
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
                     leading: const Icon(Icons.photo_library),
                     title: const Text('Photo Library'),
                     onTap: () {
-                      _imgFromGallery(which_image);
+                      _imgFromGallery(which_image, context);
                       Navigator.of(context).pop();
                     }),
                 ListTile(
                   leading: const Icon(Icons.photo_camera),
                   title: const Text('Camera'),
                   onTap: () {
-                    _imgFromCamera(which_image);
+                    _imgFromCamera(which_image, context);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -2431,7 +3437,7 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
         });
   }
 
-  _imgFromGallery(String which_image) async {
+  _imgFromGallery(String which_image, BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
     XFile? image =
     await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
@@ -2439,67 +3445,96 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
     setState(() {
       if (which_image == "aadhar_both_image") {
         aadhar_both_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_both_id, aadhar_both_path, "adhar", "all", context);
       } else if (which_image == "aadhar_front_image") {
         aadhar_front_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_front_id, aadhar_front_path, "adhar", "front", context);
       } else if (which_image == "aadhar_back_image") {
         aadhar_back_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_back_id, aadhar_back_path, "adhar", "back", context);
       } else if (which_image == "utility_first_image") {
         utility_first_path = image == null ? null : File(image.path);
+        uploadFile(utility_first_id, utility_first_path, "utility", "first", context);
       } else if (which_image == "utility_second_image") {
         utility_second_path = image == null ? null : File(image.path);
+        uploadFile(utility_second_id, utility_second_path, "utility", "second", context);
       } else if (which_image == "utility_third_image") {
         utility_third_path = image == null ? null : File(image.path);
+        uploadFile(utility_third_id, utility_third_path, "utility", "third", context);
       } else if (which_image == "utility_all_image") {
         utility_all_path = image == null ? null : File(image.path);
+        uploadFile(utility_all_id, utility_all_path, "utility", "all", context);
       } else if (which_image == "tele_first_image") {
         tele_first_path = image == null ? null : File(image.path);
+        uploadFile(tele_first_id, tele_first_path, "telephone", "first", context);
       } else if (which_image == "tele_second_image") {
         tele_second_path = image == null ? null : File(image.path);
+        uploadFile(tele_second_id, tele_second_path, "telephone", "second", context);
       } else if (which_image == "tele_third_image") {
         tele_third_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_both_id, tele_third_path, "telephone", "third", context);
       } else if (which_image == "tele_all_image") {
         tele_all_path = image == null ? null : File(image.path);
+        uploadFile(tele_all_id, tele_all_path, "telephone", "all", context);
       } else if (which_image == "passport_all_image") {
         passport_all_path = image == null ? null : File(image.path);
+        uploadFile(passport_all_id, passport_all_path, "passport", "all", context);
       } else if (which_image == "passport_first_image") {
         passport_first_path = image == null ? null : File(image.path);
+        uploadFile(passport_first_id, passport_first_path, "passport", "first", context);
       } else if (which_image == "passport_last_image") {
         passport_last_path = image == null ? null : File(image.path);
+        uploadFile(passport_last_id, passport_last_path, "passport", "last", context);
       } else if (which_image == "voter_all_image") {
         voter_all_path = image == null ? null : File(image.path);
+        uploadFile(voter_all_id, voter_all_path, "voter", "all", context);
       } else if (which_image == "voter_front_image") {
         voter_front_path = image == null ? null : File(image.path);
+        uploadFile(voter_front_id, voter_front_path, "voter", "front", context);
       } else if (which_image == "voter_last_image") {
         voter_last_path = image == null ? null : File(image.path);
+        uploadFile(voter_last_id, voter_last_path, "voter", "last", context);
       } else if (which_image == "driving_all_image") {
         driving_all_path = image == null ? null : File(image.path);
+        uploadFile(driving_all_id, driving_all_path, "drivinglicense", "all", context);
       } else if (which_image == "driving_front_image") {
         driving_front_path = image == null ? null : File(image.path);
+        uploadFile(driving_front_id, driving_front_path, "drivinglicense", "front", context);
       } else if (which_image == "driving_back_image") {
         driving_back_path = image == null ? null : File(image.path);
+        uploadFile(driving_back_id, driving_back_path, "drivinglicense", "back", context);
       } else if (which_image == "rental_all_image") {
         rental_all_path = image == null ? null : File(image.path);
+        uploadFile(rental_all_id, rental_all_path, "rental", "all", context);
       } else if (which_image == "rental_front_image") {
         rental_front_path = image == null ? null : File(image.path);
+        uploadFile(rental_front_id, rental_front_path, "rental", "front", context);
       } else if (which_image == "rental_back_image") {
         rental_back_path = image == null ? null : File(image.path);
+        uploadFile(rental_back_id, rental_back_path, "rental", "back", context);
       } else if (which_image == "company_all_image") {
         company_all_path = image == null ? null : File(image.path);
+        uploadFile(company_all_id, company_all_path, "companyletter", "all", context);
       } else if (which_image == "company_first_image") {
         company_first_path = image == null ? null : File(image.path);
+        uploadFile(company_first_id, company_first_path, "companyletter", "first", context);
       } else if (which_image == "company_second_image") {
         company_second_path = image == null ? null : File(image.path);
+        uploadFile(company_second_id, company_second_path, "companyletter", "second", context);
       } else if (which_image == "house_all_image") {
         house_all_path = image == null ? null : File(image.path);
+        uploadFile(house_all_id, house_all_path, "housepurchase", "all", context);
       } else if (which_image == "house_first_image") {
         house_first_path = image == null ? null : File(image.path);
+        uploadFile(house_first_id, house_first_path, "housepurchase", "first", context);
       } else if (which_image == "house_second_image") {
         house_second_path = image == null ? null : File(image.path);
+        uploadFile(house_second_id, house_second_path, "housepurchase", "second", context);
       }
     });
   }
 
-  _imgFromCamera(String which_image) async {
+  _imgFromCamera(String which_image, BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
     XFile? image =
     await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
@@ -2507,57 +3542,97 @@ class _ResidentUploadImageState extends State<ResidentUploadImage> {
     setState(() {
       if (which_image == "aadhar_both_image") {
         aadhar_both_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_both_id, aadhar_both_path, "adhar", "all", context);
       } else if (which_image == "aadhar_front_image") {
         aadhar_front_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_front_id, aadhar_front_path, "adhar", "front", context);
       } else if (which_image == "aadhar_back_image") {
         aadhar_back_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_back_id, aadhar_back_path, "adhar", "back", context);
       } else if (which_image == "utility_first_image") {
         utility_first_path = image == null ? null : File(image.path);
+        uploadFile(utility_first_id, utility_first_path, "utility", "first", context);
       } else if (which_image == "utility_second_image") {
         utility_second_path = image == null ? null : File(image.path);
+        uploadFile(utility_second_id, utility_second_path, "utility", "second", context);
       } else if (which_image == "utility_third_image") {
         utility_third_path = image == null ? null : File(image.path);
+        uploadFile(utility_third_id, utility_third_path, "utility", "third", context);
       } else if (which_image == "utility_all_image") {
         utility_all_path = image == null ? null : File(image.path);
+        uploadFile(utility_all_id, utility_all_path, "utility", "all", context);
       } else if (which_image == "tele_first_image") {
         tele_first_path = image == null ? null : File(image.path);
+        uploadFile(tele_first_id, tele_first_path, "telephone", "first", context);
       } else if (which_image == "tele_second_image") {
         tele_second_path = image == null ? null : File(image.path);
-      }else if (which_image == "tele_third_image") {
+        uploadFile(tele_second_id, tele_second_path, "telephone", "second", context);
+      } else if (which_image == "tele_third_image") {
         tele_third_path = image == null ? null : File(image.path);
+        uploadFile(aadhar_both_id, tele_third_path, "telephone", "third", context);
       } else if (which_image == "tele_all_image") {
         tele_all_path = image == null ? null : File(image.path);
+        uploadFile(tele_all_id, tele_all_path, "telephone", "all", context);
       } else if (which_image == "passport_all_image") {
         passport_all_path = image == null ? null : File(image.path);
+        uploadFile(passport_all_id, passport_all_path, "passport", "all", context);
       } else if (which_image == "passport_first_image") {
         passport_first_path = image == null ? null : File(image.path);
+        uploadFile(passport_first_id, passport_first_path, "passport", "first", context);
       } else if (which_image == "passport_last_image") {
         passport_last_path = image == null ? null : File(image.path);
+        uploadFile(passport_last_id, passport_last_path, "passport", "last", context);
       } else if (which_image == "voter_all_image") {
         voter_all_path = image == null ? null : File(image.path);
+        uploadFile(voter_all_id, voter_all_path, "voter", "all", context);
+      } else if (which_image == "voter_front_image") {
+        voter_front_path = image == null ? null : File(image.path);
+        uploadFile(voter_front_id, voter_front_path, "voter", "front", context);
       } else if (which_image == "voter_last_image") {
         voter_last_path = image == null ? null : File(image.path);
+        uploadFile(voter_last_id, voter_last_path, "voter", "last", context);
       } else if (which_image == "driving_all_image") {
         driving_all_path = image == null ? null : File(image.path);
+        uploadFile(driving_all_id, driving_all_path, "drivinglicense", "all", context);
+      } else if (which_image == "driving_front_image") {
+        driving_front_path = image == null ? null : File(image.path);
+        uploadFile(driving_front_id, driving_front_path, "drivinglicense", "front", context);
+      } else if (which_image == "driving_back_image") {
+        driving_back_path = image == null ? null : File(image.path);
+        uploadFile(driving_back_id, driving_back_path, "drivinglicense", "back", context);
       } else if (which_image == "rental_all_image") {
         rental_all_path = image == null ? null : File(image.path);
+        uploadFile(rental_all_id, rental_all_path, "rental", "all", context);
       } else if (which_image == "rental_front_image") {
         rental_front_path = image == null ? null : File(image.path);
+        uploadFile(rental_front_id, rental_front_path, "rental", "front", context);
       } else if (which_image == "rental_back_image") {
         rental_back_path = image == null ? null : File(image.path);
+        uploadFile(rental_back_id, rental_back_path, "rental", "back", context);
       } else if (which_image == "company_all_image") {
         company_all_path = image == null ? null : File(image.path);
+        uploadFile(company_all_id, company_all_path, "companyletter", "all", context);
       } else if (which_image == "company_first_image") {
         company_first_path = image == null ? null : File(image.path);
+        uploadFile(company_first_id, company_first_path, "companyletter", "first", context);
       } else if (which_image == "company_second_image") {
         company_second_path = image == null ? null : File(image.path);
+        uploadFile(company_second_id, company_second_path, "companyletter", "second", context);
       } else if (which_image == "house_all_image") {
         house_all_path = image == null ? null : File(image.path);
+        uploadFile(house_all_id, house_all_path, "housepurchase", "all", context);
       } else if (which_image == "house_first_image") {
         house_first_path = image == null ? null : File(image.path);
+        uploadFile(house_first_id, house_first_path, "housepurchase", "first", context);
       } else if (which_image == "house_second_image") {
         house_second_path = image == null ? null : File(image.path);
+        uploadFile(house_second_id, house_second_path, "housepurchase", "second", context);
       }
     });
+  }
+
+  void uploadFile(
+      String id, File _file, String ud_type, ud_doctype, BuildContext context) {
+    _networkCall.update_proofs(id, ud_type, ud_doctype, _file, context);
   }
 }

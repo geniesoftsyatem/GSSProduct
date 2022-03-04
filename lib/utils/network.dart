@@ -9,10 +9,13 @@ import 'package:genie_money/Model/personal_details_model.dart';
 import 'package:genie_money/Model/pincode_model.dart';
 import 'package:genie_money/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Model/bank_details_model.dart';
 import '../Model/employment_details_model.dart';
+import '../Model/user_proof_model.dart';
 import '../home.dart';
 
 class NetworkCall {
@@ -33,8 +36,7 @@ class NetworkCall {
     return isConnected;
   }
 
-  Future<bool> fetchRegistrationPosts(
-      String email,
+  Future<bool> fetchRegistrationPosts(String email,
       String mobile_no,
       String password,
       String os,
@@ -44,7 +46,6 @@ class NetworkCall {
       String install_location,
       String usertype,
       BuildContext context) async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -107,7 +108,6 @@ class NetworkCall {
 
   Future<bool> fetchLoginPosts(String username, String password,
       String otp, String type, BuildContext context) async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -117,7 +117,8 @@ class NetworkCall {
 
       if (type == "Customer") {
         response = await http.post(
-          Uri.parse('http://165.22.219.135/geniemoney/public/index.php/applogin'),
+          Uri.parse(
+              'http://165.22.219.135/geniemoney/public/index.php/applogin'),
           body: body,
         );
       } else {
@@ -175,7 +176,6 @@ class NetworkCall {
 
   Future<bool> generateOtp(String username, String password,
       String type, BuildContext context) async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -190,7 +190,8 @@ class NetworkCall {
         );
       } else {
         response = await http.post(
-          Uri.parse('http://165.22.219.135/geniemoney/public/index.php/appcompanyotp'),
+          Uri.parse(
+              'http://165.22.219.135/geniemoney/public/index.php/appcompanyotp'),
           body: body,
         );
       }
@@ -226,9 +227,8 @@ class NetworkCall {
     }
   }
 
-  Future<bool> resendOtp(
-      String username, String password, BuildContext context) async {
-
+  Future<bool> resendOtp(String username, String password,
+      BuildContext context) async {
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -265,9 +265,8 @@ class NetworkCall {
     }
   }
 
-  Future<Pincode_model> getStateAndCity(
-      String pincode, BuildContext context) async {
-
+  Future<Pincode_model> getStateAndCity(String pincode,
+      BuildContext context) async {
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -297,13 +296,13 @@ class NetworkCall {
   }
 
   Future<PersonalDetailsModel> getPersonalDetails() async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
-
       final response = await http.get(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/getpersonalinfo?userid=' + Constants.userid),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/getpersonalinfo?userid=' +
+                Constants.userid),
       );
 
       final response_server = json.decode(response.body);
@@ -313,7 +312,6 @@ class NetworkCall {
 
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
-
           return PersonalDetailsModel.fromJson(json.decode(response.body));
         } else {
           _createToast("No Data Found");
@@ -333,20 +331,21 @@ class NetworkCall {
     }
   }
 
-  Future<void> update_profile(var basicInfo, var residentialinfo, var references, BuildContext context) async {
-
+  Future<void> update_profile(var basicInfo, var residentialinfo,
+      var references, BuildContext context) async {
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
       final body = {
         "userid": Constants.userid,
         "basicinfo": jsonEncode(basicInfo),
-        "residentialinfo" : jsonEncode(residentialinfo),
-        "references" : jsonEncode(references)
+        "residentialinfo": jsonEncode(residentialinfo),
+        "references": jsonEncode(references)
       };
 
       final response = await http.post(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/updatepersonalinfo'),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/updatepersonalinfo'),
         body: body,
       );
 
@@ -358,7 +357,8 @@ class NetworkCall {
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
           _createToast("Details Updated Successfully");
-          Route newRoute = MaterialPageRoute(builder: (context) => const Home());
+          Route newRoute = MaterialPageRoute(
+              builder: (context) => const Home());
           Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
         } else {
           _createToast("Failed to update Details");
@@ -379,13 +379,13 @@ class NetworkCall {
   }
 
   Future<EmploymentDetailsModel> getEmploymentDetails() async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
-
       final response = await http.get(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/getemploymentdetail?userid=' + Constants.userid),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/getemploymentdetail?userid=' +
+                Constants.userid),
       );
 
       final response_server = json.decode(response.body);
@@ -395,7 +395,6 @@ class NetworkCall {
 
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
-
           return EmploymentDetailsModel.fromJson(json.decode(response.body));
         } else {
           _createToast("No Data Found");
@@ -415,8 +414,8 @@ class NetworkCall {
     }
   }
 
-  Future<void> update_employment(var employmentdetail, BuildContext context) async {
-
+  Future<void> update_employment(var employmentdetail,
+      BuildContext context) async {
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -426,7 +425,8 @@ class NetworkCall {
       };
 
       final response = await http.post(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/updatemploymentdetail'),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/updatemploymentdetail'),
         body: body,
       );
 
@@ -438,7 +438,8 @@ class NetworkCall {
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
           _createToast("Details Updated Successfully");
-          Route newRoute = MaterialPageRoute(builder: (context) => const Home());
+          Route newRoute = MaterialPageRoute(
+              builder: (context) => const Home());
           Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
         } else {
           _createToast("Failed to update Details");
@@ -459,7 +460,6 @@ class NetworkCall {
   }
 
   Future<void> update_bank(var bankDetails, BuildContext context) async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -469,7 +469,8 @@ class NetworkCall {
       };
 
       final response = await http.post(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/updatbankdetail'),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/updatbankdetail'),
         body: body,
       );
 
@@ -481,7 +482,8 @@ class NetworkCall {
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
           _createToast("Details Updated Successfully");
-          Route newRoute = MaterialPageRoute(builder: (context) => const Home());
+          Route newRoute = MaterialPageRoute(
+              builder: (context) => const Home());
           Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
         } else {
           _createToast("Failed to update Details");
@@ -502,13 +504,13 @@ class NetworkCall {
   }
 
   Future<BankDetailsModel> getbankDetails() async {
-
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
-
       final response = await http.get(
-        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/getbankdetail?userid=' + Constants.userid),
+        Uri.parse(
+            'http://165.22.219.135/geniemoney/public/index.php/getbankdetail?userid=' +
+                Constants.userid),
       );
 
       final response_server = json.decode(response.body);
@@ -518,7 +520,6 @@ class NetworkCall {
 
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
-
           return BankDetailsModel.fromJson(json.decode(response.body));
         } else {
           _createToast("No Data Found");
@@ -527,6 +528,102 @@ class NetworkCall {
       } else {
         if (response.statusCode == 404) {
           _createToast("No Data Found");
+        } else {
+          _createToast("Something went wrong");
+        }
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Please connect to internet");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> update_proofs(String ud_id, String ud_type, String ud_doctype,
+      File _file, BuildContext context) async {
+    bool isConnected = await isNetworkConnected();
+
+    if (isConnected) {
+      String mimeType = "";
+      if (_file.existsSync()) {
+        mimeType = mime(_file.path
+            .split("/")
+            .last) ?? "image/jpg";
+      }
+      var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+              "http://165.22.219.135/geniemoney/public/index.php/updatuserdoc"));
+      request.fields['ud_id'] = ud_id;
+      request.fields['userid'] = Constants.userid;
+      request.fields['ud_type'] = ud_type;
+      request.fields['ud_doctype'] = ud_doctype;
+      request.files.add(http.MultipartFile(
+        'photo',
+        _file.readAsBytes().asStream(),
+        _file.lengthSync(),
+        filename: _file.path
+            .split("/")
+            .last,
+        contentType: MediaType("file", mimeType
+            .split("/")
+            .last),
+      ),
+      );
+      var res = await request.send();
+
+      final response_server = res.reasonPhrase!;
+      if (kDebugMode) {
+        print(response_server);
+      }
+
+      if (res.statusCode == 201) {
+        if (ud_id.isNotEmpty) {
+          _createToast("File Updated Successfully");
+        } else {
+          _createToast("File Uploaded Successfully");
+        }
+      } else {
+        if (res.statusCode == 404) {
+          if (ud_id.isNotEmpty) {
+            _createToast("Failed to update File");
+          } else {
+            _createToast("Failed to upload File");
+          }
+        } else {
+          _createToast("Something went wrong");
+        }
+        throw Exception('Failed to load album');
+      }
+    } else {
+      _createToast("Please connect to internet");
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<UserProofModel> getUserProofs() async {
+    bool isConnected = await isNetworkConnected();
+
+    if (isConnected) {
+      final response = await http.get(
+        Uri.parse('http://165.22.219.135/geniemoney/public/index.php/getuserdoc?userid=' + Constants.userid),
+      );
+
+      final response_server = json.decode(response.body);
+      if (kDebugMode) {
+        print(response_server);
+      }
+
+      if (response.statusCode == 201) {
+        if (response_server['status'] == 201) {
+          return UserProofModel.fromJson(json.decode(response.body));
+        } else {
+          _createToast("No Files Uploaded");
+          throw Exception('Failed to load album');
+        }
+      } else {
+        if (response.statusCode == 404) {
+          _createToast("No Files Uploaded");
         } else {
           _createToast("Something went wrong");
         }
