@@ -273,6 +273,18 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
+                        } else if (homepageList[index].name == "Financial Calculator") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.financecalculator");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
                         } else if (homepageList[index].name == "Education" || homepageList[index].name == "Jobs") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.education");
@@ -536,6 +548,22 @@ class _ALlOptions extends State<AllOptions> {
             package: 'com.gss.gssfitness',
             componentName: 'com.gss.gssfitness.ui.FitnessActivity',
             data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Financial Calculator") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.financecalculator');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.financecalculator',
+            componentName: 'com.gss.financecalculator.activity.MainActivity',
+            data: 'com.gss.financecalculator',
             arguments: someMap,
           );
           await intent.launch();

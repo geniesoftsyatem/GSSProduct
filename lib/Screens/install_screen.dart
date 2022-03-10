@@ -155,6 +155,18 @@ class _InstallApps extends State<InstallApps> {
       title = "Health/Fitness";
       description =
       "Install Health & Fitness App, We provide you workout, Yoga, Pedometer & Meditation to keep physical fitness, healthy body and also provides dynamic and creative intellectual activity.";
+    } else if(widget.name == "Financial Calculator") {
+      image_list = [
+        "images/fc_gs_!.png",
+        "images/fc_gs_2.png",
+        "images/fc_gs_3.png",
+        "images/fc_gs_4.png",
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/calculator.apk";
+      _fileName = "calculator.apk";
+      app_package_name = "com.gss.financecalculator";
+      title = "Financial Calculator";
+      description = "Install the Financial Calculator, This is exclusively for Indians with the schemes available in Indian Banks, Post Office, Mutual Funds, Retirement, Income Tax, Insurance, Bonds and much more. Provides the calculator for Home loan, Credit card payoff, Mortgage Loan, Home Lease, Retirements, Saving (Recurring Deposit) etc.";
     }
     _getPackageStatus();
     _getFileDirectory();
@@ -374,6 +386,12 @@ class _InstallApps extends State<InstallApps> {
                           OpenFile.open(open_path);
                         }
                       } else if(option == "Health / Fitness"){
+                        if (isInstalled) {
+                          launchNativeActivity(option);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (option == "Financial Calculator") {
                         if (isInstalled) {
                           launchNativeActivity(option);
                         } else {
@@ -634,6 +652,22 @@ class _InstallApps extends State<InstallApps> {
             package: 'com.gss.gssfitness',
             componentName: 'com.gss.gssfitness.ui.FitnessActivity',
             data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Financial Calculator") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.financecalculator');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.financecalculator',
+            componentName: 'com.gss.financecalculator.activity.MainActivity',
+            data: 'com.gss.financecalculator',
             arguments: someMap,
           );
           await intent.launch();
