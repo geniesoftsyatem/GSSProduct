@@ -12,7 +12,14 @@ class AddMoneyScreen extends StatefulWidget {
   }
 }
 
-class _AddMoneyScreen extends State<AddMoneyScreen> {
+class _AddMoneyScreen extends State<AddMoneyScreen> with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -21,7 +28,7 @@ class _AddMoneyScreen extends State<AddMoneyScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF3A3A3A),
         title: Text(
-          "Add Money",
+          "Credit Card to Bank A/C",
           style: const TextStyle(
             color: Color(0xFFFFAE00),
           ),

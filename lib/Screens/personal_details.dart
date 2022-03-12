@@ -670,6 +670,144 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                   };
                   basic_info_json = jsonEncode(basicInfobody);
                   print(basic_info_json);
+                  final addresses = {
+                    "ur_id" : ur_id_cur,
+                    "ur_same" : "1",
+                    "ur_userid" : Constants.userid,
+                    "ur_ownership" : ownership,
+                    "ur_residingwith" : residing,
+                    "ur_noofyears" : years,
+                    "ur_address" : _current_address_controller.text,
+                    "ur_locality" : locality,
+                    "ur_pincode" : _pincode_controller.text,
+                    "ur_city" : _city_controller.text,
+                    "ur_state" : _state_controller.text,
+                  };
+                  residentialInfoBody = [
+                    addresses,
+                    addresses
+                  ];
+                  residential_info_json = jsonEncode(residentialInfoBody);
+                  print(residential_info_json);
+                  Map<String, dynamic> reference_1 = Map<String, dynamic>();
+                  Map<String, dynamic> reference_2 = Map<String, dynamic>();
+                  Map<String, dynamic> reference_3 = Map<String, dynamic>();
+                  Map<String, dynamic> reference_4 = Map<String, dynamic>();
+                  var refer;
+
+                  reference_1 = {
+                    "urf_id" : urf_id_1,
+                    "urf_userid" : Constants.userid,
+                    "urf_name" : _reference_name_1_controller.text,
+                    "urf_mobile" : _reference_mobile_no_1_controller.text,
+                    "urf_relation" : _reference_relation_type_1_controller.text
+                  };
+
+                  reference_2 = {
+                    "urf_id" : urf_id_2,
+                    "urf_userid" : Constants.userid,
+                    "urf_name" : _reference_name_2_controller.text,
+                    "urf_mobile" : _reference_mobile_no_2_controller.text,
+                    "urf_relation" : _reference_relation_type_2_controller.text
+                  };
+
+                  reference_3 = {
+                    "urf_id" : urf_id_3,
+                    "urf_userid" : Constants.userid,
+                    "urf_name" : _reference_name_3_controller.text,
+                    "urf_mobile" : _reference_mobile_no_3_controller.text,
+                    "urf_relation" : _reference_relation_type_3_controller.text
+                  };
+
+                  reference_4 = {
+                    "urf_id" : urf_id_4,
+                    "urf_userid" : Constants.userid,
+                    "urf_name" : _reference_name_4_controller.text,
+                    "urf_mobile" : _reference_mobile_no_4_controller.text,
+                    "urf_relation" : _reference_relation_type_4_controller.text
+                  };
+
+                  String data = "";
+                  if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_2,
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty){
+                    refer = [
+                      reference_2,
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty){
+                    refer = [
+                      reference_1,
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isNotEmpty){
+                    refer = [
+                      reference_1,
+                      reference_2,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_2,
+                      reference_3
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_3,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_2,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_2,
+                      reference_3
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isEmpty && reference_4.isNotEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_4
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_3
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isEmpty) {
+                    refer = [
+                      reference_1,
+                      reference_2
+                    ];
+                    data = jsonEncode(refer);
+                  } else if (reference_1.isEmpty && reference_2.isEmpty && reference_3.isEmpty && reference_4.isEmpty) {
+                    refer = [
+                      ""
+                    ];
+                    data = jsonEncode(refer);
+                  }
+                  NetworkCall network = NetworkCall();
+                  network.update_profile(basicInfobody, residentialInfoBody, refer, "1", context);
                   _tabController.animateTo(1);
                 },
                 child: const Text(
@@ -1003,6 +1141,125 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                       ];
                       residential_info_json = jsonEncode(request);
                       print(residential_info_json);
+                      Map<String, dynamic> reference_1 = Map<String, dynamic>();
+                      Map<String, dynamic> reference_2 = Map<String, dynamic>();
+                      Map<String, dynamic> reference_3 = Map<String, dynamic>();
+                      Map<String, dynamic> reference_4 = Map<String, dynamic>();
+                      var refer;
+
+                      reference_1 = {
+                        "urf_id" : urf_id_1,
+                        "urf_userid" : Constants.userid,
+                        "urf_name" : _reference_name_1_controller.text,
+                        "urf_mobile" : _reference_mobile_no_1_controller.text,
+                        "urf_relation" : _reference_relation_type_1_controller.text
+                      };
+
+                      reference_2 = {
+                        "urf_id" : urf_id_2,
+                        "urf_userid" : Constants.userid,
+                        "urf_name" : _reference_name_2_controller.text,
+                        "urf_mobile" : _reference_mobile_no_2_controller.text,
+                        "urf_relation" : _reference_relation_type_2_controller.text
+                      };
+
+                      reference_3 = {
+                        "urf_id" : urf_id_3,
+                        "urf_userid" : Constants.userid,
+                        "urf_name" : _reference_name_3_controller.text,
+                        "urf_mobile" : _reference_mobile_no_3_controller.text,
+                        "urf_relation" : _reference_relation_type_3_controller.text
+                      };
+
+                      reference_4 = {
+                        "urf_id" : urf_id_4,
+                        "urf_userid" : Constants.userid,
+                        "urf_name" : _reference_name_4_controller.text,
+                        "urf_mobile" : _reference_mobile_no_4_controller.text,
+                        "urf_relation" : _reference_relation_type_4_controller.text
+                      };
+
+                      String data = "";
+                      if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty) {
+                        refer = [
+                          reference_1,
+                          reference_2,
+                          reference_3,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty){
+                        refer = [
+                          reference_2,
+                          reference_3,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty){
+                        refer = [
+                          reference_1,
+                          reference_3,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isNotEmpty){
+                        refer = [
+                          reference_1,
+                          reference_2,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                        refer = [
+                          reference_1,
+                          reference_2,
+                          reference_3
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isNotEmpty) {
+                        refer = [
+                          reference_3,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isNotEmpty) {
+                        refer = [
+                          reference_2,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isEmpty && reference_2.isNotEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                        refer = [
+                          reference_2,
+                          reference_3
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isEmpty && reference_4.isNotEmpty) {
+                        refer = [
+                          reference_1,
+                          reference_4
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isNotEmpty && reference_2.isEmpty && reference_3.isNotEmpty && reference_4.isEmpty) {
+                        refer = [
+                          reference_1,
+                          reference_3
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isNotEmpty && reference_2.isNotEmpty && reference_3.isEmpty && reference_4.isEmpty) {
+                        refer = [
+                          reference_1,
+                          reference_2
+                        ];
+                        data = jsonEncode(refer);
+                      } else if (reference_1.isEmpty && reference_2.isEmpty && reference_3.isEmpty && reference_4.isEmpty) {
+                        refer = [
+                          ""
+                        ];
+                        data = jsonEncode(refer);
+                      }
+                      NetworkCall network = NetworkCall();
+                      network.update_profile(basicInfobody, residentialInfoBody, refer, "2", context);
                       _tabController.animateTo(2);
                     }
                 },
@@ -1573,7 +1830,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen>
                     data = jsonEncode(refer);
                   }
                   NetworkCall network = NetworkCall();
-                  network.update_profile(basicInfobody, residentialInfoBody, refer, context);
+                  network.update_profile(basicInfobody, residentialInfoBody, refer, "3", context);
                 },
                 child: const Text(
                   "Save",

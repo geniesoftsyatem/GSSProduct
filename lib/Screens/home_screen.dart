@@ -95,7 +95,7 @@ class MyHomeClass extends State<HomeScreen> {
                       name: "Apps History",
                       image: "images/app_history.png"),
                   HomePageList(
-                      id: "3", name: "Portfolio", image: "images/profolio.png"),
+                      id: "3", name: "Add Portfolio", image: "images/profolio.png"),
                   HomePageList(
                       id: "5", name: "Employee", image: "images/retailer.png")
                 ]
@@ -113,7 +113,7 @@ class MyHomeClass extends State<HomeScreen> {
                     name: "Apps History",
                     image: "images/app_history.png"),
                 HomePageList(
-                    id: "3", name: "Portfolio", image: "images/profolio.png"),
+                    id: "3", name: "Add Portfolio", image: "images/profolio.png"),
                 HomePageList(
                     id: "5", name: "Retailer", image: "images/retailer.png")
               ]
@@ -130,7 +130,7 @@ class MyHomeClass extends State<HomeScreen> {
                     name: "Apps History",
                     image: "images/app_history.png"),
                 HomePageList(
-                    id: "3", name: "Portfolio", image: "images/profolio.png"),
+                    id: "3", name: "Add Portfolio", image: "images/profolio.png"),
                 HomePageList(
                     id: "5", name: "Distributor", image: "images/retailer.png")
               ]
@@ -355,7 +355,7 @@ class MyHomeClass extends State<HomeScreen> {
                                                   builder: (context) =>
                                                       RetailerScreen(
                                                           e.name, type)));
-                                    } else if (e.name == "Portfolio") {
+                                    } else if (e.name == "Add Portfolio") {
                                       ZoomDrawer.of(context)!.isOpen()
                                           ? ZoomDrawer.of(context)!.toggle()
                                           : Navigator.push(

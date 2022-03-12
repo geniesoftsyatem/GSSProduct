@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:genie_money/Screens/onboard_screen.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Screens/signin_screen.dart';
 import 'package:genie_money/utils/network.dart';
@@ -12,7 +13,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  String which_page;
+
+  SignupScreen(this.which_page, {Key? key}) : super(key: key);
 
   @override
   _SignupScreen createState() {
@@ -86,6 +89,11 @@ class _SignupScreen extends State<SignupScreen>
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    if (widget.which_page == "1") {
+      _tabController.animateTo(1);
+    } else if (widget.which_page == "2") {
+      _tabController.animateTo(2);
+    }
     super.initState();
   }
 
@@ -216,11 +224,10 @@ class _SignupScreen extends State<SignupScreen>
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SignInScreen()));
+                                        Route newRoute = MaterialPageRoute(
+                                            builder: (context) =>
+                                                OnBoardScreen("signup", type == "Customer" ? "0" : type == "Sales Partner" ? "1" : "2"));
+                                        Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
                                       },
                                       child: const Text(
                                         "LOGIN",
@@ -609,7 +616,7 @@ class _SignupScreen extends State<SignupScreen>
                                                         Navigator.pushAndRemoveUntil<dynamic>(
                                                           context,
                                                           MaterialPageRoute<dynamic>(
-                                                            builder: (BuildContext context) => const SignInScreen(),
+                                                            builder: (BuildContext context) => SignInScreen("0"),
                                                           ),
                                                               (route) => false,
                                                         );
@@ -641,7 +648,7 @@ class _SignupScreen extends State<SignupScreen>
                                                         Navigator.pushAndRemoveUntil<dynamic>(
                                                           context,
                                                           MaterialPageRoute<dynamic>(
-                                                            builder: (BuildContext context) => const SignInScreen(),
+                                                            builder: (BuildContext context) => SignInScreen("2"),
                                                           ),
                                                               (route) => false,
                                                         );
@@ -673,7 +680,7 @@ class _SignupScreen extends State<SignupScreen>
                                                         Navigator.pushAndRemoveUntil<dynamic>(
                                                           context,
                                                           MaterialPageRoute<dynamic>(
-                                                            builder: (BuildContext context) => const SignInScreen(),
+                                                            builder: (BuildContext context) => SignInScreen("1"),
                                                           ),
                                                               (route) => false,
                                                         );

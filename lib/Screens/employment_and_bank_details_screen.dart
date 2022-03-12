@@ -747,45 +747,25 @@ class _EmploymentAndBankDetailsScreenState
                         margin: const EdgeInsets.only(top: 10.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_employer_name_controller.text.isNotEmpty) {
-                              if (_official_email_controller.text.isNotEmpty) {
-                                if (_date_controller.text.isNotEmpty) {
-                                  if (_net_monthly_salary_controller.text.isNotEmpty) {
-                                    if (_office_address_controller.text.isNotEmpty) {
-                                      final data = {
-                                        "ue_id" : ue_id,
-                                        "ue_userid" : Constants.userid,
-                                        "ue_emptype" : emp_type == "Salaried" ? "1" : emp_type == "UnEmployed" ? "2" : "3",
-                                        "ue_employername" : _employer_name_controller.text,
-                                        "ue_officeemail" : _official_email_controller.text,
-                                        "ue_workingsince" : _date_controller.text,
-                                        "ue_monthsalary" : _net_monthly_salary_controller.text,
-                                        "ue_salaryaccount" : salary_type,
-                                        "ue_jobcategory" : job_function_id,
-                                        "ue_designation" : designation_type,
-                                        "ue_worksector" : work_sector_id,
-                                        "ue_orgtype" : organisation_id,
-                                        "ue_officeaddress" : _office_address_controller.text
-                                      };
-                                      final employmentdetail = [
-                                        data
-                                      ];
-                                      _networkCall.update_employment(employmentdetail, context);
-                                    } else {
-                                      _createToast("Please enter work/office address");
-                                    }
-                                  } else {
-                                    _createToast("Please enter net monthly salary");
-                                  }
-                                } else {
-                                  _createToast("Please enter working since");
-                                }
-                              } else {
-                                _createToast("Please enter official email");
-                              }
-                            } else {
-                              _createToast("Please enter employer name");
-                            }
+                            final data = {
+                              "ue_id" : ue_id,
+                              "ue_userid" : Constants.userid,
+                              "ue_emptype" : emp_type == "Salaried" ? "1" : emp_type == "UnEmployed" ? "2" : "3",
+                              "ue_employername" : _employer_name_controller.text,
+                              "ue_officeemail" : _official_email_controller.text,
+                              "ue_workingsince" : _date_controller.text,
+                              "ue_monthsalary" : _net_monthly_salary_controller.text,
+                              "ue_salaryaccount" : salary_type,
+                              "ue_jobcategory" : job_function_id,
+                              "ue_designation" : designation_type,
+                              "ue_worksector" : work_sector_id,
+                              "ue_orgtype" : organisation_id,
+                              "ue_officeaddress" : _office_address_controller.text
+                            };
+                            final employmentdetail = [
+                              data
+                            ];
+                            _networkCall.update_employment(employmentdetail, context);
                           },
                           child: const Text(
                             "Save",

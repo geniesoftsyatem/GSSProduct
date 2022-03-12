@@ -5,6 +5,7 @@ import 'package:genie_money/Model/home_menu_list_model.dart';
 import 'package:genie_money/Screens/add_money_screen.dart';
 import 'package:genie_money/Screens/balance_inquiry_screen.dart';
 import 'package:genie_money/Screens/cash_withdrawal_screen.dart';
+import 'package:genie_money/Screens/credit_to_bank.dart';
 import 'package:genie_money/Screens/mini_statement_screen.dart';
 import 'package:genie_money/Screens/money_transfer_screen.dart';
 import 'package:genie_money/utils/silver_delegate.dart';
@@ -29,7 +30,7 @@ class _MoneyTransfer extends State<MoneyTransfer>{
       HomePageList(
           id: "1", name: "Money Transfer", image: "images/moneytransfer_gm.png"),
       HomePageList(
-          id: "2", name: "Add Money", image: "images/addmoney_gm.png"),
+          id: "2", name: "Credit Card to Bank A/C", image: "images/addmoney_gm.png"),
       HomePageList(
           id: "3", name: "Balance Inquiry", image: "images/balance_enquiry_gm.png"),
       HomePageList(
@@ -87,12 +88,12 @@ class _MoneyTransfer extends State<MoneyTransfer>{
                               MaterialPageRoute(
                                   builder: (context) =>
                                       MoneyTransferScreen()));
-                        }else if(list[index].name == "Add Money"){
+                        }else if(list[index].name == "Credit Card to Bank A/C"){
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      AddMoneyScreen()));
+                                      const CreditToBank()));
                         }else if(list[index].name == "Balance Inquiry"){
                           Navigator.push(
                               context,

@@ -332,7 +332,7 @@ class NetworkCall {
   }
 
   Future<void> update_profile(var basicInfo, var residentialinfo,
-      var references, BuildContext context) async {
+      var references, String from, BuildContext context) async {
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
@@ -357,9 +357,11 @@ class NetworkCall {
       if (response.statusCode == 201) {
         if (response_server['status'] == 201) {
           _createToast("Details Updated Successfully");
-          Route newRoute = MaterialPageRoute(
-              builder: (context) => const Home());
-          Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
+          if (from == "3") {
+            Route newRoute = MaterialPageRoute(
+                builder: (context) => const Home());
+            Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
+          }
         } else {
           _createToast("Failed to update Details");
           throw Exception('Failed to load album');

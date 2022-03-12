@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Screens/forgot_password_screen.dart';
+import 'package:genie_money/Screens/onboard_screen.dart';
 import 'package:genie_money/Screens/signup_screen.dart';
 import 'package:genie_money/utils/network.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,7 +13,9 @@ import 'package:geolocator/geolocator.dart';
 import 'otp_screen.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  String which_page;
+
+  SignInScreen(this.which_page, {Key? key}) : super(key: key);
 
   @override
   _SignInScreen createState() => _SignInScreen();
@@ -68,6 +71,11 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
       isFirst = true;
     });
     _tabController = TabController(length: 3, vsync: this);
+    if (widget.which_page == "1") {
+      _tabController.animateTo(1);
+    } else if (widget.which_page == "2") {
+      _tabController.animateTo(2);
+    }
     super.initState();
   }
 
@@ -489,10 +497,9 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignupScreen()));
+                  Route newRoute = MaterialPageRoute(
+                      builder: (context) => OnBoardScreen("signin", title == "Customer" ? "0" : title == "Sales Partner" ? "1" : "2"));
+                  Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
                 },
               ),
             ),

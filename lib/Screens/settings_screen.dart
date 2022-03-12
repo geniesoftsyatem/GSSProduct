@@ -55,6 +55,22 @@ class _SettingsScreen extends State<SettingsScreen> {
             image: "images/change_language.png"),
         HomePageList(id: "10", name: "Logout", image: "images/logout.png")
       ];
+    } else if (widget.title == "Employee") {
+      homepageList = [
+        HomePageList(
+            id: "7",
+            name: "Change Password",
+            image: "images/change_password.png"),
+        HomePageList(
+            id: "8",
+            name: "Help",
+            image: "images/help.png"),
+        HomePageList(
+            id: "9",
+            name: "Change Language",
+            image: "images/change_language.png"),
+        HomePageList(id: "10", name: "Logout", image: "images/logout.png")
+      ];
     } else {
       homepageList = [
         HomePageList(
@@ -253,7 +269,7 @@ class _SettingsScreen extends State<SettingsScreen> {
               Navigator.pushAndRemoveUntil<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => const SignInScreen(),
+                  builder: (BuildContext context) => SignInScreen("0"),
                 ),
                     (route) => false,
               );

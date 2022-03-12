@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Model/pincode_model.dart';
+import 'package:genie_money/Screens/settings_screen.dart';
 import 'package:genie_money/utils/location_finder.dart';
 import 'package:genie_money/utils/network.dart';
 import 'package:geocoding/geocoding.dart';
@@ -147,13 +148,30 @@ class _PortfolioScreenState extends State<PortfolioScreen>
         appBar: widget.type == "Employee" ? AppBar(
           backgroundColor: const Color(0xFF3A3A3A),
           title: const Text(
-            "Portfolio",
+            "Add Portfolio",
             style: TextStyle(color: Color(0xFFFFAE00)),
           ),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen(widget.type)));
+                },
+                child: const Icon(
+                  Icons.settings,
+                  color: Color(0xFFFFAE00),
+                ),
+              ),
+            ),
+          ],
         ) : AppBar(
           backgroundColor: const Color(0xFF3A3A3A),
           title: const Text(
-            "Portfolio",
+            "Add Portfolio",
             style: TextStyle(color: Color(0xFFFFAE00)),
           ),
           leading: IconButton(

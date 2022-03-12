@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Duration(seconds: 5),
             () =>
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => const OnBoardScreen())));
+                builder: (BuildContext context) => OnBoardScreen("splash", ""))));
   }
 
   @override
