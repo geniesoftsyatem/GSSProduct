@@ -167,6 +167,57 @@ class _InstallApps extends State<InstallApps> {
       app_package_name = "com.gss.financecalculator";
       title = "Financial Calculator";
       description = "Install the Financial Calculator, This is exclusively for Indians with the schemes available in Indian Banks, Post Office, Mutual Funds, Retirement, Income Tax, Insurance, Bonds and much more. Provides the calculator for Home loan, Credit card payoff, Mortgage Loan, Home Lease, Retirements, Saving (Recurring Deposit) etc.";
+    } else if(widget.name == "I Have To Fly") {
+      image_list = [
+        "images/i_have_to_fly_banner.png",
+        "images/i_have_to_fly2.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/fly.apk";
+      _fileName = "fly.apk";
+      app_package_name = "com.heyletscode.ihavetofly";
+      title = "I Have To Fly";
+      description = "Install the application for I have to Fly free games and enjoy your life.";
+    } else if(widget.name == "Space Shooter") {
+      image_list = [
+        "images/space_shooter_banner.png",
+        "images/space_shooter_banner_2.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/space.apk";
+      _fileName = "space.apk";
+      app_package_name = "com.gss.spaceshooter";
+      title = "Space Shooter";
+      description = "Install the application for Space Shooter free games and enjoy your life.";
+    } else if(widget.name == "Flying Fish") {
+      image_list = [
+        "images/flying_fish_banner.png",
+        "images/flying_fish_banner_2.png",
+        "images/flying_fish_banner_3.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/fish.apk";
+      _fileName = "fish.apk";
+      app_package_name = "com.gss.salinda.flyingfishgame";
+      title = "Flying Fish";
+      description = "Install the application for Flying Fish free games and enjoy your life.";
+    } else if(widget.name == "Plane Shooter") {
+      image_list = [
+        "images/plane_shooter_banner.png",
+        "images/plane_shooter_banner_2.png",
+        "images/plane_shooter_banner_3.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/planeshooter.apk";
+      _fileName = "planeshooter.apk";
+      app_package_name = "com.gss.planeshooter";
+      title = "Plane Shooter";
+      description = "Install the application for Plane Shooter free games and enjoy your life.";
+    } else if(widget.name == "Ludo") {
+      image_list = [
+        "images/ludo_banner.png"
+      ];
+      _fileUrl = "http://143.110.176.111/genieshield/ludo.apk";
+      _fileName = "ludo.apk";
+      app_package_name = "com.gss.myludogame";
+      title = "Ludo";
+      description = "Install the application for Ludo free games and enjoy your life.";
     }
     _getPackageStatus();
     _getFileDirectory();
@@ -397,6 +448,36 @@ class _InstallApps extends State<InstallApps> {
                         } else {
                           OpenFile.open(open_path);
                         }
+                      } else if (option == "I Have To Fly") {
+                        if (isInstalled) {
+                          launchNativeActivity(option);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (option == "Space Shooter") {
+                        if (isInstalled) {
+                          launchNativeActivity(option);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (option == "Flying Fish") {
+                        if (isInstalled) {
+                          launchNativeActivity(option);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (option == "Plane Shooter") {
+                        if (isInstalled) {
+                          launchNativeActivity(option);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
+                      } else if (option == "Ludo") {
+                        if (isInstalled) {
+                          launchNativeActivity(option);
+                        } else {
+                          OpenFile.open(open_path);
+                        }
                       }
                       Navigator.of(context).pop();
                     },
@@ -417,11 +498,6 @@ class _InstallApps extends State<InstallApps> {
       return baseStorage;
     }
 
-    // in this example we are using only Android and iOS so I can assume
-    // that you are not trying it for other platforms and the if statement
-    // for iOS is unnecessary
-
-    // iOS directory visible to user
     return await getApplicationDocumentsDirectory();
   }
 
@@ -441,7 +517,13 @@ class _InstallApps extends State<InstallApps> {
 
     if (isPermissionStatusGranted) {
       open_path = path.join(dir!.path, _fileName);
-      // await _startDownload(savePath);
+      bool fileExists = await File(open_path).exists();
+      if (fileExists) {
+        setState(() {
+          open_visible = true;
+          install_visible = false;
+        });
+      }
     } else {
       // handle the scenario when user declines the permissions
     }
@@ -668,6 +750,86 @@ class _InstallApps extends State<InstallApps> {
             package: 'com.gss.financecalculator',
             componentName: 'com.gss.financecalculator.activity.MainActivity',
             data: 'com.gss.financecalculator',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "I Have To Fly") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.heyletscode.ihavetofly',
+            componentName: 'com.heyletscode.ihavetofly.MainActivity',
+            data: 'com.heyletscode.ihavetofly',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Space Shooter") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.spaceshooter');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.spaceshooter',
+            componentName: 'com.gss.spaceshooter.StartUp',
+            data: 'com.gss.spaceshooter',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Flying Fish") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.salinda.flyingfishgame',
+            componentName: 'com.gss.salindia.flyingfishgame.SplashActivity',
+            data: 'com.gss.salinda.flyingfishgame',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Plane Shooter") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.planeshooter');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.planeshooter',
+            componentName: 'com.gss.planeshooter.MainActivity',
+            data: 'com.gss.planeshooter',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Ludo") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.myludogame');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.myludogame',
+            componentName: 'com.gss.myludogame.MainActivity',
+            data: 'com.gss.myludogame',
             arguments: someMap,
           );
           await intent.launch();

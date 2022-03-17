@@ -150,8 +150,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSettingsScreen()));
                         } else if (homepageList[index].name == "Change Language") {
                           showSelectDialog(context, width, height);
-                        }
-                        else {
+                        } else {
                           _alertDialog("", "Coming Soon");
                         }
                       },

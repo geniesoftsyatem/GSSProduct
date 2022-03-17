@@ -79,7 +79,11 @@ class MyHomeClass extends State<HomeScreen> {
                 HomePageList(
                     id: "7",
                     name: "Privilage Offer",
-                    image: "images/privilage_offer.png")
+                    image: "images/privilage_offer.png"),
+                HomePageList(
+                    id: "7",
+                    name: "Games",
+                    image: "images/games.png")
               ]
             }
           else if (type == "Retailer")

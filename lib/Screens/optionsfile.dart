@@ -135,6 +135,29 @@ class _ALlOptions extends State<AllOptions> {
             name: "CoWIN",
             image: "images/cowinlogo.png")
       ];
+    } else if (option.endsWith("Games")) {
+      homepageList = [
+        HomePageList(
+            id: "7",
+            name: "I Have To Fly",
+            image: "images/i_have_to_fly_icon.png"),
+        HomePageList(
+            id: "8",
+            name: "Space Shooter",
+            image: "images/space_shooter_icon.png"),
+        HomePageList(
+            id: "24",
+            name: "Flying Fish",
+            image: "images/flying_fish_icon.png"),
+        HomePageList(
+            id: "25",
+            name: "Plane Shooter",
+            image: "images/plane_shooter_icon.png"),
+        HomePageList(
+            id: "25",
+            name: "Ludo",
+            image: "images/ludo_gs.png")
+      ];
     }
 
     super.initState();
@@ -180,7 +203,67 @@ class _ALlOptions extends State<AllOptions> {
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        if (homepageList[index].name == "Credit Score") {
+                        if (homepageList[index].name == "I Have To Fly") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.heyletscode.ihavetofly");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "Space Shooter") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.spaceshooter");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "Flying Fish") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.salinda.flyingfishgame");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "Plane Shooter") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.planeshooter");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "Ludo") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.myludogame");
+                          if (installed) {
+                            launchNativeActivity(homepageList[index].name);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));
+                          }
+                        } else if (homepageList[index].name == "Credit Score") {
                           Route route = MaterialPageRoute(builder: (context) => const CreditScoreScreen());
                           Navigator.push(context, route);
                         } else if (homepageList[index].name == "Recharge and Bill Payment") {
@@ -564,6 +647,86 @@ class _ALlOptions extends State<AllOptions> {
             package: 'com.gss.financecalculator',
             componentName: 'com.gss.financecalculator.activity.MainActivity',
             data: 'com.gss.financecalculator',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "I Have To Fly") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.heyletscode.ihavetofly',
+            componentName: 'com.heyletscode.ihavetofly.MainActivity',
+            data: 'com.heyletscode.ihavetofly',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Space Shooter") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.spaceshooter');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.spaceshooter',
+            componentName: 'com.gss.spaceshooter.StartUp',
+            data: 'com.gss.spaceshooter',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Flying Fish") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.salinda.flyingfishgame',
+            componentName: 'com.gss.salindia.flyingfishgame.SplashActivity',
+            data: 'com.gss.salinda.flyingfishgame',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Plane Shooter") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.planeshooter');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.planeshooter',
+            componentName: 'com.gss.planeshooter.MainActivity',
+            data: 'com.gss.planeshooter',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Ludo") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.myludogame');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.myludogame',
+            componentName: 'com.gss.myludogame.MainActivity',
+            data: 'com.gss.myludogame',
             arguments: someMap,
           );
           await intent.launch();

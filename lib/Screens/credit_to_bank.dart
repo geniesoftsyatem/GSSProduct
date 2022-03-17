@@ -669,8 +669,7 @@ class _CreditToBankState extends State<CreditToBank> {
                                         ],
                                       ),
                                       Container(
-                                        margin:
-                                            const EdgeInsets.only(left: 10.0),
+                                        margin: const EdgeInsets.only(left: 10.0),
                                         child: Icon(
                                           Icons.chevron_right_sharp,
                                           color: Color(0xFFFFAE00),
@@ -680,127 +679,111 @@ class _CreditToBankState extends State<CreditToBank> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: width,
-                                margin: const EdgeInsets.only(top: 10.0),
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20)),
-                                  color: const Color(0xFF3A3A3A),
+
+                              InkWell(
+                                onTap: () {
+                                  Route route = MaterialPageRoute(
+                                      builder: (context) =>
+                                      const AddContactsScreen());
+                                  Navigator.of(context).push(route);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(10.0),
+                                  margin: const EdgeInsets.all(20.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10)),
+                                    color: const Color(0xFF3A3A3A),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Icon(
+                                        Icons.person_add_alt,
+                                        color: Color(0xFFFFAE00),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child: Text(
+                                              "Add Contacts",
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                  color:
+                                                  Color(0xFFFFAE00),
+                                                  fontSize: 16.0),
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child: Text(
+                                              "Add your Vendors & Customers",
+                                              style: TextStyle(
+                                                color: Color(0xFFFFAE00),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 10.0),
+                                        child: Icon(
+                                          Icons.chevron_right_sharp,
+                                          color: Color(0xFFFFAE00),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Route route = MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AddContactsScreen());
-                                        Navigator.of(context).push(route);
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(10.0),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          color: const Color(0xFF3A3A3A),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Icon(
-                                              Icons.person_add_alt,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isTransaction = true;
+                                  });
+                                },
+                                child: Container(
+                                  width: width,
+                                  padding: const EdgeInsets.all(10.0),
+                                  margin: const EdgeInsets.all(20.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10)),
+                                    color: const Color(0xFF3A3A3A),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 10.0),
+                                        child: Text(
+                                          "Transactions",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
                                               color: Color(0xFFFFAE00),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 10.0),
-                                                  child: Text(
-                                                    "Add Contacts",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            Color(0xFFFFAE00),
-                                                        fontSize: 16.0),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 10.0),
-                                                  child: Text(
-                                                    "Add your Vendors & Customers",
-                                                    style: TextStyle(
-                                                      color: Color(0xFFFFAE00),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 10.0),
-                                              child: Icon(
-                                                Icons.chevron_right_sharp,
-                                                color: Color(0xFFFFAE00),
-                                              ),
-                                            ),
-                                          ],
+                                              fontSize: 16.0),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10.0),
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        width: width * 0.70,
-                                        height: 1.0,
-                                        color: Color(0xFF111111),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          isTransaction = true;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: width,
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 10.0),
-                                              child: Text(
-                                                "Transactions",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xFFFFAE00),
-                                                    fontSize: 16.0),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 10.0),
-                                              child: Icon(
-                                                Icons.chevron_right_sharp,
-                                                color: Color(0xFFFFAE00),
-                                              ),
-                                            ),
-                                          ],
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 10.0),
+                                        child: Icon(
+                                          Icons.chevron_right_sharp,
+                                          color: Color(0xFFFFAE00),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
