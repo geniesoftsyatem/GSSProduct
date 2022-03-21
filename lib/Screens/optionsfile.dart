@@ -13,7 +13,9 @@ import 'package:genie_money/Screens/offer_screen.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 
 import 'package:genie_money/utils/silver_delegate.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../Model/ott_model.dart';
 import 'install_screen.dart';
 import 'money_transfer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,7 +115,8 @@ class _ALlOptions extends State<AllOptions> {
     } else if (option.endsWith("Value Addition")) {
       homepageList = [
         HomePageList(id: "7", name: "Education", image: "images/education.png"),
-        HomePageList(id: "8", name: "Health / Fitness", image: "images/fitness.png"),
+        HomePageList(
+            id: "8", name: "Health / Fitness", image: "images/fitness.png"),
         HomePageList(id: "8", name: "Jobs", image: "images/jobs.png")
       ];
     } else if (option.endsWith("Privilage Offer")) {
@@ -126,14 +129,8 @@ class _ALlOptions extends State<AllOptions> {
             id: "8",
             name: "COVID-19 Insurance",
             image: "images/covid_insurance.png"),*/
-        HomePageList(
-            id: "24",
-            name: "Offers",
-            image: "images/offers.png"),
-        HomePageList(
-            id: "25",
-            name: "CoWIN",
-            image: "images/cowinlogo.png")
+        HomePageList(id: "24", name: "Offers", image: "images/offers.png"),
+        HomePageList(id: "25", name: "CoWIN", image: "images/cowinlogo.png")
       ];
     } else if (option.endsWith("Games")) {
       homepageList = [
@@ -153,10 +150,7 @@ class _ALlOptions extends State<AllOptions> {
             id: "25",
             name: "Plane Shooter",
             image: "images/plane_shooter_icon.png"),
-        HomePageList(
-            id: "25",
-            name: "Ludo",
-            image: "images/ludo_gs.png")
+        HomePageList(id: "25", name: "Ludo", image: "images/ludo_gs.png")
       ];
     }
 
@@ -193,7 +187,8 @@ class _ALlOptions extends State<AllOptions> {
               child: Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                  gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                     crossAxisCount: 3,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
@@ -215,7 +210,8 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "Space Shooter") {
+                        } else if (homepageList[index].name ==
+                            "Space Shooter") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.spaceshooter");
                           if (installed) {
@@ -239,7 +235,8 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "Plane Shooter") {
+                        } else if (homepageList[index].name ==
+                            "Plane Shooter") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.planeshooter");
                           if (installed) {
@@ -264,21 +261,25 @@ class _ALlOptions extends State<AllOptions> {
                                         InstallApps(homepageList[index].name)));
                           }
                         } else if (homepageList[index].name == "Credit Score") {
-                          Route route = MaterialPageRoute(builder: (context) => const CreditScoreScreen());
+                          Route route = MaterialPageRoute(
+                              builder: (context) => const CreditScoreScreen());
                           Navigator.push(context, route);
-                        } else if (homepageList[index].name == "Recharge and Bill Payment") {
+                        } else if (homepageList[index].name ==
+                            "Recharge and Bill Payment") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       const RechargeAndBillPayment()));
-                        } else if (homepageList[index].name == "Accidental Insurance") {
+                        } else if (homepageList[index].name ==
+                            "Accidental Insurance") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       InsuranceScreen("Accidental Insurance")));
-                        } else if (homepageList[index].name == "COVID-19 Insurance") {
+                        } else if (homepageList[index].name ==
+                            "COVID-19 Insurance") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -330,19 +331,13 @@ class _ALlOptions extends State<AllOptions> {
                                         InstallApps(homepageList[index].name)));
                           }
                         } else if (homepageList[index].name == "OTT") {
-                          // bool installed = await DeviceApps.isAppInstalled(
-                          //     "com.vanced.android.apps.youtube.music");
-                          // if (installed) {
-                          //   DeviceApps.openApp("com.vanced.android.apps.youtube.music");
-                          // } else {
-                          //
-                          // }
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      InstallApps(homepageList[index].name)));
-                        } else if (homepageList[index].name == "YouTube Download" ||
+                                      const OTTScreen()));
+                        } else if (homepageList[index].name ==
+                                "YouTube Download" ||
                             homepageList[index].name == "News Channels" ||
                             homepageList[index].name == "Other Channels") {
                           bool installed = await DeviceApps.isAppInstalled(
@@ -356,7 +351,8 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "Financial Calculator") {
+                        } else if (homepageList[index].name ==
+                            "Financial Calculator") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.financecalculator");
                           if (installed) {
@@ -368,7 +364,8 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        } else if (homepageList[index].name == "Education" || homepageList[index].name == "Jobs") {
+                        } else if (homepageList[index].name == "Education" ||
+                            homepageList[index].name == "Jobs") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.education");
                           if (installed) {
@@ -380,37 +377,36 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        }else if(homepageList[index].name == "Money Transfer"){
+                        } else if (homepageList[index].name ==
+                            "Money Transfer") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      MoneyTransfer()));
-                        }else if(homepageList[index].name == "Offers"){
+                                  builder: (context) => MoneyTransfer()));
+                        } else if (homepageList[index].name == "Offers") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      OfferScreen()));
-                        }else if(homepageList[index].name == "CoWIN"){
+                                  builder: (context) => OfferScreen()));
+                        } else if (homepageList[index].name == "CoWIN") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      CowinScreen()));
-                        }else if(homepageList[index].name == "Health / Fitness"){
-                          bool installed = await DeviceApps.isAppInstalled("com.gss.gssfitness");
+                                  builder: (context) => CowinScreen()));
+                        } else if (homepageList[index].name ==
+                            "Health / Fitness") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.gssfitness");
                           if (installed) {
                             launchNativeActivity(homepageList[index].name);
-                          }else{
+                          } else {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
-                        }
-                        else {
+                        } else {
                           _alertDialog();
                         }
                       },
@@ -486,18 +482,18 @@ class _ALlOptions extends State<AllOptions> {
 
   void launchNativeActivity(String pageName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var userid = prefs.getString('userid')?? '';
-    var name = prefs.getString('name')?? '';
-    var email = prefs.getString('email')?? '';
-    var phone = prefs.getString('phone')?? '';
+    var userid = prefs.getString('userid') ?? '';
+    var name = prefs.getString('name') ?? '';
+    var email = prefs.getString('email') ?? '';
+    var phone = prefs.getString('phone') ?? '';
 
     final Map<String, String> someMap = {
-      "activity" : pageName,
-      "userid" : userid,
-      "name" : name,
-      "email" : email,
-      "phone" : phone
-      };
+      "activity": pageName,
+      "userid": userid,
+      "name": name,
+      "email": email,
+      "phone": phone
+    };
 
     if (Platform.isAndroid) {
       //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
@@ -547,7 +543,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "News Channels") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.entertainment');
+            await DeviceApps.isAppInstalled('com.gss.entertainment');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -566,7 +562,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "Other Channels") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.entertainment');
+            await DeviceApps.isAppInstalled('com.gss.entertainment');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -584,8 +580,7 @@ class _ALlOptions extends State<AllOptions> {
           print("not installed");
         }
       } else if (pageName == "Jobs") {
-        bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.education');
+        bool isInstalled = await DeviceApps.isAppInstalled('com.gss.education');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -603,8 +598,7 @@ class _ALlOptions extends State<AllOptions> {
           print("not installed");
         }
       } else if (pageName == "Education") {
-        bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.education');
+        bool isInstalled = await DeviceApps.isAppInstalled('com.gss.education');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -621,9 +615,8 @@ class _ALlOptions extends State<AllOptions> {
         } else {
           print("not installed");
         }
-      } else if(pageName == "Health / Fitness"){
-        bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.education');
+      } else if (pageName == "Health / Fitness") {
+        bool isInstalled = await DeviceApps.isAppInstalled('com.gss.education');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -639,7 +632,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "Financial Calculator") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.financecalculator');
+            await DeviceApps.isAppInstalled('com.gss.financecalculator');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -655,7 +648,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "I Have To Fly") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
+            await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -671,7 +664,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "Space Shooter") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.spaceshooter');
+            await DeviceApps.isAppInstalled('com.gss.spaceshooter');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -687,7 +680,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "Flying Fish") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
+            await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -703,7 +696,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "Plane Shooter") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.planeshooter');
+            await DeviceApps.isAppInstalled('com.gss.planeshooter');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -719,7 +712,7 @@ class _ALlOptions extends State<AllOptions> {
         }
       } else if (pageName == "Ludo") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.myludogame');
+            await DeviceApps.isAppInstalled('com.gss.myludogame');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -735,5 +728,134 @@ class _ALlOptions extends State<AllOptions> {
         }
       }
     }
+  }
+}
+
+class OTTScreen extends StatefulWidget {
+  const OTTScreen({Key? key}) : super(key: key);
+
+  @override
+  State<OTTScreen> createState() => _OTTScreenState();
+}
+
+class _OTTScreenState extends State<OTTScreen> {
+  late List<OTTModel> ottList;
+
+  @override
+  void initState() {
+    ottList = [
+      OTTModel("7", "Netflix", "images/netflix_gs1.png", "com.netflix.mediaclient"),
+      OTTModel("8", "Amazon Prime", "images/primvideo_gs2.png", "com.amazon.avod.thirdpartyclient"),
+      OTTModel("9", "Disney+ Hotstar", "images/disney_hotstar_gs3.png", "in.startv.hotstar"),
+      OTTModel("10", "Sony Liv", "images/sonyliv-gs4.png", "com.sonyliv"),
+      OTTModel("11", "Zee 5", "images/zee5_gs5.png", "com.graymatrix.did"),
+      OTTModel("12", "Voot", "images/voot_gs6.png", "com.tv.v18.viola"),
+      OTTModel("13", "MX Player", "images/mx_player_gs7.png", "com.mxtech.videoplayer.ad"),
+      OTTModel("14", "ALT Balaji", "images/alt_balaji_gs8.png", "com.balaji.alt"),
+      OTTModel("15", "TVF Play", "images/tvf_gs9.png", "com.tvf.tvfplay"),
+      OTTModel("16", "Eros Now", "images/erosnow_gs10.png", "com.erosnow"),
+      OTTModel("16", "Jio Cinema", "images/jiocinema_gs11.png", "com.jio.media.ondemand"),
+      OTTModel("16", "Airtel XStream", "images/airtel_xstream_gs12.png", "tv.accedo.airtel.wynk")
+    ];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      backgroundColor: const Color(0xFF111111),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF3A3A3A),
+        title: const Text(
+          "OTT",
+          style: TextStyle(
+            color: Color(0xFFFFAE00),
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color(0xFFFFAE00),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: GridView.builder(
+                  gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                    height: height * 0.25,
+                  ),
+                  itemCount: ottList.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        bool isInstalled = await DeviceApps.isAppInstalled(ottList[index].packageName);
+                        if (isInstalled) {
+                          DeviceApps.openApp(ottList[index].packageName);
+                        } else {
+                          launch("https://play.google.com/store/apps/details?id=${ottList[index].packageName}");
+                        }
+                      },
+                      child: Card(
+                        elevation: 10,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                            side: BorderSide(
+                              color: Color(0xFFFFAE00),
+                              width: 2.0,
+                            )),
+                        color: const Color(0xFF444444),
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(top: 20.0),
+                                child: Image(
+                                  image: AssetImage(ottList[index].image),
+                                  width: 50.0,
+                                  height: 50.0,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    top: 10, left: 5.0, right: 5.0),
+                                child: Text(
+                                  ottList[index].name,
+                                  style: const TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 15.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
