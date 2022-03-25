@@ -342,7 +342,8 @@ class MyHomeClass extends State<HomeScreen> {
                         child: Column(
                           children: [
                             GridView.count(
-                              crossAxisCount: 2,
+                              crossAxisCount: 3,
+                              childAspectRatio: width / 500,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               children: homepageList.map((e) {
@@ -432,13 +433,15 @@ class MyHomeClass extends State<HomeScreen> {
                                           ),
                                           Container(
                                             margin:
-                                                const EdgeInsets.only(top: 20),
+                                                const EdgeInsets.only(top: 20, left: 5.0, right: 5.0),
                                             child: Text(
                                               e.name,
                                               style: const TextStyle(
                                                 color: Color(0xFFFFAE00),
                                                 fontSize: 15.0,
                                               ),
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
