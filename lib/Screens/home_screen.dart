@@ -343,7 +343,7 @@ class MyHomeClass extends State<HomeScreen> {
                           children: [
                             GridView.count(
                               crossAxisCount: 3,
-                              childAspectRatio: width / 500,
+                              childAspectRatio: width / 450,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               children: homepageList.map((e) {
@@ -407,8 +407,8 @@ class MyHomeClass extends State<HomeScreen> {
                                           color: Color(0xFFFFAE00),
                                           width: 2.0,
                                         )),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 10.0),
+                                    // margin: const EdgeInsets.symmetric(
+                                    //     vertical: 10.0, horizontal: 10.0),
                                     color: const Color(0xFF444444),
                                     child: Center(
                                       child: Column(
@@ -427,13 +427,13 @@ class MyHomeClass extends State<HomeScreen> {
                                             ),
                                             child: Image(
                                               image: AssetImage(e.image),
-                                              width: 70.0,
-                                              height: 70.0,
+                                              width: 60.0,
+                                              height: 60.0,
                                             ),
                                           ),
                                           Container(
                                             margin:
-                                                const EdgeInsets.only(top: 20, left: 5.0, right: 5.0),
+                                                const EdgeInsets.only(top: 10, left: 5.0, right: 5.0, bottom: 5.0),
                                             child: Text(
                                               e.name,
                                               style: const TextStyle(
