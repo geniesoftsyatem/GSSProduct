@@ -1,14 +1,23 @@
+import 'dart:io';
+
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
 import 'package:genie_money/Screens/distributor_retailer_screen.dart';
 import 'package:genie_money/Screens/essentials_screen.dart';
 import 'package:genie_money/Screens/portfolio.dart';
+import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 import 'package:genie_money/Screens/sales_partner_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'credit_score_screen.dart';
+import 'install_screen.dart';
+import 'money_transfer.dart';
 import 'optionsfile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +32,7 @@ class HomeScreen extends StatefulWidget {
 
 class MyHomeClass extends State<HomeScreen> {
   int _currentPosition = 0;
+  String _result = "";
 
   late bool _load = true;
   late List<HomePageList> homepageList = [];
@@ -176,7 +186,53 @@ class MyHomeClass extends State<HomeScreen> {
                 Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        String? result = await showSearch(context: context, delegate: DataSearch());
+                        if (result! == "Essentials") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const EssentialsScreen()));
+                        } else if (result == "Finance" || result == "Personal Security" ||
+                            result == "Device Security" || result == "Value Addition" ||
+                            result == "Entertainment" || result == "Privilage Offer" ||
+                            result == "Games"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AllOptions(result)));
+                        } else if (result == "Money Transfer") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MoneyTransfer()));
+                        } else if (result == "Recharge and Bill Payment") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const RechargeAndBillPayment()));
+                        } else if (result == "Credit Score") {
+                          Route route = MaterialPageRoute(
+                              builder: (context) => const CreditScoreScreen());
+                          Navigator.push(context, route);
+                        } else if (result == "Financial Calculator") {
+                          bool installed = await DeviceApps.isAppInstalled("com.gss.financecalculator");
+                          if (installed) {
+                            launchNativeActivity(result);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(result)));
+                          }
+                        } else {
+                          _alertDialog(context);
+                        }
+                      },
                       child: const Icon(Icons.search,
                           size: 26.0, color: Color(0xFFFFAE00)),
                     )),
@@ -460,6 +516,433 @@ class MyHomeClass extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void launchNativeActivity(String pageName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userid = prefs.getString('userid') ?? '';
+    var name = prefs.getString('name') ?? '';
+    var email = prefs.getString('email') ?? '';
+    var phone = prefs.getString('phone') ?? '';
+
+    final Map<String, String> someMap = {
+      "activity": pageName,
+      "userid": userid,
+      "name": name,
+      "email": email,
+      "phone": phone
+    };
+
+    if (Platform.isAndroid) {
+      //DeviceApps.openApp('com.google.android.apps.nbu.paisa.user');
+      if (pageName == "Spy Camera" ||
+          pageName == "Life Saver" ||
+          pageName == "Secure Chat" ||
+          pageName == "Anti Hacking" ||
+          pageName == "Anti Virus" ||
+          pageName == "Anti Theft" ||
+          pageName == "Wi-Fi Protect") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.genieshield');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.genieshield',
+            componentName: 'com.gss.genieshield.Activity.PasscodeActivity',
+            data: 'com.gss.genieshield',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "YouTube Download") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "News Channels") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Other Channels") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.entertainment');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.entertainment',
+            componentName: 'com.gss.entertainment.Dashboard',
+            data: 'com.gss.entertainment',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Jobs") {
+        bool isInstalled = await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.education',
+            componentName: 'com.gss.education.cbse.ui.Dashboard',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Education") {
+        bool isInstalled = await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          //if (pageName == "Anti Hacking") {
+
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.education',
+            componentName: 'com.gss.education.cbse.ui.EducationActivity',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+          //}
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Health / Fitness") {
+        bool isInstalled = await DeviceApps.isAppInstalled('com.gss.education');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.gssfitness',
+            componentName: 'com.gss.gssfitness.ui.FitnessActivity',
+            data: 'com.gss.education',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Financial Calculator") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.financecalculator');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.financecalculator',
+            componentName: 'com.gss.financecalculator.activity.MainActivity',
+            data: 'com.gss.financecalculator',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "I Have To Fly") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.heyletscode.ihavetofly',
+            componentName: 'com.heyletscode.ihavetofly.MainActivity',
+            data: 'com.heyletscode.ihavetofly',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Space Shooter") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.spaceshooter');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.spaceshooter',
+            componentName: 'com.gss.spaceshooter.StartUp',
+            data: 'com.gss.spaceshooter',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Flying Fish") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.salinda.flyingfishgame',
+            componentName: 'com.gss.salindia.flyingfishgame.SplashActivity',
+            data: 'com.gss.salinda.flyingfishgame',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Plane Shooter") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.planeshooter');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.planeshooter',
+            componentName: 'com.gss.planeshooter.MainActivity',
+            data: 'com.gss.planeshooter',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      } else if (pageName == "Ludo") {
+        bool isInstalled =
+        await DeviceApps.isAppInstalled('com.gss.myludogame');
+        if (isInstalled == true) {
+          AndroidIntent intent;
+          intent = AndroidIntent(
+            action: 'android_send',
+            package: 'com.gss.myludogame',
+            componentName: 'com.gss.myludogame.MainActivity',
+            data: 'com.gss.myludogame',
+            arguments: someMap,
+          );
+          await intent.launch();
+        } else {
+          print("not installed");
+        }
+      }
+    }
+  }
+
+  Future _alertDialog(BuildContext context) {
+    return showAnimatedDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ClassicGeneralDialogWidget(
+          contentText: 'Coming Soon',
+          onPositiveClick: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+      animationType: DialogTransitionType.size,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(seconds: 1),
+    );
+  }
+}
+
+class DataSearch extends SearchDelegate<String> {
+  final services = [
+    "Finance",
+    "Essentials",
+    "Personal Security",
+    "Device Security",
+    "Value Addition",
+    "Entertainment",
+    "Privilage Offer",
+    "Games",
+
+    "Money Transfer",
+    "Instant Loan",
+    "Consumer Loan",
+    "Insurance",
+    "Investment",
+    "Stock & IPOs",
+    "Recharge and Bill Payment",
+    "Credit Score",
+    "Digi Locker",
+    "Financial Calculator",
+
+    "Credit Card to Bank A/C",
+    "Balance Inquiry",
+    "Cash Withdrawal",
+    "Mini Statement",
+    "Micro ATM",
+    "Mobile Prepaid",
+    "DTH",
+    "Electricity",
+    "GAS",
+    "Water",
+    "BroadBand Prepaid",
+    "Landline Postpaid",
+    "BroadBand Postpaid",
+    "Mobile Postpaid",
+    "General Store",
+    "Vegetable Vendor",
+    "AC / Appliance Repair",
+    "Electricians",
+    "Plumber",
+    "Carpenter",
+    "Car / Bike Mechanic",
+    "Cleaning",
+    "Tutor",
+    "Maid",
+    "Laundry",
+    "Cable Vendor",
+    "Saloon, Spa, Massage",
+    "Home Painting",
+    "Pest Control",
+    "Medicine Shop",
+    "Emergency",
+    "Gas / Cylinder Vendor",
+    "Internet Provider",
+    "Restaurants",
+    "Gardener",
+    "Dmart",
+    "Big Bazzar",
+    "Metro Mall",
+    "Harbans Karyana Store",
+    "Air Conditioner",
+    "Chimney",
+    "Geyser",
+    "Microwave",
+    "Television",
+    "Washing Machine",
+    "Water Purifier",
+    "Atharva Enterprises",
+    "Pawan Enterprises",
+    "Spy Camera",
+    "Life Saver",
+    "Secure Chat",
+    "Anti Hacking",
+    "Anti Virus",
+    "Anti Theft",
+    "Wifi Protect",
+    "Education",
+    "Health / Fitness",
+    "Jobs",
+    "Government Jobs",
+    "Private Jobs",
+    "Resume Maker",
+    "YouTube Video",
+    "YouTube Music",
+    "YouTube Download",
+    "News Channels",
+    "Other Channels",
+    "Facebook Video",
+    "OTT"
+  ];
+
+  final recentSearches = [
+    "Finance",
+    "Essentials",
+    "Personal Security",
+    "Device Security",
+    "Value Addition",
+    "Entertainment",
+    "Privilage Offer",
+    "Games"
+  ];
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    // actions for the app bar
+    return [
+      IconButton(
+          onPressed: () {
+            query = "";
+          },
+          icon: const Icon(Icons.clear))
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // leading icon on the left of app bar
+    return IconButton(
+        onPressed: () {
+          close(context, "");
+        },
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // show when some one searches for something
+    final suggestionList = query.isEmpty
+        ? services
+        : services
+        .where((p) => p.toLowerCase().startsWith(query.toLowerCase()))
+        .toList();
+    return ListView.separated(
+      itemBuilder: (context, index) => ListTile(
+        onTap: (){
+          Navigator.of(context).pop(suggestionList[index]);
+        },
+        title: Text(suggestionList[index]),
+      ),
+      itemCount: suggestionList.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return const Divider(
+          color: Color(0xFF3A3A3A),
+        );
+      },
     );
   }
 }

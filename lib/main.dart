@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:genie_money/Screens/splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => {
+            runApp(MyApp()),
+          });
 }
 
 class MyApp extends StatelessWidget {
-
   MyApp({Key? key}) : super(key: key);
 
   static const MaterialColor primaryBlack = MaterialColor(

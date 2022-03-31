@@ -211,7 +211,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
