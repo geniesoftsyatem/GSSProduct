@@ -9,14 +9,22 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
 import 'package:genie_money/Screens/distributor_retailer_screen.dart';
 import 'package:genie_money/Screens/essentials_screen.dart';
+import 'package:genie_money/Screens/payment_screen.dart';
 import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 import 'package:genie_money/Screens/sales_partner_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
+import 'package:genie_money/Screens/sub_catagories_screen.dart';
+import 'package:genie_money/Screens/sub_sub_categories_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'balance_inquiry_screen.dart';
+import 'cash_withdrawal_screen.dart';
 import 'credit_score_screen.dart';
+import 'credit_to_bank.dart';
+import 'essential_details_screen.dart';
 import 'install_screen.dart';
+import 'mini_statement_screen.dart';
 import 'money_transfer.dart';
 import 'optionsfile.dart';
 
@@ -90,10 +98,7 @@ class MyHomeClass extends State<HomeScreen> {
                     id: "7",
                     name: "Privilage Offer",
                     image: "images/privilage_offer.png"),
-                HomePageList(
-                    id: "7",
-                    name: "Games",
-                    image: "images/games.png")
+                HomePageList(id: "7", name: "Games", image: "images/games.png")
               ]
             }
           else if (type == "Retailer")
@@ -109,7 +114,9 @@ class MyHomeClass extends State<HomeScreen> {
                       name: "Apps History",
                       image: "images/app_history.png"),
                   HomePageList(
-                      id: "3", name: "Add Portfolio", image: "images/profolio.png"),
+                      id: "3",
+                      name: "Add Portfolio",
+                      image: "images/profolio.png"),
                   HomePageList(
                       id: "5", name: "Employee", image: "images/retailer.png")
                 ]
@@ -127,7 +134,9 @@ class MyHomeClass extends State<HomeScreen> {
                     name: "Apps History",
                     image: "images/app_history.png"),
                 HomePageList(
-                    id: "3", name: "Add Portfolio", image: "images/profolio.png"),
+                    id: "3",
+                    name: "Add Portfolio",
+                    image: "images/profolio.png"),
                 HomePageList(
                     id: "5", name: "Retailer", image: "images/retailer.png")
               ]
@@ -144,7 +153,9 @@ class MyHomeClass extends State<HomeScreen> {
                     name: "Apps History",
                     image: "images/app_history.png"),
                 HomePageList(
-                    id: "3", name: "Add Portfolio", image: "images/profolio.png"),
+                    id: "3",
+                    name: "Add Portfolio",
+                    image: "images/profolio.png"),
                 HomePageList(
                     id: "5", name: "Distributor", image: "images/retailer.png")
               ]
@@ -187,22 +198,25 @@ class MyHomeClass extends State<HomeScreen> {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: GestureDetector(
                       onTap: () async {
-                        String? result = await showSearch(context: context, delegate: DataSearch());
+                        String? result = await showSearch(
+                            context: context, delegate: DataSearch());
                         if (result! == "Essentials") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                  const EssentialsScreen()));
-                        } else if (result == "Finance" || result == "Personal Security" ||
-                            result == "Device Security" || result == "Value Addition" ||
-                            result == "Entertainment" || result == "Privilage Offer" ||
-                            result == "Games"){
+                                      const EssentialsScreen()));
+                        } else if (result == "Finance" ||
+                            result == "Personal Security" ||
+                            result == "Device Security" ||
+                            result == "Value Addition" ||
+                            result == "Entertainment" ||
+                            result == "Privilage Offer" ||
+                            result == "Games") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      AllOptions(result)));
+                                  builder: (context) => AllOptions(result)));
                         } else if (result == "Money Transfer") {
                           Navigator.push(
                               context,
@@ -213,13 +227,151 @@ class MyHomeClass extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                  const RechargeAndBillPayment()));
+                                      const RechargeAndBillPayment()));
                         } else if (result == "Credit Score") {
                           Route route = MaterialPageRoute(
                               builder: (context) => const CreditScoreScreen());
                           Navigator.push(context, route);
                         } else if (result == "Financial Calculator") {
-                          bool installed = await DeviceApps.isAppInstalled("com.gss.financecalculator");
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.financecalculator");
+                          if (installed) {
+                            launchNativeActivity(result);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => InstallApps(result)));
+                          }
+                        } else if(result == "Credit Card to Bank A/C"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const CreditToBank()));
+                        } else if(result == "Balance Inquiry"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      BalanceInquiry()));
+                        } else if(result == "Cash Withdrawal"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CashWithdrawalScreen()));
+                        } else if(result == "Mini Statement"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MiniStatementScreen()));
+                        } else if (result == "Mobile Prepaid" || result == "DTH" || result == "Electricity" ||
+                            result == "GAS" || result == "Water" || result == "Landline Postpaid" ||
+                            result == "BroadBand Postpaid" || result == "Mobile Postpaid") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) =>
+                              PaymentScreen(result)));
+                        } else if (result == "AC/ Appliance Repair") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SubCatagoriesScreen(result)));
+                        } else if (result == "General Store") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SubSubCategoriesScreen(result)));
+                        } else if (result == "Dmart" || result == "Big Bazzar" || result == "Metro Mall" ||
+                            result == "Harbans Karyana Store" || result == "Atharva Enterprises" ||
+                            result == "Pawan Enterprises") {
+                          Route route = MaterialPageRoute(
+                              builder: (context) =>
+                                  EssentialDetailsScreen(result, result == "Dmart" ? 5.0 :
+                                  result == "Big Bazzar" ? 4.5 : result == "Metro Mall" ? 4.0 :
+                                  result == "Harbans Karyana Store" ? 3.5 : result == "Atharva Enterprises" ? 4.5 : result == "Pawan Enterprises" ? 3.5 : 0.0));
+                          Navigator.push(context, route);
+                        } else if (result == "Air Conditioner") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SubSubCategoriesScreen(result)));
+                        } else if (result == "Spy Camera" || result == "Life Saver" || result == "Secure Chat" ||
+                            result == "Anti Hacking" || result == "Anti Virus" || result == "Anti Theft" ||
+                            result == "Wi-Fi Protect") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.genieshield");
+                          if (installed) {
+                            launchNativeActivity(result);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(result)));
+                          }
+                        } else if (result == "Education" || result == "Jobs") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.education");
+                          if (installed) {
+                            launchNativeActivity(result);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(result)));
+                          }
+                        } else if (result == "Health / Fitness") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.gssfitness");
+                          if (installed) {
+                            launchNativeActivity(result);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(result)));
+                          }
+                        } else if (result == "YouTube Video") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.vanced.android.youtube");
+                          if (installed) {
+                            DeviceApps.openApp("com.vanced.android.youtube");
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(result)));
+                          }
+                        } else if (result == "YouTube Music") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.vanced.android.apps.youtube.music");
+                          if (installed) {
+                            DeviceApps.openApp(
+                                "com.vanced.android.apps.youtube.music");
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(result)));
+                          }
+                        } else if (result == "OTT") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const OTTScreen()));
+                        } else if (result == "YouTube Download" || result == "News Channels" ||
+                            result == "Other Channels") {
+                          bool installed = await DeviceApps.isAppInstalled(
+                              "com.gss.entertainment");
                           if (installed) {
                             launchNativeActivity(result);
                           } else {
@@ -488,8 +640,11 @@ class MyHomeClass extends State<HomeScreen> {
                                             ),
                                           ),
                                           Container(
-                                            margin:
-                                                const EdgeInsets.only(top: 10, left: 5.0, right: 5.0, bottom: 5.0),
+                                            margin: const EdgeInsets.only(
+                                                top: 10,
+                                                left: 5.0,
+                                                right: 5.0,
+                                                bottom: 5.0),
                                             child: Text(
                                               e.name,
                                               style: const TextStyle(
@@ -544,7 +699,7 @@ class MyHomeClass extends State<HomeScreen> {
           pageName == "Anti Theft" ||
           pageName == "Wi-Fi Protect") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.genieshield');
+            await DeviceApps.isAppInstalled('com.gss.genieshield');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -563,7 +718,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "YouTube Download") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.entertainment');
+            await DeviceApps.isAppInstalled('com.gss.entertainment');
         if (isInstalled) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -582,7 +737,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "News Channels") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.entertainment');
+            await DeviceApps.isAppInstalled('com.gss.entertainment');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -601,7 +756,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "Other Channels") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.entertainment');
+            await DeviceApps.isAppInstalled('com.gss.entertainment');
         if (isInstalled == true) {
           AndroidIntent intent;
           //if (pageName == "Anti Hacking") {
@@ -671,7 +826,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "Financial Calculator") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.financecalculator');
+            await DeviceApps.isAppInstalled('com.gss.financecalculator');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -687,7 +842,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "I Have To Fly") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
+            await DeviceApps.isAppInstalled('com.heyletscode.ihavetofly');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -703,7 +858,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "Space Shooter") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.spaceshooter');
+            await DeviceApps.isAppInstalled('com.gss.spaceshooter');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -719,7 +874,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "Flying Fish") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
+            await DeviceApps.isAppInstalled('com.gss.salinda.flyingfishgame');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -735,7 +890,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "Plane Shooter") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.planeshooter');
+            await DeviceApps.isAppInstalled('com.gss.planeshooter');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -751,7 +906,7 @@ class MyHomeClass extends State<HomeScreen> {
         }
       } else if (pageName == "Ludo") {
         bool isInstalled =
-        await DeviceApps.isAppInstalled('com.gss.myludogame');
+            await DeviceApps.isAppInstalled('com.gss.myludogame');
         if (isInstalled == true) {
           AndroidIntent intent;
           intent = AndroidIntent(
@@ -798,7 +953,6 @@ class DataSearch extends SearchDelegate<String> {
     "Entertainment",
     "Privilage Offer",
     "Games",
-
     "Money Transfer",
     "Instant Loan",
     "Consumer Loan",
@@ -809,7 +963,6 @@ class DataSearch extends SearchDelegate<String> {
     "Credit Score",
     "Digi Locker",
     "Financial Calculator",
-
     "Credit Card to Bank A/C",
     "Balance Inquiry",
     "Cash Withdrawal",
@@ -868,9 +1021,6 @@ class DataSearch extends SearchDelegate<String> {
     "Education",
     "Health / Fitness",
     "Jobs",
-    "Government Jobs",
-    "Private Jobs",
-    "Resume Maker",
     "YouTube Video",
     "YouTube Music",
     "YouTube Download",
@@ -878,17 +1028,6 @@ class DataSearch extends SearchDelegate<String> {
     "Other Channels",
     "Facebook Video",
     "OTT"
-  ];
-
-  final recentSearches = [
-    "Finance",
-    "Essentials",
-    "Personal Security",
-    "Device Security",
-    "Value Addition",
-    "Entertainment",
-    "Privilage Offer",
-    "Games"
   ];
 
   @override
@@ -928,11 +1067,11 @@ class DataSearch extends SearchDelegate<String> {
     final suggestionList = query.isEmpty
         ? services
         : services
-        .where((p) => p.toLowerCase().startsWith(query.toLowerCase()))
-        .toList();
+            .where((p) => p.toLowerCase().startsWith(query.toLowerCase()))
+            .toList();
     return ListView.separated(
       itemBuilder: (context, index) => ListTile(
-        onTap: (){
+        onTap: () {
           Navigator.of(context).pop(suggestionList[index]);
         },
         title: Text(suggestionList[index]),
