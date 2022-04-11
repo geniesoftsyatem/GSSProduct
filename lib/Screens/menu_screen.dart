@@ -376,6 +376,72 @@ class _MenuScreen extends State<MenuScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: InkWell(
                           onTap: () {
+                            _navigate("Games");
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              children: const [
+                                Image(
+                                  image: AssetImage("images/games.png"),
+                                  width: 24.0,
+                                  height: 24.0,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "Games",
+                                  style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: InkWell(
+                          onTap: () {
+                            _navigate("Travel");
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              children: const [
+                                Image(
+                                  image: AssetImage("images/travel.png"),
+                                  width: 24.0,
+                                  height: 24.0,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "Travel",
+                                  style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: InkWell(
+                          onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

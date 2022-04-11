@@ -17,8 +17,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final TextEditingController _dth_customer_no_controller =
       TextEditingController();
   final TextEditingController _dth_amount_controller = TextEditingController();
-  final TextEditingController _electricity_customer_no_controller =
-      TextEditingController();
+  final TextEditingController _electricity_customer_no_controller = TextEditingController();
+  final TextEditingController _electricity_customer_amount_controller = TextEditingController();
   final TextEditingController _electricity_amount_controller =
       TextEditingController();
   final TextEditingController _gas_customer_no_controller =
@@ -44,6 +44,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool dth = false;
   bool _show_dth = false;
   bool electricity = false;
+  bool show_data_electricity = false;
   bool _show_electricity = false;
   bool gas = false;
   bool _show_gas = false;
@@ -60,6 +61,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String prepaid_operator = 'Select Operator';
   String dth_operator = 'Select Operator';
   String electricity_operator = 'Select Operator';
+  String payment_time = 'Pay Now';
+  String payment_method = 'Select Payment Method';
   String gas_operator = 'Select Operator';
   String water_operator = 'Select Operator';
   String landline_operator = 'Select Operator';
@@ -79,6 +82,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     'MTNL Delhi Special',
     'MTNL Mumbai'
   ];
+
   List<String> dth_operator_list = [
     'Select Operator',
     'Dish TV',
@@ -100,6 +104,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     'Bikaner Electricity Supply Limited (BKESL) - Old',
     'Bikaner Electricity Supply Limited (BKESL)',
     'BSES Rajdhani Power Limited'
+  ];
+  List<String> payment_time_list = [
+    'Pay Now'
+  ];
+  List<String> payment_method_list = [
+    'Select Payment Method'
   ];
 
   List<String> gas_operator_list = [
@@ -188,105 +198,139 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  Future<bool> _onBackPressed() async {
+    if (show_data_electricity) {
+      setState(() {
+        show_data_electricity = false;
+        _show_electricity = true;
+      });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  void initState() {
+    if(electricity) {
+      setState(() {
+        _electricity_customer_amount_controller.text = "1560.00";
+      });
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     _checkName();
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      key: _scaffoldKey,
-      backgroundColor: const Color(0xFF111111),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF3A3A3A),
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Color(0xFFFFAE00)),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color(0xFFFFAE00),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        key: _scaffoldKey,
+        backgroundColor: const Color(0xFF111111),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF3A3A3A),
+          title: Text(
+            widget.title,
+            style: const TextStyle(color: Color(0xFFFFAE00)),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Color(0xFFFFAE00),
+            ),
+            onPressed: () {
+              if (show_data_electricity) {
+                setState(() {
+                  show_data_electricity = false;
+                  _show_electricity = true;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.all(10.0),
-          child: CustomScrollView(
-            scrollDirection: Axis.vertical,
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Visibility(
-                      visible: prepaid_recharge,
-                      child: perpaidMobileCenter(height, width, context),
-                    ),
-                    Visibility(
-                      visible: dth,
-                      child: dthColumn(height, width, context),
-                    ),
-                    Visibility(
-                      visible: electricity,
-                      child: electricityColumn(height, width, context),
-                    ),
-                    Visibility(
-                      visible: gas,
-                      child: gasColumn(height, width, context),
-                    ),
-                    Visibility(
-                      visible: water,
-                      child: waterColumn(height, width, context),
-                    ),
-                    Visibility(
-                      visible: landline,
-                      child: landlineColumn(height, width, context),
-                    ),
-                    Visibility(
-                      visible: broadband_postpaid,
-                      child: broadband_postpaid_Column(height, width, context),
-                    ),
-                    Visibility(
-                      visible: postpaid_recharge,
-                      child: mobile_postpaid_Column(height, width, context),
-                    ),
-                  ],
+        body: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(10.0),
+            child: CustomScrollView(
+              scrollDirection: Axis.vertical,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Visibility(
+                        visible: prepaid_recharge,
+                        child: perpaidMobileCenter(height, width, context),
+                      ),
+                      Visibility(
+                        visible: dth,
+                        child: dthColumn(height, width, context),
+                      ),
+                      Visibility(
+                        visible: electricity,
+                        child: electricityColumn(height, width, context),
+                      ),
+                      Visibility(
+                        visible: gas,
+                        child: gasColumn(height, width, context),
+                      ),
+                      Visibility(
+                        visible: water,
+                        child: waterColumn(height, width, context),
+                      ),
+                      Visibility(
+                        visible: landline,
+                        child: landlineColumn(height, width, context),
+                      ),
+                      Visibility(
+                        visible: broadband_postpaid,
+                        child:
+                            broadband_postpaid_Column(height, width, context),
+                      ),
+                      Visibility(
+                        visible: postpaid_recharge,
+                        child: mobile_postpaid_Column(height, width, context),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Visibility(
-                    visible: isButton,
-                    child: ElevatedButton(
-                      child: const Text(
-                        "PAY",
-                        style: TextStyle(
-                            color: Color(0xFF111111),
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize:
-                        Size(width, MediaQuery.of(context).size.height * 0.05),
-                        primary: const Color(0xFFFFAE00),
-                        shadowColor: const Color(0xFFFFAE00),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Visibility(
+                      visible: isButton,
+                      child: ElevatedButton(
+                        child: const Text(
+                          "PAY",
+                          style: TextStyle(
+                              color: Color(0xFF111111),
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold),
                         ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(
+                              width, MediaQuery.of(context).size.height * 0.05),
+                          primary: const Color(0xFFFFAE00),
+                          shadowColor: const Color(0xFFFFAE00),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                        onPressed: () {},
                       ),
-                      onPressed: () {},
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -1155,21 +1199,349 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                     isDense: true,
                     label: const Text(
-                      "Customer ID",
+                      "Consumer Number",
                       style: TextStyle(color: Color(0xFFFFAE00)),
                     ),
                     labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
                   ),
                 ),
               ),
+              // Container(
+              //   margin: const EdgeInsets.only(top: 10.0),
+              //   child: TextField(
+              //     cursorColor: const Color(0xFFFFAE00),
+              //     keyboardType:
+              //         const TextInputType.numberWithOptions(decimal: true),
+              //     style: const TextStyle(color: Color(0xFFFFAE00)),
+              //     controller: _electricity_amount_controller,
+              //     decoration: InputDecoration(
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: const BorderSide(color: Color(0xFFFFAE00)),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       disabledBorder: OutlineInputBorder(
+              //         borderSide: const BorderSide(color: Color(0xFFFFAE00)),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: const BorderSide(color: Color(0xFFFFAE00)),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       border: OutlineInputBorder(
+              //         borderSide: const BorderSide(color: Color(0xFFFFAE00)),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       isDense: true,
+              //       label: const Text(
+              //         "Amount",
+              //         style: TextStyle(color: Color(0xFFFFAE00)),
+              //       ),
+              //       labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
+              //     ),
+              //   ),
+              // ),
               Container(
-                margin: const EdgeInsets.only(top: 10.0),
+                margin: const EdgeInsets.all(10.0),
+                child: Text(
+                  "** By using this service, you provide consen to add this biller registration. This will be usd to fetch your current and future bill details from th biller got presenting to you for payment.",
+                  style: TextStyle(color: const Color(0xFFFFAE00)),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                  child: const Text(
+                    "Get Bill",
+                    style: TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize:
+                        Size(width, MediaQuery.of(context).size.height * 0.05),
+                    primary: const Color(0xFFFFAE00),
+                    shadowColor: const Color(0xFFFFAE00),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (!show_data_electricity) {
+                        show_data_electricity = true;
+                        _show_electricity = false;
+                      } else {
+                        show_data_electricity = false;
+                        _show_electricity = true;
+                      }
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        Visibility(
+          visible: show_data_electricity,
+          child: show_data_electric(width, height, context),
+        ),
+      ],
+    );
+  }
+
+  Column show_data_electric(double width, double height, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Bill Amount",
+                style: TextStyle(
+                  color: const Color(0xFFFFAE00),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "\u20B91560.00",
+                  style: TextStyle(
+                    color: const Color(0xFFFFAE00),
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 1.0,
+          color: const Color(0xFFFFAE00),
+          margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        ),
+        Container(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Due Date",
+                style: TextStyle(
+                  color: const Color(0xFFFFAE00),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "27-03-2022",
+                  style: TextStyle(
+                    color: const Color(0xFFFFAE00),
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 1.0,
+          color: const Color(0xFFFFAE00),
+          margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        ),
+        Container(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Bill Number",
+                style: TextStyle(
+                  color: const Color(0xFFFFAE00),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "981276346556",
+                  style: TextStyle(
+                    color: const Color(0xFFFFAE00),
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 1.0,
+          color: const Color(0xFFFFAE00),
+          margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        ),
+        Container(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Bill Period",
+                style: TextStyle(
+                  color: const Color(0xFFFFAE00),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "2022/03",
+                  style: TextStyle(
+                    color: const Color(0xFFFFAE00),
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 1.0,
+          color: const Color(0xFFFFAE00),
+          margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        ),
+        Container(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Consumer Number",
+                style: TextStyle(
+                  color: const Color(0xFFFFAE00),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  _electricity_customer_no_controller.text,
+                  style: TextStyle(
+                    color: const Color(0xFFFFAE00),
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 1.0,
+          color: const Color(0xFFFFAE00),
+          margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        ),
+        Container(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Customer Name",
+                style: TextStyle(
+                  color: const Color(0xFFFFAE00),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "Anup More",
+                  style: TextStyle(
+                    color: const Color(0xFFFFAE00),
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 10.0),
+          decoration: BoxDecoration(
+              color: const Color(0xFF3A3A3A),
+              borderRadius: BorderRadius.all(Radius.circular(20))
+          ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: DropdownButtonFormField<String>(
+                  dropdownColor: const Color(0xFF3A3A3A),
+                  isExpanded: true,
+                  decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    isDense: true,
+                    label: Text("When To Pay"),
+                    labelStyle: TextStyle(
+                        color: const Color(0xFFFFAE00)
+                    ),
+                  ),
+                  value: payment_time,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Color(0xFFFFAE00),
+                  ),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Color(0xFFFFAE00), fontSize: 18),
+                  onChanged: (String? data) {
+                    setState(() {
+                      payment_time = data!;
+                    });
+                  },
+                  items: payment_time_list
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
                 child: TextField(
+                  readOnly: true,
                   cursorColor: const Color(0xFFFFAE00),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: TextInputType.number,
                   style: const TextStyle(color: Color(0xFFFFAE00)),
-                  controller: _electricity_amount_controller,
+                  controller: _electricity_customer_amount_controller,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFFFAE00)),
@@ -1189,35 +1561,134 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                     isDense: true,
                     label: const Text(
-                      "Amount",
+                      "Payment Amount (\u20B9)",
                       style: TextStyle(color: Color(0xFFFFAE00)),
                     ),
                     labelStyle: const TextStyle(color: Color(0xFFFFAE00)),
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: height * 0.4493,
-              // ),
-              // ElevatedButton(
-              //   child: const Text(
-              //     "PAY",
-              //     style: TextStyle(
-              //         color: Color(0xFF111111),
-              //         fontSize: 15.0,
-              //         fontWeight: FontWeight.bold),
-              //   ),
-              //   style: ElevatedButton.styleFrom(
-              //     fixedSize:
-              //         Size(width, MediaQuery.of(context).size.height * 0.05),
-              //     primary: const Color(0xFFFFAE00),
-              //     shadowColor: const Color(0xFFFFAE00),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(5.0),
-              //     ),
-              //   ),
-              //   onPressed: () {},
-              // ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: DropdownButtonFormField<String>(
+                  dropdownColor: const Color(0xFF3A3A3A),
+                  isExpanded: true,
+                  decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFFFAE00)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                    isDense: true,
+                    label: Text("Payment Method"),
+                    labelStyle: TextStyle(
+                        color: const Color(0xFFFFAE00)
+                    ),
+                  ),
+                  value: payment_method,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Color(0xFFFFAE00),
+                  ),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Color(0xFFFFAE00), fontSize: 18),
+                  onChanged: (String? data) {
+                    setState(() {
+                      payment_method = data!;
+                    });
+                  },
+                  items: payment_method_list
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                  child: const Text(
+                    "Pay",
+                    style: TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize:
+                    Size(width, MediaQuery.of(context).size.height * 0.05),
+                    primary: const Color(0xFFFFAE00),
+                    shadowColor: const Color(0xFFFFAE00),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          width: width,
+          margin: const EdgeInsets.only(top: 10.0),
+          decoration: BoxDecoration(
+              color: const Color(0xFF3A3A3A),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Text(
+                    "NOTE",
+                  style: TextStyle(
+                    color: Color(0xFFFFAE00),
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Text(
+                  "When to Pay-Pay later",
+                  style: TextStyle(
+                    color: Color(0xFFFFAE00),
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Text(
+                  "Scheduled your payment to a later date (but prior to atleast few working days before due date). Please note your account will be automatically debited on next working day of the scheduled date.",
+                  style: TextStyle(
+                    color: Color(0xFFFFAE00),
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -1321,7 +1792,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 margin: const EdgeInsets.only(top: 10.0),
                 child: TextField(
                   cursorColor: const Color(0xFFFFAE00),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                   style: const TextStyle(color: Color(0xFFFFAE00)),
                   controller: _dth_amount_controller,
                   decoration: InputDecoration(

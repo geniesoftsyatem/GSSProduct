@@ -11,6 +11,7 @@ import 'package:genie_money/Screens/credit_score_screen.dart';
 import 'package:genie_money/Screens/insurance_screen.dart';
 import 'package:genie_money/Screens/offer_screen.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
+import 'package:genie_money/Screens/web_view_screen.dart';
 
 import 'package:genie_money/utils/silver_delegate.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,7 +41,30 @@ class _ALlOptions extends State<AllOptions> {
   @override
   void initState() {
     // TODO: implement initState
-    if (option.endsWith("Finance")) {
+    if (option.endsWith("Travel")) {
+      homepageList = [
+        HomePageList(
+            id: "7",
+            name: "Aeroplane",
+            image: "images/aeroplane.png"),
+        HomePageList(
+            id: "7",
+            name: "Hotel",
+            image: "images/hotel_gs.png"),
+        HomePageList(
+            id: "7",
+            name: "Train",
+            image: "images/train_gs.png"),
+        HomePageList(
+            id: "7",
+            name: "Cabs",
+            image: "images/car.png"),
+        HomePageList(
+            id: "7",
+            name: "Bus",
+            image: "images/bus.png"),
+      ];
+    } else if (option.endsWith("Finance")) {
       homepageList = [
         HomePageList(
             id: "7",
@@ -198,7 +222,25 @@ class _ALlOptions extends State<AllOptions> {
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        if (homepageList[index].name == "I Have To Fly") {
+                        if (homepageList[index].name == "Hotel") {
+                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/hotels/", "Hotel"));
+                          Navigator.of(context).push(route);
+                        } else if (homepageList[index].name == "Aeroplane") {
+                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/flights/", "Aeroplane"));
+                          Navigator.of(context).push(route);
+                        } else if (homepageList[index].name == "Bus") {
+                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/bus/", "Bus"));
+                          Navigator.of(context).push(route);
+                        } else if (homepageList[index].name == "Train") {
+                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/trains/", "Train"));
+                          Navigator.of(context).push(route);
+                        } else if (homepageList[index].name == "Cabs") {
+                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/cars/", "Cabs"));
+                          Navigator.of(context).push(route);
+                        } else if (homepageList[index].name == "Digi Locker") {
+                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://accounts.digilocker.gov.in/signin/smart_v2/cbf21f85030e4d26e590207443947a9f--en", "Digi Locker"));
+                          Navigator.push(context, route);
+                        } else if (homepageList[index].name == "I Have To Fly") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.heyletscode.ihavetofly");
                           if (installed) {
