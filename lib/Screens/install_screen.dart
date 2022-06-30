@@ -370,7 +370,7 @@ class _InstallApps extends State<InstallApps> {
                     maxValue: 100,
                     progressColor: const Color(0xFFFFAE00),
                     displayText: display_percent + "%",
-                    currentValue: percentage,
+                    currentValue: percentage.toDouble(),
                   ),
                 ),
               ),

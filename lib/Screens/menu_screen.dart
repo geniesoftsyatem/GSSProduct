@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Screens/cashback_screen.dart';
+import 'package:genie_money/Screens/offer_screen.dart';
 import 'package:genie_money/Screens/refer_and_earn_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
 import 'package:genie_money/utils/constants.dart';
@@ -211,6 +212,39 @@ class _MenuScreen extends State<MenuScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: InkWell(
                           onTap: () {
+                            _navigate("Travel");
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              children: const [
+                                Image(
+                                  image: AssetImage("images/travel.png"),
+                                  width: 24.0,
+                                  height: 24.0,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "Travel",
+                                  style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 2,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: InkWell(
+                          onTap: () {
                             _navigate("Personal Security");
                           },
                           child: Container(
@@ -343,14 +377,14 @@ class _MenuScreen extends State<MenuScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: InkWell(
                           onTap: () {
-                            _navigate("Privilage Offer");
+                            _navigate("Offer");
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 10.0),
                             child: Row(
                               children: const [
                                 Image(
-                                  image: AssetImage("images/privilage_offer.png"),
+                                  image: AssetImage("images/offers.png"),
                                   width: 24.0,
                                   height: 24.0,
                                 ),
@@ -358,7 +392,7 @@ class _MenuScreen extends State<MenuScreen> {
                                   width: 15,
                                 ),
                                 Text(
-                                  "Privilage Offer",
+                                  "Offer",
                                   style: TextStyle(
                                     color: Color(0xFFFFAE00),
                                     fontSize: 22,
@@ -409,22 +443,23 @@ class _MenuScreen extends State<MenuScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: InkWell(
                           onTap: () {
-                            _navigate("Travel");
+                            _navigate("Wallet");
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 10.0),
                             child: Row(
                               children: const [
-                                Image(
-                                  image: AssetImage("images/travel.png"),
+                                /*Image(
+                                  image: AssetImage("images/w"),
                                   width: 24.0,
                                   height: 24.0,
-                                ),
+                                ),*/
+                                Icon(Icons.account_balance_wallet, color: Color(0xFFFFAE00),),
                                 SizedBox(
                                   width: 15,
                                 ),
                                 Text(
-                                  "Travel",
+                                  "Wallet",
                                   style: TextStyle(
                                     color: Color(0xFFFFAE00),
                                     fontSize: 22,
@@ -564,6 +599,8 @@ class _MenuScreen extends State<MenuScreen> {
               builder: (context) => const EssentialsScreen()));
     } else if (name == "Settings") {
       Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen("Customer")));
+    }else if (name == "Offer") {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => OfferScreen()));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => AllOptions(name)));
     }

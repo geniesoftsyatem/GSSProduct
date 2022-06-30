@@ -2,16 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/aadhar_cardpay_screen.dart';
 import 'package:genie_money/Screens/add_money_screen.dart';
 import 'package:genie_money/Screens/balance_inquiry_screen.dart';
 import 'package:genie_money/Screens/cash_withdrawal_screen.dart';
 import 'package:genie_money/Screens/credit_to_bank.dart';
+import 'package:genie_money/Screens/customer_money_transfer.dart';
 import 'package:genie_money/Screens/mini_statement_screen.dart';
 import 'package:genie_money/Screens/money_transfer_screen.dart';
+import 'package:genie_money/Screens/qr_code_scanner_screen.dart';
 import 'package:genie_money/utils/silver_delegate.dart';
 
 class MoneyTransfer extends StatefulWidget{
-  MoneyTransfer({Key? key}) : super(key: key);
+  String fromScreen;
+  MoneyTransfer({required this.fromScreen,Key? key}) : super(key: key);
 
   @override
   _MoneyTransfer createState() {
@@ -26,20 +30,60 @@ class _MoneyTransfer extends State<MoneyTransfer>{
 
   @override
   void initState() {
-    list = [
-      HomePageList(
-          id: "1", name: "Money Transfer", image: "images/moneytransfer_gm.png"),
-      HomePageList(
-          id: "2", name: "Credit Card to Bank A/C", image: "images/addmoney_gm.png"),
-      HomePageList(
-          id: "3", name: "Balance Inquiry", image: "images/balance_enquiry_gm.png"),
-      HomePageList(
-          id: "4", name: "Cash Withdrawal", image: "images/cash_withdraw_gm.png"),
-      HomePageList(
-          id: "5", name: "Mini Statement", image: "images/mini_statement_gm.png"),
-      HomePageList(
-          id: "6", name: "Micro ATM", image: "images/micro_atm_gm.png")
-    ];
+    if(widget.fromScreen=="Money Transfer"){
+      list = [
+        /*HomePageList(
+            id: "1", name: "Scan QR", image: "images/scantopay_gm.png"),*/
+        HomePageList(
+            id: "1", name: "Bank A/c to bank A/c", image: "images/moneytransfer_gm.png"),
+        HomePageList(
+            id: "2", name: "Forex", image: "images/addmoney_gm.png"),
+        HomePageList(
+            id: "6", name: "Micro ATM", image: "images/micro_atm_gm.png"),
+        HomePageList(
+            id: "3", name: "Balance Inquiry", image: "images/balance_enquiry_gm.png"),
+        HomePageList(
+            id: "4", name: "Cash Withdrawal", image: "images/cash_withdraw_gm.png"),
+        HomePageList(
+            id: "5", name: "Mini Statement", image: "images/mini_statement_gm.png"),
+        HomePageList(
+            id: "7", name: "Credit Card Payment", image: "images/creditcard_gm.png"),
+        HomePageList(
+            id: "7", name: "Payment by cards", image: "images/credit_card_offer.png"),
+        HomePageList(
+            id: "8", name: "Pay via Aadhar Card", image: "images/aadharcard_payment_gm.png")
+      ];
+    }else{
+      list = [
+        HomePageList(
+            id: "7", name: "Scan QR", image: "images/scantopay_gm.png"),
+        HomePageList(
+            id: "1", name: "Transfer to Mobile", image: "images/moneytransfer_gm.png"),
+        HomePageList(
+            id: "1", name: "Transfer to Bank A/c", image: "images/moneytransfer_gm.png"),
+        HomePageList(
+            id: "7", name: "Payment by cards", image: "images/credit_card_offer.png"),
+        /*HomePageList(
+            id: "2", name: "Forex", image: "images/addmoney_gm.png"),*/
+        /*HomePageList(
+            id: "6", name: "Micro ATM", image: "images/micro_atm_gm.png"),*/
+        HomePageList(
+            id: "3", name: "Balance Inquiry", image: "images/balance_enquiry_gm.png"),
+        /*HomePageList(
+            id: "4", name: "Cash Withdrawal", image: "images/cash_withdraw_gm.png"),*/
+        /*HomePageList(
+            id: "5", name: "Mini Statement", image: "images/mini_statement_gm.png"),*/
+        HomePageList(
+            id: "7", name: "Loans Repayment", image: "images/consumer_loan.png"),
+        HomePageList(
+            id: "7", name: "Credit Card Payment", image: "images/creditcard_gm.png"),
+
+        HomePageList(
+            id: "8", name: "Pay via Aadhar Card", image: "images/aadharcard_payment_gm.png")
+      ];
+
+    }
+
     super.initState();
   }
   @override
@@ -51,7 +95,7 @@ class _MoneyTransfer extends State<MoneyTransfer>{
       appBar: AppBar(
         backgroundColor: const Color(0xFF3A3A3A),
         title: Text(
-          "Money Transfer",
+          widget.fromScreen,
           style: const TextStyle(
             color: Color(0xFFFFAE00),
           ),
@@ -82,13 +126,19 @@ class _MoneyTransfer extends State<MoneyTransfer>{
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        if (list[index].name == "Money Transfer") {
+                        if (list[index].name == "Bank A/c to bank A/c"|| list[index].name == "Transfer to Bank A/c") {
+                         /* Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CustomerMoneyTransfer()));*/
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       MoneyTransferScreen()));
-                        }else if(list[index].name == "Credit Card to Bank A/C"){
+                        }else if(list[index].name == "Credit Card Payment" ||
+                            list[index].name == "Payment by cards"){
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -112,7 +162,17 @@ class _MoneyTransfer extends State<MoneyTransfer>{
                               MaterialPageRoute(
                                   builder: (context) =>
                                       MiniStatementScreen()));
-                        }else if(list[index].name == "Micro ATM"){
+                        }else if(list[index].name == "Scan QR"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QRCodeScannerScreen()));
+                        }else if(list[index].name == "Pay via Aadhar Card"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AadharCardPayScreen()));
+                        }else /*if(list[index].name == "Micro ATM")*/{
                           _alertDialog();
                         }
                       },

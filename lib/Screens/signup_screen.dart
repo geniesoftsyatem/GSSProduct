@@ -169,13 +169,13 @@ class _SignupScreen extends State<SignupScreen>
                                   if (value == 0) {
                                     type = "Customer";
                                   } else if (value == 1) {
-                                    type = "Sales Partner";
+                                    type = "Business Partner";
                                   } else {
                                     type = "Employee";
                                   }
                                 });
                               },
-                              isScrollable: true,
+                              isScrollable: false,
                               indicatorColor: Colors.white,
                               controller: _tabController,
                               labelColor: const Color(0xFF111111),
@@ -190,7 +190,7 @@ class _SignupScreen extends State<SignupScreen>
                                 ),
                                 Tab(
                                   child: Text(
-                                    "Sales Partner",
+                                    "Business Partner",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 18.0),
                                   ),
@@ -226,7 +226,7 @@ class _SignupScreen extends State<SignupScreen>
                                       onPressed: () {
                                         Route newRoute = MaterialPageRoute(
                                             builder: (context) =>
-                                                OnBoardScreen("signup", type == "Customer" ? "0" : type == "Sales Partner" ? "1" : "2"));
+                                                OnBoardScreen("signup", type == "Customer" ? "0" : type == "Business Partner" ? "1" : "2"));
                                         Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
                                       },
                                       child: const Text(
@@ -409,7 +409,7 @@ class _SignupScreen extends State<SignupScreen>
                                     ),
                                     SizedBox(height: height * 0.02),
                                     Visibility(
-                                      visible: type == "Sales Partner" ? true : false,
+                                      visible: type == "Business Partner" ? true : false,
                                       child: DropdownButtonFormField<String>(
                                         dropdownColor: const Color(0xFF3A3A3A),
                                         isExpanded: true,
@@ -639,7 +639,7 @@ class _SignupScreen extends State<SignupScreen>
                                                           latitude,
                                                           longitude,
                                                           "",
-                                                          "Employee",
+                                                          "employee",
                                                           context);
                                                       setState(() {
                                                         isProgress = false;

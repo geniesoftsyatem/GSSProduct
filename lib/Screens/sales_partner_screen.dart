@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Model/app_history_model.dart';
+import 'package:genie_money/Screens/payment_option_screen.dart';
 
 class SalesPartnerScreen extends StatefulWidget {
   String title;
@@ -17,7 +19,7 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
 
   late List<AppHistoryModel> appHistoryList = [];
   List<AppHistoryModel> dummySearchList = [];
-
+  bool payOnlineVisibility = false;
   @override
   void initState() {
     setState(() {
@@ -376,106 +378,174 @@ class _SalesPartnerScreenState extends State<SalesPartnerScreen> {
 
   Widget generateCodeCard(double width, double height) {
     return Center(
-      child: Container(
-        margin: EdgeInsets.only(top: height * 0.15),
-        child: Card(
-          color: const Color(0xFF3A3A3A),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.only(top: 10, bottom: 10),
+            decoration: BoxDecoration(
+              color: Color(0xFF3A3A3A),
+              borderRadius: BorderRadius.all(Radius.circular(10))
             ),
-            side: BorderSide(
-              color: Color(0xFFFFAE00),
-              width: 2.0,
-            ),
-          ),
-          child: Container(
-            margin: const EdgeInsets.all(10.0),
-            child: Column(
+            child: Row(
               children: [
-                const Text(
-                  "Please Enter Mobile Number",
-                  style: TextStyle(
-                    color: Color(0xFFFFAE00),
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Text(
+                  "Balance Code : ",
+                  style: TextStyle(color: Color(0xFFFFAE00), fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.call,
-                        color: Color(0xFFFFAE00),
-                      ),
-                      Container(
-                        width: width * 0.77,
-                        margin: const EdgeInsets.only(left: 10.0),
-                        child: TextField(
-                          style: const TextStyle(color: Color(0xFFFFAE00)),
-                          cursorColor: const Color(0xFFFFAE00),
-                          keyboardType: TextInputType.phone,
-                          controller: _mobile_no_controller,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Color(0xFFFFAE00)),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Color(0xFFFFAE00)),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Color(0xFFFFAE00)),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Color(0xFFFFAE00)),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            labelStyle:
-                                const TextStyle(color: Color(0xFFFFAE00)),
-                            // hintText: 'Email / Mobile No.',
-                            labelText: 'Mobile No.',
-                            isDense: true,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10.0),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(
-                        color: Color(0xFF111111),
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(width, 40.0),
-                      primary: const Color(0xFFFFAE00),
-                      shadowColor: const Color(0xFFFFAE00),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                  ),
-                ),
+                Text(
+                  "5",
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                )
               ],
             ),
           ),
-        ),
+          Container(
+            //margin: EdgeInsets.only(top: height * 0.15),
+            child: Card(
+              color: const Color(0xFF3A3A3A),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                side: BorderSide(
+                  color: Color(0xFFFFAE00),
+                  width: 2.0,
+                ),
+              ),
+              child: Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    
+                    const Text(
+                      "Please Enter Mobile Number",
+                      style: TextStyle(
+                        color: Color(0xFFFFAE00),
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.call,
+                            color: Color(0xFFFFAE00),
+                          ),
+                          Container(
+                            width: width * 0.77,
+                            margin: const EdgeInsets.only(left: 10.0),
+                            child: TextField(
+                              style: const TextStyle(color: Color(0xFFFFAE00)),
+                              cursorColor: const Color(0xFFFFAE00),
+                              keyboardType: TextInputType.phone,
+                              controller: _mobile_no_controller,
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Color(0xFFFFAE00)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Color(0xFFFFAE00)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Color(0xFFFFAE00)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Color(0xFFFFAE00)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelStyle:
+                                    const TextStyle(color: Color(0xFFFFAE00)),
+                                // hintText: 'Email / Mobile No.',
+                                labelText: 'Mobile No.',
+                                isDense: true,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            payOnlineVisibility = true;
+                          });
+                          _createToast("Insufficient Balance Code. To upgrade the Code, please do the payment or contact to GenieMoney");
+                        },
+                        child: const Text(
+                          "Generate Activation Code",
+                          style: TextStyle(
+                            color: Color(0xFF111111),
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(width, 40.0),
+                          primary: const Color(0xFFFFAE00),
+                          shadowColor: const Color(0xFFFFAE00),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: payOnlineVisibility,
+            child: Container(
+              margin: const EdgeInsets.only(top: 10.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PaymentOptionScreen()));
+                },
+                child: const Text(
+                  "Pay Online ",
+                  style: TextStyle(
+                    color: Color(0xFF111111),
+                    fontSize: 16.0,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(width, 40.0),
+                  primary: const Color(0xFFFFAE00),
+                  shadowColor: const Color(0xFFFFAE00),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _createToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1);
   }
 
   void filterSearchResults(String query) {

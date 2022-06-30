@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/utils/constants.dart';
 import 'package:genie_money/utils/network.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Model/bank_details_model.dart';
+import '../Model/dmt/BankListModel.dart';
 import '../Model/employment_details_model.dart';
 
 class EmploymentAndBankDetailsScreen extends StatefulWidget {
@@ -111,9 +115,21 @@ class _EmploymentAndBankDetailsScreenState
   List<Employmentdetail>? employmentdetail = [];
   List<Bankdetail>? bankdetail = [];
   String ue_id = "", ub_id = "";
+  List<BankModel>? bankList = [];
+  List<BankModel>? tempBankList = [];
+  late BankModel selectedBank;
+  BankModel? selectedBankModelp;
+  String selectedBankNamep ="Selecte Bank";
+  double width=0;
+  double height=0;
+
+
+
 
   @override
   void initState() {
+    getBankList();
+
     super.initState();
     if (widget.title == "Employment Details") {
       isEmployment = true;
@@ -193,8 +209,8 @@ class _EmploymentAndBankDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFF111111),
@@ -791,7 +807,7 @@ class _EmploymentAndBankDetailsScreenState
                   visible: isBank,
                   child: Column(
                     children: [
-                      Container(
+                      /*Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: TextField(
                           style: const TextStyle(color: Color(0xFFFFAE00)),
@@ -825,7 +841,9 @@ class _EmploymentAndBankDetailsScreenState
                             isDense: true,
                           ),
                         ),
-                      ),
+                      ),*/
+                      getBankListDropDown(context),
+
                       Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: TextField(
@@ -969,13 +987,14 @@ class _EmploymentAndBankDetailsScreenState
                       Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_bank_name_controller.text.isNotEmpty) {
+                          onPressed: () async{
+
+                            if (selectedBankNamep!="Selecte Bank") {
                               if (_account_no_controller.text.isNotEmpty) {
                                 if (_confirm_account_no_controller.text.isNotEmpty) {
                                   if (_confirm_account_no_controller.text == _account_no_controller.text) {
                                     if (_ifsc_code_controller.text.isNotEmpty) {
-                                      if (_upi_id_controller.text.isNotEmpty) {
+                                      //if (_upi_id_controller.text.isNotEmpty) {
                                         final data = {
                                           "ub_id" : ub_id,
                                           "ub_userid" : Constants.userid,
@@ -984,13 +1003,28 @@ class _EmploymentAndBankDetailsScreenState
                                           "ub_ifsccode" : _ifsc_code_controller.text,
                                           "ub_upi" : _upi_id_controller.text
                                         };
-                                        final bankDetails = [
+
+                                        print("bank name : "+selectedBankModelp!.bankName);
+                                        SharedPreferences pref = await SharedPreferences.getInstance();
+                                        setState((){
+                                          //containerVisible = false;
+                                          pref.setBool("isAccountAdded",true);
+                                          pref.setString("registerAccount", _confirm_account_no_controller.text);
+                                          pref.setString("ifsc", _ifsc_code_controller.text);
+                                          pref.setString("bankname", selectedBankModelp!.bankName);
+                                          pref.setString("bankid", selectedBankModelp!.bankid.toString());
+                                          //pref.setString("upi", _upi_id_controller.text);
+                                        });
+
+                                        Navigator.pop(context);
+
+                                        /*final bankDetails = [
                                           data
                                         ];
-                                        _networkCall.update_bank(bankDetails, context);
-                                      } else {
+                                        _networkCall.update_bank(bankDetails, context);*/
+                                      /*} else {
                                         _createToast("Please enter upi id");
-                                      }
+                                      }*/
                                     } else {
                                       _createToast("Please enter IFSC code");
                                     }
@@ -1030,6 +1064,188 @@ class _EmploymentAndBankDetailsScreenState
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<List<BankModel>> getBankList()async{
+    String data =await DefaultAssetBundle.of(context).loadString("assets/dmt_bank_list.json") ;
+
+    final jsonResult = json.decode(data);
+    setState(() {
+      bankList = (BankListModel.fromJson(jsonResult).list);
+      bankList!.sort((a,b)=>a.bankName.compareTo(b.bankName));
+      tempBankList!.addAll(bankList!);
+      //bankList!.insertAll(0, [new BankModel(bankid: 0, bankName: "Select Bank")]);
+    });
+
+    print(jsonResult);
+    //selectedBank= bankList!.first;
+    return bankList!;
+  }
+
+  Widget getBankListDropDown(BuildContext context){
+    /*return Container(
+      margin: EdgeInsets.only(top: 5,bottom: 5),
+      padding: EdgeInsets.only(left: 10, right: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          border: Border.all(color: Color(0xFFFFAE00))
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<BankModel>(
+          dropdownColor: const Color(0xFF3A3A3A),
+          isExpanded: true,
+          value: selectedBank,
+          icon: const Icon(
+            Icons.arrow_drop_down,
+            color: Color(0xFFFFAE00),
+          ),
+          iconSize: 24,
+          elevation: 16,
+          //style: TextStyle(color: Color(0xFFFFAE00), fontSize: 18),
+          onChanged: (data) {
+            setState(() {
+              selectedBank = data!;
+              print("slected state "+selectedBank.bankName);
+              //prepaid_operator = data.;
+            });
+          },
+          items: bankList?.map((value) => DropdownMenuItem(
+            child: Text(
+              value.bankName.toString().trim(),
+              overflow: TextOverflow.visible,
+              maxLines: 2,
+              style: TextStyle(color: Color(0xFFFFAE00), fontSize: 16),
+            ),
+            value: value,
+          ))?.toList()??[],
+        ),
+      ),
+    );*/
+    return GestureDetector(
+      onTap: (){
+        setState((){
+          tempBankList=bankList;
+        });
+        Dialog bankDialog = Dialog(
+          backgroundColor: Color(0xFF3A3A3A),
+          child: StatefulBuilder(builder: (context,setStateNew) {
+
+            return Container(
+              height: height - 100,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10)),
+                        border: Border.all(
+                            color: Color(0xFFFFAE00))
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Container(
+                              child: TextField(
+                                textCapitalization: TextCapitalization.characters,
+                                onChanged: (value) {
+                                  setStateNew((){
+                                    if(value.isNotEmpty){
+                                      tempBankList = bankList!.where((element) => element.bankName.contains(value)).toList();
+                                    }else{
+                                      tempBankList = bankList!;
+                                    }
+
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Search",
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                ),
+                                autocorrect: false,
+                                enableSuggestions: false,
+                                style: TextStyle(
+                                    color: Color(0xFFFFAE00),
+                                    decoration: TextDecoration
+                                        .none
+                                ),
+                                cursorColor: const Color(
+                                    0xFFFFAE00),
+                              ),
+                            )
+                        ),
+                        Icon(Icons.search,
+                          color: Color(0xFFFFAE00),)
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: tempBankList!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: (){
+                                setState((){
+                                  selectedBankModelp=tempBankList![index];
+                                  selectedBankNamep=selectedBankModelp!.bankName;
+                                });
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  tempBankList![index].bankName,
+                                  style: TextStyle(color: Color(
+                                      0xFFFFAE00), fontSize: 18),
+                                ),
+                              ),
+                            );
+                          }
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+
+          }),
+        );
+
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) => bankDialog);
+      },
+      child: Container(
+        //height: 40,
+        margin: EdgeInsets.only(top: 10,bottom: 10),
+        padding: EdgeInsets.only(left: 10, right: 10,top: 12,bottom: 12),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            border: Border.all(color: Color(0xFFFFAE00))
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                selectedBankNamep,
+                style: TextStyle(color: Color(0xFFFFAE00),fontSize: 16),
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Icon(Icons.arrow_drop_down,color: Color(0xFFFFAE00),)
+          ],
         ),
       ),
     );

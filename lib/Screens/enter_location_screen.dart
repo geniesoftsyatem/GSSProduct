@@ -345,7 +345,7 @@ class _EnterLocationState extends State<EnterLocation> {
                   child: ElevatedButton(
                     onPressed: () async {},
                     child: const Text(
-                      "Save",
+                      "Submit",
                       style: TextStyle(
                         color: Color(0xFF111111),
                         fontSize: 16.0,

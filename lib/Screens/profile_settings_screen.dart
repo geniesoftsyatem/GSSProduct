@@ -23,22 +23,22 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   String bank_percentage = "0";
   String photo_percentage = "0";
 
-  int value = 0;
-  int value1 = 0;
-  int value2 = 0;
-  int value3 = 0;
-  int emp_value = 0;
-  int emp_value1 = 0;
-  int emp_value2 = 0;
-  int emp_value3 = 0;
-  int bank_value = 0;
-  int bank_value1 = 0;
-  int bank_value2 = 0;
-  int bank_value3 = 0;
-  int photo_value = 0;
-  int photo_value1 = 0;
-  int photo_value2 = 0;
-  int photo_value3 = 0;
+  double value = 0;
+  double value1 = 0;
+  double value2 = 0;
+  double value3 = 0;
+  double emp_value = 0;
+  double emp_value1 = 0;
+  double emp_value2 = 0;
+  double emp_value3 = 0;
+  double bank_value = 0;
+  double bank_value1 = 0;
+  double bank_value2 = 0;
+  double bank_value3 = 0;
+  double photo_value = 0;
+  double photo_value1 = 0;
+  double photo_value2 = 0;
+  double photo_value3 = 0;
 
   int flag = 0;
   int flag1 = 0;
@@ -188,7 +188,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       backgroundColor: const Color(0xFF111111),
                                       maxValue: 25,
                                       progressColor: const Color(0xFF4285F4),
-                                      currentValue: value,
+                                      currentValue: value as double,
                                       size: 10.0,
                                     ),
                                   ),
@@ -199,7 +199,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       backgroundColor: const Color(0xFF111111),
                                       maxValue: 25,
                                       progressColor: const Color(0xFF4285F4),
-                                      currentValue: value1,
+                                      currentValue: value1 as double,
                                       size: 10.0,
                                     ),
                                   ),
@@ -210,7 +210,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       backgroundColor: const Color(0xFF111111),
                                       maxValue: 25,
                                       progressColor: const Color(0xFF4285F4),
-                                      currentValue: value2,
+                                      currentValue: value2 as double,
                                       size: 10.0,
                                     ),
                                   ),
@@ -221,7 +221,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       backgroundColor: const Color(0xFF111111),
                                       maxValue: 25,
                                       progressColor: const Color(0xFF4285F4),
-                                      currentValue: value3,
+                                      currentValue: value3 as double,
                                       size: 10.0,
                                     ),
                                   ),
@@ -299,7 +299,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFEA4335),
-                                        currentValue: emp_value,
+                                        currentValue: emp_value as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -311,7 +311,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFEA4335),
-                                        currentValue: emp_value1,
+                                        currentValue: emp_value1 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -323,7 +323,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFEA4335),
-                                        currentValue: emp_value2,
+                                        currentValue: emp_value2 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -335,7 +335,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFEA4335),
-                                        currentValue: emp_value3,
+                                        currentValue: emp_value3 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -414,7 +414,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFFBBC05),
-                                        currentValue: bank_value,
+                                        currentValue: bank_value as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -426,7 +426,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFFBBC05),
-                                        currentValue: bank_value1,
+                                        currentValue: bank_value1 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -437,7 +437,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         backgroundColor:
                                         const Color(0xFF111111),
                                         progressColor: const Color(0xFFFBBC05),
-                                        currentValue: bank_value2,
+                                        currentValue: bank_value2 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -449,7 +449,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         const Color(0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFFFBBC05),
-                                        currentValue: bank_value3,
+                                        currentValue: bank_value3 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -524,7 +524,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                             0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFF34A853),
-                                        currentValue: photo_value,
+                                        currentValue: photo_value as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -536,7 +536,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                             0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFF34A853),
-                                        currentValue: photo_value1,
+                                        currentValue: photo_value1 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -548,7 +548,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                             0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFF34A853),
-                                        currentValue: photo_value2,
+                                        currentValue: photo_value2 as double,
                                         size: 10.0,
                                       ),
                                     ),
@@ -560,7 +560,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                             0xFF111111),
                                         maxValue: 25,
                                         progressColor: const Color(0xFF34A853),
-                                        currentValue: photo_value3,
+                                        currentValue: photo_value3 as double,
                                         size: 10.0,
                                       ),
                                     ),

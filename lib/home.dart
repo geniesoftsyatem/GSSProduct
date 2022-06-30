@@ -6,6 +6,8 @@ import 'Screens/menu_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+  //String loginType;
+  //Home({required this.loginType});
 
   @override
   State<StatefulWidget> createState() => _MyHomePageState();

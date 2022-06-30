@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:genie_money/Screens/portfolio.dart';
 import 'package:genie_money/utils/network.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home.dart';
 
@@ -110,6 +111,7 @@ class _OtpScreen extends State<OTPScreen> {
                                     DeviceInfoPlugin deviceInfo =
                                         DeviceInfoPlugin();
                                     var model, manufacturer, release, sdkInt, id;
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
                                     if (Platform.isAndroid) {
                                       AndroidDeviceInfo androidInfo =
                                           await deviceInfo.androidInfo;
@@ -131,9 +133,9 @@ class _OtpScreen extends State<OTPScreen> {
                                     String sdk = "$sdkInt";
                                     NetworkCall networkcall = NetworkCall();
                                     setState(() {
-                                      isLoading = true;
+                                      //isLoading = true;
                                     });
-                                    bool status = await networkcall.fetchLoginPosts(
+                                    /*bool status = await networkcall.fetchLoginPosts(
                                         widget.username,
                                         widget.password,
                                         verificationCode,
@@ -141,7 +143,8 @@ class _OtpScreen extends State<OTPScreen> {
                                         context);
                                     setState(() {
                                       isLoading = false;
-                                    });
+                                    });*/
+                                    bool status = true;
                                     if (status) {
                                       if (widget.type == "Employee") {
                                         Navigator.pushAndRemoveUntil<dynamic>(
@@ -152,10 +155,11 @@ class _OtpScreen extends State<OTPScreen> {
                                               (route) => false,
                                         );
                                       } else {
+                                        prefs.setString("type", widget.type);
                                         Navigator.pushAndRemoveUntil<dynamic>(
                                           context,
                                           MaterialPageRoute<dynamic>(
-                                            builder: (BuildContext context) => const Home(),
+                                            builder: (BuildContext context) => Home(),
                                           ),
                                               (route) => false,
                                         );
@@ -221,28 +225,4 @@ class _OtpScreen extends State<OTPScreen> {
     );
   }
 
-// Widget _countDownTimer() {
-//   return CountdownTimer(
-//     endTime: endTime,
-//     widgetBuilder: (context, CurrentRemainingTime? time) {
-//       if (time == null) {
-//         _enableButton = true;
-//         return const Text(
-//           '0 : min , 0 : sec',
-//           style: TextStyle(color: Color(0xFFFFAE00), fontSize: 20.0),
-//         );
-//       } else {
-//         if (time.min == null) {
-//           return Text('0 : min , [ ${time.sec} ] : sec',
-//               style:
-//                   TextStyle(color: const Color(0xFFFFAE00), fontSize: 20.0));
-//         } else {
-//           return Text('${time.min} : min , ${time.sec} : sec',
-//               style:
-//                   TextStyle(color: const Color(0xFFFFAE00), fontSize: 20.0));
-//         }
-//       }
-//     },
-//   );
-// }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:genie_money/Screens/forgot_password_screen.dart';
@@ -9,7 +10,9 @@ import 'package:genie_money/Screens/onboard_screen.dart';
 import 'package:genie_money/Screens/signup_screen.dart';
 import 'package:genie_money/utils/network.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home.dart';
 import 'otp_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -136,7 +139,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                               height_angle = height * 0.40;
                             }
                           } else if (value == 1) {
-                            title = "Sales Partner";
+                            title = "Business Partner";
                             if (height <= 593) {
                               curve = height * 0.79;
                               height_angle = height * 0.69;
@@ -162,7 +165,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                           }
                         });
                       },
-                      isScrollable: true,
+                      isScrollable: false,
                       indicatorColor: Colors.white,
                       controller: _tabController,
                       labelColor: const Color(0xFF111111),
@@ -177,7 +180,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                         ),
                         Tab(
                           child: Text(
-                            "Sales Partner",
+                            "Business Partner",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 18.0),
                           ),
@@ -219,6 +222,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
             right: MediaQuery.of(context).size.width * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,7 +251,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 30.0),
-                  child: TextField(
+                  child: TextFormField(
                     controller: _email_mobile_controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -274,7 +278,7 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                   ),
                 ),
                 Visibility(
-                  visible: title == "Sales Partner" ? true : false,
+                  visible: title == "Business Partner" ? true : false,
                   child: Container(
                     margin: const EdgeInsets.only(top: 10.0),
                     child: DropdownButtonFormField<String>(
@@ -391,25 +395,34 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                           RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
                               .hasMatch(_email_mobile_controller.text);
                           if (emailValid || mobileValid) {
-                            if (title == "Sales Partner") {
+                            if (title == "Business Partner") {
                               NetworkCall networdCall = NetworkCall();
                               setState(() {
-                                _isLoading = true;
+                                //_isLoading = true;
                               });
-                              bool status = await networdCall.generateOtp(
+                              /*bool status = await networdCall.generateOtp(
                                   _email_mobile_controller.text,
                                   _password_controller.text,
                                   selected_type,
                                   context);
                               setState(() {
                                 _isLoading = false;
-                              });
-                              if (status) {
+                              });*/
+                              var status =true;
+                              //if(selected_type=='Retailer'){
+                                if (status) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => OTPScreen(_email_mobile_controller.text, _password_controller.text, selected_type),),);
+                                }
+                              //}
+                              /*if (status) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => OTPScreen(_email_mobile_controller.text, _password_controller.text, selected_type),),);
-                              }
+                              }*/
                             } else {
                               NetworkCall networdCall = NetworkCall();
                               setState(() {
@@ -463,46 +476,127 @@ class _SignInScreen extends State<SignInScreen> with SingleTickerProviderStateMi
                     ),
                   ),
                 ),
-                const SizedBox(
+                /*const SizedBox(
                   height: 100.0,
-                ),
-                const Center(
-                  child: Text(
-                    "OR",
-                    style: TextStyle(
-                        color: Color(0xFFFFAE00),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0),
-                  ),
-                ),
+                ),*/
+
               ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: height * 0.10),
-              child: ElevatedButton(
-                child: const Text(
-                  "SIGN UP",
-                  style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  fixedSize:
-                  Size(width * 0.90, MediaQuery.of(context).size.height * 0.05),
-                  primary: const Color(0xFFFFAE00),
-                  shadowColor: const Color(0xFFFFAE00),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {
-                  Route newRoute = MaterialPageRoute(
-                      builder: (context) => OnBoardScreen("signin", title == "Customer" ? "0" : title == "Sales Partner" ? "1" : "2"));
-                  Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
-                },
+            Center(
+              child: Text(
+                "OR",
+                style: TextStyle(
+                    color: Color(0xFFFFAE00),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0),
               ),
             ),
+            Column(
+              children: [
+                Visibility(
+                  visible: title=="Employee" ?false:true,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: height * 0.10),
+                        child: ElevatedButton(
+                          child: const Text(
+                            "SIGN UP",
+                            style: TextStyle(
+                                color: Color(0xFF111111),
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize:
+                            Size(width * 0.90, MediaQuery.of(context).size.height * 0.05),
+                            primary: const Color(0xFFFFAE00),
+                            shadowColor: const Color(0xFFFFAE00),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            Route newRoute = MaterialPageRoute(
+                                builder: (context) => OnBoardScreen("signin", title == "Customer" ? "0" : title == "Business Partner" ? "1" : "2"));
+                            Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top:10),
+                        child: ElevatedButton(
+                          child: const Text(
+                            "DEMO",
+                            style: TextStyle(
+                                color: Color(0xFF111111),
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize:
+                            Size(width * 0.90, MediaQuery.of(context).size.height * 0.05),
+                            primary: const Color(0xFFFFAE00),
+                            shadowColor: const Color(0xFFFFAE00),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          onPressed: () async{
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            if(title=="Customer"){
+                              prefs.setString("type",title);
+
+                            }else{
+                              prefs.setString("type",selected_type);
+                            }
+
+                            Navigator.pushAndRemoveUntil<dynamic>(
+                                context,
+                                MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) => const Home(),
+                            ),
+                            (route) => false,);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: title=="Employee"?true:false,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            child: Text(
+                                "New Employee?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFFFFAE00),
+                                  fontSize: 18.0,),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            child: Text(
+                              "Please Contact HR Team",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFFFFAE00),
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                ),
+              ],
+            )
           ],
         ),
       ),

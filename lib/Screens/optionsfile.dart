@@ -8,18 +8,22 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
 import 'package:genie_money/Screens/cowin_screen.dart';
 import 'package:genie_money/Screens/credit_score_screen.dart';
+import 'package:genie_money/Screens/digital_security_detail_screen.dart';
 import 'package:genie_money/Screens/insurance_screen.dart';
+import 'package:genie_money/Screens/investment_services.dart';
+import 'package:genie_money/Screens/loan_service.dart';
 import 'package:genie_money/Screens/offer_screen.dart';
+import 'package:genie_money/Screens/qr_code_scanner_screen.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 import 'package:genie_money/Screens/web_view_screen.dart';
-
 import 'package:genie_money/utils/silver_delegate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Model/ott_model.dart';
+import 'bank_service.dart';
 import 'install_screen.dart';
 import 'money_transfer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AllOptions extends StatefulWidget {
   String option;
@@ -41,52 +45,73 @@ class _ALlOptions extends State<AllOptions> {
   @override
   void initState() {
     // TODO: implement initState
-    if (option.endsWith("Travel")) {
+    if (option.endsWith("Travel") ||
+        option.endsWith("Travel Booking Services")) {
       homepageList = [
-        HomePageList(
-            id: "7",
-            name: "Aeroplane",
-            image: "images/aeroplane.png"),
-        HomePageList(
-            id: "7",
-            name: "Hotel",
-            image: "images/hotel_gs.png"),
-        HomePageList(
-            id: "7",
-            name: "Train",
-            image: "images/train_gs.png"),
-        HomePageList(
-            id: "7",
-            name: "Cabs",
-            image: "images/car.png"),
-        HomePageList(
-            id: "7",
-            name: "Bus",
-            image: "images/bus.png"),
+        HomePageList(id: "1", name: "Aeroplane", image: "images/aeroplane.png"),
+        HomePageList(id: "2", name: "Hotel", image: "images/hotel_gs.png"),
+        HomePageList(id: "3", name: "Train", image: "images/train_gs.png"),
+        HomePageList(id: "4", name: "Cabs", image: "images/car.png"),
+        HomePageList(id: "5", name: "Bus", image: "images/bus.png"),
       ];
     } else if (option.endsWith("Finance")) {
       homepageList = [
         HomePageList(
-            id: "7",
-            name: "Money Transfer",
-            image: "images/money_transfer.png"),
+            id: "6", name: "Payments", image: "images/money_transfer.png"),
         HomePageList(
-            id: "8", name: "Instant Loan", image: "images/instant_loan.png"),
-        HomePageList(
-            id: "9", name: "Consumer Loans", image: "images/consumer_loan.png"),
-        HomePageList(
-            id: "10", name: "Insurance", image: "images/insurance.png"),
-        HomePageList(
-            id: "11", name: "Investments", image: "images/investment.png"),
-        HomePageList(id: "12", name: "Stock & IPOs", image: "images/stock.png"),
-        HomePageList(
-            id: "13",
-            name: "Recharge and Bill Payment",
+            id: "8",
+            name: "Recharge/Bill Payment",
             image: "images/recharge_and_bill.png"),
+        HomePageList(
+            id: "10", name: "Loans", image: "images/consumer_loan.png"),
+        /*HomePageList(
+            id: "9", name: "Instant Loan", image: "images/instant_loan.png"),
+        HomePageList(
+            id: "10", name: "Consumer Loans", image: "images/consumer_loan.png"),*/
+        HomePageList(
+            id: "11", name: "Insurance", image: "images/insurance.png"),
+        HomePageList(
+            id: "12", name: "Investments", image: "images/investment.png"),
+        /*HomePageList(
+            id: "13", name: "Stock & IPOs", image: "images/stock.png"),*/
         HomePageList(
             id: "14", name: "Credit Score", image: "images/cerdit_score.png"),
         HomePageList(
             id: "15", name: "Digi Locker", image: "images/digi_locker.png"),
+        HomePageList(
+            id: "16",
+            name: "Financial Calculator",
+            image: "images/finance_calculator.png")
+      ];
+    } else if (option.endsWith("Finance Services")) {
+      homepageList = [
+        HomePageList(
+            id: "6",
+            name: "Money Transfer",
+            image: "images/money_transfer.png"),
+        HomePageList(
+            id: "7", name: "Bank Services", image: "images/bank_details.png"),
+        /*HomePageList(
+            id: "7", name: "Scan To Pay", image: "images/scantopay_gm.png"),*/
+        HomePageList(
+            id: "8",
+            name: "Recharge/Bill Payment",
+            image: "images/recharge_and_bill.png"),
+        HomePageList(id: "9", name: "Loans", image: "images/instant_loan.png"),
+        /*HomePageList(
+            id: "9", name: "Instant Loan", image: "images/instant_loan.png"),
+        HomePageList(
+            id: "10", name: "Consumer Loans", image: "images/consumer_loan.png"),*/
+        HomePageList(
+            id: "11", name: "Insurance", image: "images/insurance.png"),
+        HomePageList(
+            id: "12", name: "Investments", image: "images/investment.png"),
+        /* HomePageList(
+            id: "13", name: "Stock & IPOs", image: "images/stock.png"),
+        HomePageList(
+            id: "14", name: "Credit Score", image: "images/cerdit_score.png"),
+        HomePageList(
+            id: "15", name: "Digi Locker", image: "images/digi_locker.png"),*/
         HomePageList(
             id: "16",
             name: "Financial Calculator",
@@ -101,12 +126,13 @@ class _ALlOptions extends State<AllOptions> {
         HomePageList(
             id: "19", name: "Secure Chat", image: "images/secure_chat.png")
       ];
-    } else if (option.endsWith("Device Security")) {
+    } else if (option.endsWith("Device Security") ||
+        option.endsWith("Digital Security Services")) {
       homepageList = [
         HomePageList(
             id: "20", name: "Anti Hacking", image: "images/anti_hacking.png"),
-        HomePageList(
-            id: "21", name: "Anti Virus", image: "images/anitvirus.png"),
+        /*HomePageList(
+            id: "21", name: "Anti Virus", image: "images/anitvirus.png"),*/
         HomePageList(
             id: "22", name: "Anti Theft", image: "images/anittheft.png"),
         HomePageList(
@@ -114,47 +140,52 @@ class _ALlOptions extends State<AllOptions> {
             name: "Wi-Fi Protect",
             image: "images/wifi_protection.png")
       ];
-    } else if (option.endsWith("Entertainment")) {
+    } else if (option.endsWith("Entertainment") ||
+        option.endsWith("Entertainment Service")) {
       homepageList = [
         HomePageList(
-            id: "7", name: "YouTube Video", image: "images/youtube_video.png"),
+            id: "24", name: "YouTube Video", image: "images/youtube_video.png"),
         HomePageList(
             id: "8", name: "YouTube Music", image: "images/youtube_music.png"),
         HomePageList(
-            id: "9",
+            id: "25",
             name: "YouTube Download",
             image: "images/youtube_download.png"),
         HomePageList(
-            id: "10", name: "News Channels", image: "images/valueaddition.png"),
+            id: "26", name: "News Channels", image: "images/valueaddition.png"),
         HomePageList(
-            id: "11",
+            id: "27",
             name: "Other Channels",
             image: "images/other_channel.png"),
         HomePageList(
-            id: "12",
+            id: "28",
             name: "Facebook video downloader",
             image: "images/facebook_video_downloader.png"),
-        HomePageList(id: "13", name: "OTT", image: "images/ott.png")
+        HomePageList(id: "29", name: "OTT", image: "images/ott.png")
       ];
-    } else if (option.endsWith("Value Addition")) {
+    } else if (option.endsWith("Value Addition") ||
+        option.endsWith("Value Addition Services")) {
       homepageList = [
-        HomePageList(id: "7", name: "Education", image: "images/education.png"),
         HomePageList(
-            id: "8", name: "Health / Fitness", image: "images/fitness.png"),
-        HomePageList(id: "8", name: "Jobs", image: "images/jobs.png")
+            id: "30", name: "Education", image: "images/education.png"),
+        HomePageList(
+            id: "31", name: "Health / Fitness", image: "images/fitness.png"),
+        HomePageList(id: "32", name: "Jobs", image: "images/jobs.png"),
+        HomePageList(id: "35", name: "CoWIN", image: "images/cowinlogo.png")
       ];
     } else if (option.endsWith("Privilage Offer")) {
       homepageList = [
-        HomePageList(
-            id: "7",
+        /*HomePageList(
+            id: "33",
             name: "Accidental Insurance",
-            image: "images/accidental_insurance.png"),
+            image: "images/accidental_insurance.png"),*/
         /*HomePageList(
             id: "8",
             name: "COVID-19 Insurance",
             image: "images/covid_insurance.png"),*/
-        HomePageList(id: "24", name: "Offers", image: "images/offers.png"),
-        HomePageList(id: "25", name: "CoWIN", image: "images/cowinlogo.png")
+        HomePageList(id: "34", name: "Offers", image: "images/offers.png"),
+        /*HomePageList(
+            id: "35", name: "CoWIN", image: "images/cowinlogo.png")*/
       ];
     } else if (option.endsWith("Games")) {
       homepageList = [
@@ -223,24 +254,39 @@ class _ALlOptions extends State<AllOptions> {
                     return GestureDetector(
                       onTap: () async {
                         if (homepageList[index].name == "Hotel") {
-                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/hotels/", "Hotel"));
+                          Route route = MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  "https://www.goibibo.com/hotels/", "Hotel"));
                           Navigator.of(context).push(route);
                         } else if (homepageList[index].name == "Aeroplane") {
-                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/flights/", "Aeroplane"));
+                          Route route = MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  "https://www.goibibo.com/flights/",
+                                  "Aeroplane"));
                           Navigator.of(context).push(route);
                         } else if (homepageList[index].name == "Bus") {
-                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/bus/", "Bus"));
+                          Route route = MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  "https://www.goibibo.com/bus/", "Bus"));
                           Navigator.of(context).push(route);
                         } else if (homepageList[index].name == "Train") {
-                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/trains/", "Train"));
+                          Route route = MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  "https://www.goibibo.com/trains/", "Train"));
                           Navigator.of(context).push(route);
                         } else if (homepageList[index].name == "Cabs") {
-                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://www.goibibo.com/cars/", "Cabs"));
+                          Route route = MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  "https://www.goibibo.com/cars/", "Cabs"));
                           Navigator.of(context).push(route);
                         } else if (homepageList[index].name == "Digi Locker") {
-                          Route route = MaterialPageRoute(builder: (context) => WebViewScreen("https://accounts.digilocker.gov.in/signin/smart_v2/cbf21f85030e4d26e590207443947a9f--en", "Digi Locker"));
+                          Route route = MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  "https://accounts.digilocker.gov.in/signin/smart_v2/cbf21f85030e4d26e590207443947a9f--en",
+                                  "Digi Locker"));
                           Navigator.push(context, route);
-                        } else if (homepageList[index].name == "I Have To Fly") {
+                        } else if (homepageList[index].name ==
+                            "I Have To Fly") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.heyletscode.ihavetofly");
                           if (installed) {
@@ -251,6 +297,11 @@ class _ALlOptions extends State<AllOptions> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
+                            /*Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DigitalSecurityDetailScren(name:homepageList[index].name)));*/
                           }
                         } else if (homepageList[index].name ==
                             "Space Shooter") {
@@ -307,7 +358,7 @@ class _ALlOptions extends State<AllOptions> {
                               builder: (context) => const CreditScoreScreen());
                           Navigator.push(context, route);
                         } else if (homepageList[index].name ==
-                            "Recharge and Bill Payment") {
+                            "Recharge/Bill Payment") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -339,11 +390,16 @@ class _ALlOptions extends State<AllOptions> {
                           if (installed) {
                             launchNativeActivity(homepageList[index].name);
                           } else {
+                           /* Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InstallApps(homepageList[index].name)));*/
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        InstallApps(homepageList[index].name)));
+                                        DigitalSecurityDetailScren( name: homepageList[index].name,)));
                           }
                         } else if (homepageList[index].name ==
                             "YouTube Video") {
@@ -376,8 +432,7 @@ class _ALlOptions extends State<AllOptions> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const OTTScreen()));
+                                  builder: (context) => const OTTScreen()));
                         } else if (homepageList[index].name ==
                                 "YouTube Download" ||
                             homepageList[index].name == "News Channels" ||
@@ -424,7 +479,21 @@ class _ALlOptions extends State<AllOptions> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MoneyTransfer()));
+                                  builder: (context) => MoneyTransfer(
+                                        fromScreen: homepageList[index].name,
+                                      )));
+                        } else if (homepageList[index].name == "Payments") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MoneyTransfer(
+                                        fromScreen: homepageList[index].name,
+                                      )));
+                        } else if (homepageList[index].name == "Scan To Pay") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QRCodeScannerScreen()));
                         } else if (homepageList[index].name == "Offers") {
                           Navigator.push(
                               context,
@@ -448,6 +517,21 @@ class _ALlOptions extends State<AllOptions> {
                                     builder: (context) =>
                                         InstallApps(homepageList[index].name)));
                           }
+                        } else if (homepageList[index].name == "Bank Services") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BankServices()));
+                        } else if (homepageList[index].name == "Loans") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoanService()));
+                        } else if (homepageList[index].name == "Investments") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InvestmentServices()));
                         } else {
                           _alertDialog();
                         }
@@ -786,18 +870,25 @@ class _OTTScreenState extends State<OTTScreen> {
   @override
   void initState() {
     ottList = [
-      OTTModel("7", "Netflix", "images/netflix_gs1.png", "com.netflix.mediaclient"),
-      OTTModel("8", "Amazon Prime", "images/primvideo_gs2.png", "com.amazon.avod.thirdpartyclient"),
-      OTTModel("9", "Disney+ Hotstar", "images/disney_hotstar_gs3.png", "in.startv.hotstar"),
+      OTTModel(
+          "7", "Netflix", "images/netflix_gs1.png", "com.netflix.mediaclient"),
+      OTTModel("8", "Amazon Prime", "images/primvideo_gs2.png",
+          "com.amazon.avod.thirdpartyclient"),
+      OTTModel("9", "Disney+ Hotstar", "images/disney_hotstar_gs3.png",
+          "in.startv.hotstar"),
       OTTModel("10", "Sony Liv", "images/sonyliv-gs4.png", "com.sonyliv"),
       OTTModel("11", "Zee 5", "images/zee5_gs5.png", "com.graymatrix.did"),
       OTTModel("12", "Voot", "images/voot_gs6.png", "com.tv.v18.viola"),
-      OTTModel("13", "MX Player", "images/mx_player_gs7.png", "com.mxtech.videoplayer.ad"),
-      OTTModel("14", "ALT Balaji", "images/alt_balaji_gs8.png", "com.balaji.alt"),
+      OTTModel("13", "MX Player", "images/mx_player_gs7.png",
+          "com.mxtech.videoplayer.ad"),
+      OTTModel(
+          "14", "ALT Balaji", "images/alt_balaji_gs8.png", "com.balaji.alt"),
       OTTModel("15", "TVF Play", "images/tvf_gs9.png", "com.tvf.tvfplay"),
       OTTModel("16", "Eros Now", "images/erosnow_gs10.png", "com.erosnow"),
-      OTTModel("16", "Jio Cinema", "images/jiocinema_gs11.png", "com.jio.media.ondemand"),
-      OTTModel("16", "Airtel XStream", "images/airtel_xstream_gs12.png", "tv.accedo.airtel.wynk")
+      OTTModel("16", "Jio Cinema", "images/jiocinema_gs11.png",
+          "com.jio.media.ondemand"),
+      OTTModel("16", "Airtel XStream", "images/airtel_xstream_gs12.png",
+          "tv.accedo.airtel.wynk")
     ];
     super.initState();
   }
@@ -842,11 +933,13 @@ class _OTTScreenState extends State<OTTScreen> {
                   itemBuilder: (BuildContext ctx, index) {
                     return GestureDetector(
                       onTap: () async {
-                        bool isInstalled = await DeviceApps.isAppInstalled(ottList[index].packageName);
+                        bool isInstalled = await DeviceApps.isAppInstalled(
+                            ottList[index].packageName);
                         if (isInstalled) {
                           DeviceApps.openApp(ottList[index].packageName);
                         } else {
-                          launch("https://play.google.com/store/apps/details?id=${ottList[index].packageName}");
+                          launch(
+                              "https://play.google.com/store/apps/details?id=${ottList[index].packageName}");
                         }
                       },
                       child: Card(

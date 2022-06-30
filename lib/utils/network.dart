@@ -49,18 +49,31 @@ class NetworkCall {
     bool isConnected = await isNetworkConnected();
 
     if (isConnected) {
-      final body = {
+      /*final body = {
         "mobile_no": mobile_no,
         "email": email,
         "os": os,
         "phone_model": model,
-        "lat": latitude,
-        "long": longitude,
-        "install_location": install_location,
-        "code_name": "",
+        "lat": "",
+        "long": "",
+        //"install_location": "",
+        //"code_name": "",
         "password": password,
-        "usertype": usertype
-      };
+        //"usertype": usertype
+        "admin_type":usertype
+      };*/
+
+      final body= {
+        "mobile_no": "99609953019",
+        "email": "arati.genie1@gmail.com",
+        "os": "Android",
+        "phone_model": "Samsung S-51",
+        "lat": "",
+        "long": "",
+        "install_location": "",
+        "password": "1234",
+        "admin_type":"employee"
+    };
 
       final response;
 
@@ -68,23 +81,30 @@ class NetworkCall {
         response = await http.post(
           Uri.parse(
               'http://165.22.219.135/geniemoney/public/index.php/appregister'),
+          //headers: {'content-type': 'application/json',},
           body: body,
         );
       } else {
+        print("not customer");
+
+
         response = await http.post(
           Uri.parse(
-              'http://165.22.219.135/geniemoney/public/index.php/appcompanyregister'),
+            'http://165.22.219.135/genie_money/public/index.php/employeeregister'
+              //'http://165.22.219.135/geniemoney/public/index.php/appcompanyregister'
+          ),
           body: body,
         );
       }
 
-      var response_server = jsonDecode(response.body);
+      print(response.body);
+      /*var response_server = jsonDecode(response.body);
 
       if (kDebugMode) {
         print(response_server);
-      }
+      }*/
 
-      if (response.statusCode == 201) {
+      /*if (response.statusCode == 201) {
         if (response_server["status"] == 201) {
           _createToast("User registered successfully, Please login");
           return true;
@@ -99,7 +119,8 @@ class NetworkCall {
           _createToast("Failed to register User");
         }
         return false;
-      }
+      }*/
+      return false;
     } else {
       _createToast("Please connect to internet");
       return false;
@@ -124,7 +145,9 @@ class NetworkCall {
       } else {
         response = await http.post(
           Uri.parse(
-              'http://165.22.219.135/geniemoney/public/index.php/appcompanylogin'),
+            'http://165.22.219.135/genie_money/public/index.php/employeelogin'
+              //'http://165.22.219.135/geniemoney/public/index.php/appcompanylogin'
+          ),
           body: body,
         );
       }
@@ -138,7 +161,7 @@ class NetworkCall {
         if (response_server['status'] == 201) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           Constants.userid = response_server['userdetail']['userid'];
-          Constants.name = response_server['userdetail']['name'];
+          Constants.name = response_server['userdetail']['name']??"";
           Constants.email = response_server['userdetail']['email'];
           Constants.phone = response_server['userdetail']['phone'];
           Constants.type = type;
@@ -191,7 +214,8 @@ class NetworkCall {
       } else {
         response = await http.post(
           Uri.parse(
-              'http://165.22.219.135/geniemoney/public/index.php/appcompanyotp'),
+              'http://165.22.219.135/geniemoney/public/index.php/appcompanyotp'
+          ),
           body: body,
         );
       }

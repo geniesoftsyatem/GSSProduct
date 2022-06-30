@@ -7,15 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:genie_money/Model/home_menu_list_model.dart';
+import 'package:genie_money/Screens/bank_service.dart';
 import 'package:genie_money/Screens/distributor_retailer_screen.dart';
 import 'package:genie_money/Screens/essentials_screen.dart';
-import 'package:genie_money/Screens/payment_screen.dart';
+import 'package:genie_money/Screens/bill_payment_screen.dart';
+import 'package:genie_money/Screens/offer_screen.dart';
 import 'package:genie_money/Screens/portfolio.dart';
+import 'package:genie_money/Screens/qr_code_scanner_screen.dart';
 import 'package:genie_money/Screens/recharge_and_bill_payment_screen.dart';
 import 'package:genie_money/Screens/sales_partner_screen.dart';
 import 'package:genie_money/Screens/settings_screen.dart';
 import 'package:genie_money/Screens/sub_catagories_screen.dart';
 import 'package:genie_money/Screens/sub_sub_categories_screen.dart';
+import 'package:genie_money/Screens/wallet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'balance_inquiry_screen.dart';
@@ -65,19 +69,24 @@ class MyHomeClass extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       type = prefs.get("type") ?? "Customer";
+
     });
   }
 
   @override
   void initState() {
     _check_preference().then((value) => {
-          if (type == "Customer")
+      if (type == "Customer")
             {
               homepageList = [
                 HomePageList(
                     id: "1", name: "Finance", image: "images/finance.png"),
                 HomePageList(
                     id: "2", name: "Essentials", image: "images/essential.png"),
+                HomePageList(
+                    id: "7",
+                    name: "Travel",
+                    image: "images/travel.png"),
                 HomePageList(
                     id: "3",
                     name: "Personal Security",
@@ -86,23 +95,78 @@ class MyHomeClass extends State<HomeScreen> {
                     id: "4",
                     name: "Device Security",
                     image: "images/device_security.png"),
-                HomePageList(
-                    id: "5",
-                    name: "Value Addition",
-                    image: "images/valueaddition.png"),
+                /*HomePageList(
+                    id: "3", name: "Personal Security", image: "images/personal_security.png"),*/
                 HomePageList(
                     id: "6",
                     name: "Entertainment",
                     image: "images/entertainment.png"),
                 HomePageList(
                     id: "7",
-                    name: "Privilage Offer",
-                    image: "images/privilage_offer.png"),
-                HomePageList(id: "7", name: "Games", image: "images/games.png"),
-                HomePageList(id: "7", name: "Travel", image: "images/travel.png")
+                    name: "Offer",
+                    image: "images/offers.png"),
+                HomePageList(
+                    id: "5",
+                    name: "Value Addition",
+                    image: "images/valueaddition.png"),
+                HomePageList(
+                    id: "8",
+                    name: "Games",
+                    image: "images/games.png"),
+
               ]
+            }else if(type == "Retailer" || type == "Distributor" || type == "Super Distributor"){
+                  homepageList = [
+                    /*HomePageList(
+                        id: "1",
+                        name: "Generate Code",
+                        image: "images/generate_code.png"),
+                    HomePageList(
+                        id: "2",
+                        name: "Apps History",
+                        image: "images/app_history.png"),*/
+                    HomePageList(
+                        id: "1", name: "Finance Services", image: "images/finance.png"),
+                    HomePageList(
+                        id: "2", name: "Essentials Services", image: "images/essential.png"),
+                    HomePageList(
+                        id: "7",
+                        name: "Travel Booking Services",
+                        image: "images/travel.png"),
+                    HomePageList(
+                        id: "4",
+                        name: "Digital Security Services",
+                        image: "images/device_security.png"),
+                    HomePageList(
+                        id: "5",
+                        name: "Value Addition Services",
+                        image: "images/valueaddition.png"),
+                    HomePageList(
+                        id: "6",
+                        name: "Entertainment Service",
+                        image: "images/entertainment.png"),
+                    HomePageList(
+                        id: "3",
+                        name: "Advertisment Services",
+                        image: "images/advertisement.png"),
+                    /*HomePageList(
+                        id: "3",
+                        name: "Add Portfolio",
+                        image: "images/profolio.png"),*/
+                    HomePageList(
+                        id: "5", name: "Employee", image: "images/retailer.png"),
+                    /*HomePageList(
+                        id: "6", name: "Money Transfer", image: "images/money_transfer.png"),
+                    HomePageList(
+                        id: "7", name: "Scan To Pay", image: "images/scantopay_gm.png"),
+                    HomePageList(
+                        id: "8", name: "Recharge and Bill Payment", image: "images/recharge_and_bill.png"),
+                    HomePageList(
+                        id: "16", name: "Financial Calculator", image: "images/finance_calculator.png"),*/
+
+                    ]
             }
-          else if (type == "Retailer")
+         /* else if (type == "Retailer")
             {
               {
                 homepageList = [
@@ -141,7 +205,7 @@ class MyHomeClass extends State<HomeScreen> {
                 HomePageList(
                     id: "5", name: "Retailer", image: "images/retailer.png")
               ]
-            }
+            }*/
           else
             {
               homepageList = [
@@ -201,19 +265,32 @@ class MyHomeClass extends State<HomeScreen> {
                       onTap: () async {
                         String? result = await showSearch(
                             context: context, delegate: DataSearch());
-                        if (result! == "Essentials") {
+                        if (result! == "Essentials" ) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       const EssentialsScreen()));
+                        }else if(result == "Essentials Services"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const EssentialsScreen()));
                         } else if (result == "Finance" ||
                             result == "Personal Security" ||
-                            result == "Device Security" ||
+                            result == "Digit Security" ||
                             result == "Value Addition" ||
                             result == "Entertainment" ||
-                            result == "Privilage Offer" ||
+                            /*result == "Privilage Offer" ||*/
                             result == "Games") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllOptions(result)));
+                        }else if (result == "Finance Services" ||
+                            result == "Digital Security Services" ||
+                            result == "Value Added Services") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -222,7 +299,7 @@ class MyHomeClass extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MoneyTransfer()));
+                                  builder: (context) => MoneyTransfer(fromScreen: result,)));
                         } else if (result == "Recharge and Bill Payment") {
                           Navigator.push(
                               context,
@@ -275,7 +352,7 @@ class MyHomeClass extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                               builder: (context) =>
-                              PaymentScreen(result)));
+                              BillPaymentScreen(result)));
                         } else if (result == "AC/ Appliance Repair") {
                           Navigator.push(
                               context,
@@ -314,6 +391,11 @@ class MyHomeClass extends State<HomeScreen> {
                                     builder: (context) =>
                                         InstallApps(result)));
                           }
+                        }else if(result == "Offer"){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OfferScreen()));
                         } else if (result == "Education" || result == "Jobs") {
                           bool installed = await DeviceApps.isAppInstalled(
                               "com.gss.education");
@@ -385,10 +467,31 @@ class MyHomeClass extends State<HomeScreen> {
                         } else {
                           _alertDialog(context);
                         }
+
+
                       },
                       child: const Icon(Icons.search,
                           size: 26.0, color: Color(0xFFFFAE00)),
-                    )),
+                    )
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  WalletScrreen()));
+                    },
+                    child: const Icon(
+                      Icons.account_balance_wallet,
+                      color: Color(0xFFFFAE00),
+                    ),
+                  ),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
@@ -518,7 +621,7 @@ class MyHomeClass extends State<HomeScreen> {
                     width: width,
                     child: const Center(
                       child: Text(
-                        "Balance : 405",
+                        "Balance : "+"\u20B9" +"405",
                         style: TextStyle(
                             color: Color(0xFFFFAE00),
                             fontSize: 18.0,
@@ -557,7 +660,7 @@ class MyHomeClass extends State<HomeScreen> {
                               physics: const NeverScrollableScrollPhysics(),
                               children: homepageList.map((e) {
                                 return GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
                                     if (e.name == "Retailer" ||
                                         e.name == "Distributor" ||
                                         e.name == "Employee") {
@@ -579,7 +682,7 @@ class MyHomeClass extends State<HomeScreen> {
                                                       PortfolioScreen(type)));
                                     } else if (e.name == "Generate Code" ||
                                         e.name == "Apps History" ||
-                                        e.name == "Advertisement") {
+                                        e.name == "Advertisement" ) {
                                       ZoomDrawer.of(context)!.isOpen()
                                           ? ZoomDrawer.of(context)!.toggle()
                                           : Navigator.push(
@@ -588,7 +691,7 @@ class MyHomeClass extends State<HomeScreen> {
                                                   builder: (context) =>
                                                       SalesPartnerScreen(
                                                           e.name)));
-                                    } else if (e.name == "Essentials") {
+                                    } else if (e.name == "Essentials" || e.name == "Essentials Services") {
                                       ZoomDrawer.of(context)!.isOpen()
                                           ? ZoomDrawer.of(context)!.toggle()
                                           : Navigator.push(
@@ -596,7 +699,50 @@ class MyHomeClass extends State<HomeScreen> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       const EssentialsScreen()));
-                                    } else {
+                                    }
+                                      else if (e.name == "Recharge and Bill Payment") {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              const RechargeAndBillPayment()));
+                                    }    else if (e.name == "Financial Calculator") {
+                                      bool installed = await DeviceApps.isAppInstalled(
+                                          "com.gss.financecalculator");
+                                      if (installed) {
+                                        launchNativeActivity(e.name);
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    InstallApps(e.name)));
+                                      }
+                                    }  else if (e.name == "Money Transfer") {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MoneyTransfer(fromScreen: e.name,)));
+                                    }else if (e.name == "Payment") {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MoneyTransfer(fromScreen: e.name,)));
+                                    }else if (e.name == "Scan To Pay") {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => QRCodeScannerScreen()));
+
+                                    }else if(e.name == "Advertisment Services"){
+                                        _alertDialog(context);
+                                    }else if(e.name == "Offer"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => OfferScreen()));
+                                    }
+                                    else {
                                       ZoomDrawer.of(context)!.isOpen()
                                           ? ZoomDrawer.of(context)!.toggle()
                                           : Navigator.push(
@@ -949,7 +1095,7 @@ class DataSearch extends SearchDelegate<String> {
     "Finance",
     "Essentials",
     "Personal Security",
-    "Device Security",
+    "Digit Security",
     "Value Addition",
     "Entertainment",
     "Privilage Offer",
